@@ -61,7 +61,7 @@ public class TipoProdutoResource {
 	@PutMapping("/{id}")
     protected ResponseEntity<TipoProduto> atualizaTipoProduto(@PathVariable("id") Long id,@RequestBody TipoProduto tipoProduto,HttpServletResponse responseEntity){
     	return tipoProdutoRepository.findById(id).map(record -> {
-			    		record.setDescricaoTipoProduto(tipoProduto.getDescricaoTipoProduto());
+			    		record.setDescricao(tipoProduto.getDescricao());
 			    		TipoProduto updated = tipoProdutoRepository.save(record);
     	                return ResponseEntity.ok().body(updated);
     	                   	               

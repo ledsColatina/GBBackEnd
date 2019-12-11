@@ -12,10 +12,10 @@ public class Linha {
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long id;
-	
+	//wdf
 	@NotEmpty(message = "Descrição da Linha deve ser informado")
 	@NotNull(message = "Descrição da Linha deve ser informado")
-	private String descricaoLinha;
+	private String descricao;
 
 	public Long getId() {
 		return id;
@@ -26,11 +26,11 @@ public class Linha {
 	}
 
 	public String getDescricao() {
-		return descricaoLinha;
+		return descricao;
 	}
 
 	public void setDescricao(String descricao) {
-		this.descricaoLinha = descricao;
+		this.descricao = descricao;
 	}
 	
 	

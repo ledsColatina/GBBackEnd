@@ -15,7 +15,7 @@ public class TipoProduto {
 	
 	@NotEmpty(message = "Grupo(Promo,Line) do produto deve ser informado")
 	@NotNull(message = "Grupo(Promo,Line) do produto deve ser informado")
-	private String descricaoTipoProduto;
+	private String descricao;
 
 	
 	
@@ -27,12 +27,12 @@ public class TipoProduto {
 		this.id = id;
 	}
 
-	public String getDescricaoTipoProduto() {
-		return descricaoTipoProduto;
+	public String getDescricao() {
+		return descricao;
 	}
 
-	public void setDescricaoTipoProduto(String grupo) {
-		this.descricaoTipoProduto = grupo;
+	public void setDescricao(String grupo) {
+		this.descricao = grupo;
 	}
 	
 	
