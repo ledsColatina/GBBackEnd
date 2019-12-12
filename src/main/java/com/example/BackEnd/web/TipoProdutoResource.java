@@ -31,6 +31,7 @@ public class TipoProdutoResource {
 	@GetMapping()
 	protected ResponseEntity<List<TipoProduto>> listar(){
 		List<TipoProduto> tipoProduto = tipoProdutoRepository.findAll();
+		
 		return !tipoProduto.isEmpty() ? ResponseEntity.ok(tipoProduto) : ResponseEntity.noContent().build();
 	}
 	
@@ -45,7 +46,7 @@ public class TipoProdutoResource {
 	}
 	
 	@PostMapping()
-    protected ResponseEntity<TipoProduto> criarLinha(@Valid @RequestBody  TipoProduto tipoProduto,HttpServletResponse responseEntity){
+    protected ResponseEntity<TipoProduto> criarLinha(@Valid @RequestBody  TipoProduto tipoProduto,HttpServletResponse responseEntity){		
 		TipoProduto tipoProdutoSalvo = tipoProdutoRepository.save(tipoProduto);
     	return ResponseEntity.status(HttpStatus.OK).body(tipoProdutoSalvo);
     }
@@ -53,18 +54,15 @@ public class TipoProdutoResource {
 	@DeleteMapping("/{id}")	
     @ResponseStatus(HttpStatus.NO_CONTENT)
     protected void deleteTipoProduto(@PathVariable Long id){
-		
 		tipoProdutoRepository.deleteById(id);
-
     }
 	
 	@PutMapping("/{id}")
     protected ResponseEntity<TipoProduto> atualizaTipoProduto(@PathVariable("id") Long id,@RequestBody TipoProduto tipoProduto,HttpServletResponse responseEntity){
-    	return tipoProdutoRepository.findById(id).map(record -> {
+		return tipoProdutoRepository.findById(id).map(record -> {
 			    		record.setDescricao(tipoProduto.getDescricao());
 			    		TipoProduto updated = tipoProdutoRepository.save(record);
-    	                return ResponseEntity.ok().body(updated);
-    	                   	               
+    	                return ResponseEntity.ok().body(updated); 	               
     	           }).orElse(ResponseEntity.notFound().build());
     }   
 }
