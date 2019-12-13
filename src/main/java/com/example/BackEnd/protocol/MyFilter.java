@@ -21,7 +21,7 @@ public class MyFilter extends OncePerRequestFilter{
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		response.addHeader("Access-Control-Allow-Origin","*");
+		response.addHeader("Access-Control-Allow-Origin","https://smartzune.herokuapp.com");
 		response.addHeader("Access-Control-Allow-Methods"," POST, GET, OPTIONS, DELETE, PUT");
 		response.addHeader("Access-Control-Allow-Credentials","true");
 		response.addHeader("Access-Control-Allow-Headers",
