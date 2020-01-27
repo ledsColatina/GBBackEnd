@@ -26,7 +26,7 @@ public class ValorGrupo {
 
 	@ManyToOne
 	@JoinColumn(name = "tarefa_id")
-	private Tarefa tarefa;
+	private Processos tarefa;
 	
 	
 	public Long getId() {
