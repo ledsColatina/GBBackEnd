@@ -36,11 +36,11 @@ public class EtapaProducao {
 	
 	
 	@ManyToMany()
-	@JoinTable(name = "tarefa_etapaProducao",
+	@JoinTable(name = "processo_etapaProducao",
 				joinColumns={@JoinColumn(name="etapaProducao_id")},
-				inverseJoinColumns={@JoinColumn(name="tarefa_id")}
+				inverseJoinColumns={@JoinColumn(name="processo_id")}
 	)
-	private List<Tarefa> tarefas;
+	private List<Processos> processos;
 	
 	
 	public Long getId() {

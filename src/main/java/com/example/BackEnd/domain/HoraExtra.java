@@ -1,6 +1,5 @@
 package com.example.BackEnd.domain;
 
-import java.sql.Time;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -20,7 +19,7 @@ public class HoraExtra {
 	
 	private Long capacidade;
 	
-	private Time qtdHoras;
+	private String qtdHoras;
 	
 	@ManyToOne
 	@JoinColumn(name = "turno_id")
@@ -50,11 +49,11 @@ public class HoraExtra {
 		this.capacidade = capacidade;
 	}
 
-	public Time getQtdHoras() {
+	public String getQtdHoras() {
 		return qtdHoras;
 	}
 
-	public void setQtdHoras(Time qtdHoras) {
+	public void setQtdHoras(String qtdHoras) {
 		this.qtdHoras = qtdHoras;
 	}
 	
