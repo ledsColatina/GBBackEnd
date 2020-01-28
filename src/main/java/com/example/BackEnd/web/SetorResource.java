@@ -80,6 +80,7 @@ public class SetorResource {
 //-----------------------------------------------------------------------------------------------------------------------
 	@PostMapping()
     public ResponseEntity<?> criarSetor( @RequestBody Setor  setor,HttpServletResponse responseEntity) throws ParseException{
+		
 		/*
 		if(verficarRegrasDeNegocio(setor)==0) {
 			System.out.println("if");
