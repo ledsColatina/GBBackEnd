@@ -90,6 +90,116 @@ public class SetorResource {
     		return ResponseEntity.noContent().build();	
     	}*/
 		
+		/*
+		int totalDeHorasDoSetor=0;
+		int minutosInicio = 0;
+		int minutosFim = 0;
+		int cont=0;
+		int contadorDeVerificacaoEntreOsTurnos=1;
+		ArrayList<Integer> vetorHorasInicio = new ArrayList<Integer>();
+		ArrayList<Integer> vetorHorasFinal = new ArrayList<Integer>();
+		int totalDeTurnos=0;
+		int totalDeHorasDoTurno =0;
+		for(int b=0;b<setor.getListTurno().size();b++) {
+			totalDeTurnos = totalDeTurnos+1;
+		}
+		
+		if(totalDeTurnos == 1 ) {
+			turnoRepository.save(setor);
+			return  ResponseEntity.status(HttpStatus.OK).body(setor);
+		}
+		
+		
+		for(int c=0;c<setor.getListTurno().size();c++) {
+			totalDeHorasDoSetor = totalDeHorasDoSetor+setor.getListTurno().get(c).getTotalHoras();
+		}
+		//System.out.println(totalDeHorasDoSetor);
+		
+		for(int i=0;i<setor.getListTurno().size();i++) {
+			totalDeHorasDoTurno = totalDeHorasDoTurno+setor.getListTurno().get(i).getTotalHoras();
+			String str = setor.getListTurno().get(i).getHoraInicio(); 
+			String[] arr= str.split(":"); 
+			
+			
+			if(arr.length==2){ 
+				minutosInicio=Integer.parseInt(arr[0] )*60+Integer.parseInt(arr[1] ); 
+			} 
+			
+			minutosFim = (totalDeHorasDoTurno*60) + minutosInicio;
+			
+			
+			if(minutosFim > 24*60) {
+				minutosFim = minutosFim-24*60;
+			}
+			
+			//System.out.println("minutoFim: " + minutosFim/60);
+			if(cont>0) {
+				for(int j=0;j<vetorHorasInicio.size();j++) {
+					
+					if((minutosFim >= vetorHorasInicio.get(j) && minutosFim >= vetorHorasFinal.get(j)) ||   (  minutosInicio/60  >=  vetorHorasInicio.get(j)/60   &&   minutosInicio/60   >=   vetorHorasFinal.get(j)/60) ) {
+						System.out.println("IF");
+						System.out.println("(" + minutosFim/60 + " >= " +  vetorHorasInicio.get(j)/60 + " && " + minutosFim/60 +" >= " + vetorHorasFinal.get(j)/60 + ")" +" || " + "(" + minutosInicio/60 + " >= " +vetorHorasInicio.get(j)/60 + " && " + minutosInicio/60 + " >= " + vetorHorasFinal.get(j)/60+")");
+						
+						if(minutosInicio>=vetorHorasFinal.get(j)) {
+							turnoRepository.save(setor);
+							return ResponseEntity.status(HttpStatus.OK).body(setor);
+						}
+						return ResponseEntity.noContent().build();
+					}else {
+						System.out.println("ELSE");
+						System.out.println("(" + minutosFim/60 + " <= " +  vetorHorasInicio.get(j)/60 + " && " + minutosFim/60 +" <= " + vetorHorasFinal.get(j)/60 + ")" +" && " + "(" + minutosInicio/60 + " <= " +vetorHorasInicio.get(j)/60 + " && " + minutosInicio/60 + " <= " + vetorHorasFinal.get(j)/60+")");
+
+						System.out.println(minutosInicio/60 + " >= " + vetorHorasFinal.get(j)/60 + " && " + minutosInicio/60 + " >= " + vetorHorasInicio.get(j)/60);
+						System.out.println(minutosInicio/60 + " <= " + vetorHorasFinal.get(j)/60 + " && " + minutosInicio/60 + " <= " + vetorHorasInicio.get(j)/60);
+						
+						
+						if((minutosInicio >= vetorHorasFinal.get(j) && minutosInicio >= vetorHorasInicio.get(j)) || (minutosInicio <= vetorHorasFinal.get(j) && minutosInicio <= vetorHorasInicio.get(j)))  {
+							System.out.println(minutosFim/60 + " >= " + vetorHorasFinal.get(j)/60 + " && " + minutosFim/60 + " >= " + vetorHorasInicio.get(j)/60);
+							System.out.println(minutosFim/60 + " <= " + vetorHorasFinal.get(j)/60 + " && " + minutosFim/60 + " <= " + vetorHorasInicio.get(j)/60);
+							
+							
+							if((minutosFim >= vetorHorasFinal.get(j) && minutosFim >= vetorHorasInicio.get(j)) || (minutosFim <= vetorHorasFinal.get(j) && minutosFim <= vetorHorasInicio.get(j))){
+								contadorDeVerificacaoEntreOsTurnos = contadorDeVerificacaoEntreOsTurnos+1;
+								System.out.println("cont :" + contadorDeVerificacaoEntreOsTurnos + " // " + "totalDeTurnos" + totalDeTurnos);
+								if(contadorDeVerificacaoEntreOsTurnos+1 == totalDeTurnos ) {
+									if(totalDeHorasDoSetor<24) {
+										turnoRepository.save(setor);
+										return ResponseEntity.status(HttpStatus.OK).body(setor);	
+									}else {
+										return ResponseEntity.noContent().build();			
+									}
+								}		
+							}
+						}
+					}
+					
+					
+					
+				}	
+			}
+			contadorDeVerificacaoEntreOsTurnos = 0;
+			//System.out.println(minutosInicio);
+			vetorHorasInicio.add(minutosInicio);
+			vetorHorasFinal.add((totalDeHorasDoTurno*60) + minutosInicio);
+			cont = cont+1;
+			totalDeHorasDoTurno = 0;
+			
+			
+		}
+		if(cont == 1) {
+			turnoRepository.save(setor);
+			return  ResponseEntity.status(HttpStatus.OK).body(setor);
+		}
+		
+		
+		
+	
+		//clienteRepository.save(cliente);
+    	return ResponseEntity.noContent().build();
+		
+		*/
+		
+		
 		Setor setorSalvo = setorRepository.save(setor);
     	return ResponseEntity.status(HttpStatus.OK).body(setorSalvo);
     }
