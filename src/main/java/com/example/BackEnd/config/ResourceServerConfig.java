@@ -35,7 +35,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 	
 	//@Autowired
 	//private UserDetailsService useDetailsService;
-	
+	//sdgfsd
 	@Bean
 	@Override
 	protected AuthenticationManager authenticationManager() throws Exception {
