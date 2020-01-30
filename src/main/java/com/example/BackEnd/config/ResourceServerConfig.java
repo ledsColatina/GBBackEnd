@@ -35,7 +35,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 	
 	//@Autowired
 	//private UserDetailsService useDetailsService;
-	//sdgfsd
+	//arroba
 	@Bean
 	@Override
 	protected AuthenticationManager authenticationManager() throws Exception {
@@ -81,8 +81,10 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 			web.ignoring().antMatchers("/usuario/**");
 			
 			web.ignoring().antMatchers("/setor");
+			
 			web.ignoring().antMatchers("/setor/**");
 			web.ignoring().antMatchers("/setor/{id}/turnos/lastID");
+			web.ignoring().antMatchers("/setor/lastID");
 			
 			web.ignoring().antMatchers("/linha");
 			web.ignoring().antMatchers("/linha/**");
@@ -94,6 +96,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 			
 			web.ignoring().antMatchers("/turno");
 			web.ignoring().antMatchers("/turno/**");
+			//web.ignoring().antMatchers("https://backend-gb.herokuapp.com/setor");
 			
 			web.ignoring().antMatchers("/actuator/**");
 			
@@ -120,7 +123,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 			accessTokenConverter.setSigningKey("gb");
 			return accessTokenConverter;
 		}
-		
+		//sdfgsdg
 		
 		
 		

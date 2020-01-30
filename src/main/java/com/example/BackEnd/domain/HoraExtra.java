@@ -1,6 +1,6 @@
 package com.example.BackEnd.domain;
 
-import java.util.Date;
+
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,15 +15,41 @@ public class HoraExtra {
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long id;
 	
-	private Date data;
+	private String data;
 	
 	private Long capacidade;
 	
 	private String qtdHoras;
 	
+	public enum status{
+		FINALIZADO(1),PENDENTE(2);
+		
+		
+		private final int valor;
+		status(int valorOpcao){
+	        valor = valorOpcao;
+	    }
+		
+		
+	    public int getValor(){
+	        return valor;
+	    }
+	}
+	
 	@ManyToOne
 	@JoinColumn(name = "turno_id")
 	private Turno turno;
+
+	
+	
+	
+	public Turno getTurno() {
+		return turno;
+	}
+
+	public void setTurno(Turno turno) {
+		this.turno = turno;
+	}
 
 	public Long getId() {
 		return id;
@@ -33,11 +59,11 @@ public class HoraExtra {
 		this.id = id;
 	}
 
-	public Date getData() {
+	public String getData() {
 		return data;
 	}
 
-	public void setData(Date data) {
+	public void setData(String data) {
 		this.data = data;
 	}
 

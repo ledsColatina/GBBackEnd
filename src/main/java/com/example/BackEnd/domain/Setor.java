@@ -31,7 +31,7 @@ public class Setor {
 
 	@OneToMany(cascade = {CascadeType.ALL})
 
-	@JoinColumn(name = "turno_id")
+	@JoinColumn(name = "setor_id")
 	private List<Turno> ListTurno;
 	
 	
