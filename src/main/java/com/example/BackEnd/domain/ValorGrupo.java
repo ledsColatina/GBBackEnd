@@ -7,28 +7,24 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-
 @Entity
 public class ValorGrupo {
 	@Id
-	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
-	
+
 	private float valorAtual;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "linha_id")
 	private Linha linha;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "tipoProduto_id")
 	private TipoProduto tipoProduto;
 
-	@ManyToOne
-	@JoinColumn(name = "tarefa_id")
-	private Processos tarefa;
 	
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -60,9 +56,7 @@ public class ValorGrupo {
 	public void setTipoProduto(TipoProduto tipoProduto) {
 		this.tipoProduto = tipoProduto;
 	}
-	
-	
-	
-	
-}
 
+	
+
+}

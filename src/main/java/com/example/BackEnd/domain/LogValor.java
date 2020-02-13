@@ -11,63 +11,45 @@ import javax.persistence.ManyToOne;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-
 @Entity
 public class LogValor {
 	@Id
-	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
-	
-	private float ValorNovo;
-	
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	private Date data;
 
-	@ManyToOne
-	@JoinColumn(name = "valorGrupo_id")
-	private ValorGrupo valorGrupo;
-	
-	
+	// USAR DOUBLE
+	private float ValorNovo;
+
+	// @DateTimeFormat(pattern = "dd/MM/yyyy")
+	private String data;
+
+	// @ManyToOne
+	// @JoinColumn(name = "valorGrupo_id")
+	// private ValorGrupo valorGrupo;
+
 	public Long getId() {
 		return id;
 	}
-
 
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-
-	public float getNovoValor() {
+	
+	public float getValorNovo() {
 		return ValorNovo;
 	}
 
-
-	public void setNovoValor(float novoValor) {
-		this.ValorNovo = novoValor;
+	public void setValorNovo(float valorNovo) {
+		ValorNovo = valorNovo;
 	}
 
-
-	public Date getData() {
+	public String getData() {
 		return data;
 	}
 
-
-	public void setData(Date data) {
+	public void setData(String data) {
 		this.data = data;
 	}
 
-
-	public ValorGrupo getValorGrupo() {
-		return valorGrupo;
-	}
-
-
-	public void setValorGrupo(ValorGrupo valorGrupo) {
-		this.valorGrupo = valorGrupo;
-	}
-	
-	
-	
-	
 }

@@ -1,5 +1,6 @@
 package com.example.BackEnd.Exception;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,9 +12,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.jca.cci.RecordTypeNotSupportedException;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+@SuppressWarnings({"unchecked","rawtypes"})
 @ControllerAdvice
 public class ExceptionHandler extends ResponseEntityExceptionHandler{
 		//dsfdsfg
@@ -29,7 +35,7 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler{
 	}
 	
 	
-@org.springframework.web.bind.annotation.ExceptionHandler({EmptyResultDataAccessException.class})
+	@org.springframework.web.bind.annotation.ExceptionHandler({EmptyResultDataAccessException.class})
 	public ResponseEntity<Object> handleEmptyResultDataAccessException(EmptyResultDataAccessException ex ,WebRequest request) {
 		String mensagemUsuario = messageSource.getMessage("recurso.nao-encontrado",null,LocaleContextHolder.getLocale());
 		String mensagemDesenvolvedor = ex.toString();
@@ -37,7 +43,24 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler{
 		return handleExceptionInternal(ex,erros, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
 	
+	@Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        List<String> details = new ArrayList<>();
+        for(ObjectError error : ex.getBindingResult().getAllErrors()) {
+            details.add(error.getDefaultMessage());
+        }
+        ErrorResponse error = new ErrorResponse("Falha na validaçao do objeto", details);
+        return new ResponseEntity<Object>(error, HttpStatus.BAD_REQUEST);
+    }
 	
+	
+	@org.springframework.web.bind.annotation.ExceptionHandler({RecordTypeNotSupportedException.class})
+    public final ResponseEntity<Object> handleUserNotFoundException(RecordTypeNotSupportedException ex, WebRequest request) {
+        List<String> details = new ArrayList<>();
+        details.add(ex.getLocalizedMessage());
+        ErrorResponse error = new ErrorResponse("Registro nao encontrado", details);
+        return new ResponseEntity(error, HttpStatus.NOT_FOUND);
+    }
 	
 	public static class Erro {
 		String mensagemUsuario;

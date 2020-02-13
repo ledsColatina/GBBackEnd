@@ -19,30 +19,35 @@ public class HoraExtra {
 	
 	private Long capacidade;
 	
-	private String qtdHoras;
+	private float qtdHoras;
 	
-	public enum status{
-		FINALIZADO(1),PENDENTE(2);
-		
-		
-		private final int valor;
-		status(int valorOpcao){
-	        valor = valorOpcao;
-	    }
-		
-		
-	    public int getValor(){
-	        return valor;
-	    }
-	}
+	private String status;
+	
+	private String momento;
 	
 	@ManyToOne
-	@JoinColumn(name = "turno_id")
+	@JoinColumn(name = "turno")
 	private Turno turno;
 
 	
 	
 	
+	public String getMomento() {
+		return momento;
+	}
+
+	public void setMomento(String momento) {
+		this.momento = momento;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public Turno getTurno() {
 		return turno;
 	}
@@ -75,11 +80,11 @@ public class HoraExtra {
 		this.capacidade = capacidade;
 	}
 
-	public String getQtdHoras() {
+	public float getQtdHoras() {
 		return qtdHoras;
 	}
 
-	public void setQtdHoras(String qtdHoras) {
+	public void setQtdHoras(float qtdHoras) {
 		this.qtdHoras = qtdHoras;
 	}
 	

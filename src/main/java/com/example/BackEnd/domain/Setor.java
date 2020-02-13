@@ -1,7 +1,5 @@
 package com.example.BackEnd.domain;
 
-
-
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,27 +12,26 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-
-
 @Entity
 public class Setor {
 	@Id
-	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotEmpty(message = "Nome do Setor deve ser informado")
 	@NotNull(message = "Nome do Setor deve ser informado")
 	private String nome;
 
 	private Long maxOcupacao;
-	
 
-	@OneToMany(cascade = {CascadeType.ALL})
-
+	@OneToMany(cascade = { CascadeType.ALL })
 	@JoinColumn(name = "setor_id")
 	private List<Turno> ListTurno;
-	
-	
+
+	@OneToMany(cascade = { CascadeType.ALL })
+	@JoinColumn(name = "setor_id")
+	private List<Processos> ListProcessos;
+
 	public List<Turno> getListTurno() {
 		return ListTurno;
 	}
@@ -59,13 +56,20 @@ public class Setor {
 		this.nome = nome;
 	}
 
-
 	public Long getMaxOcupacao() {
 		return maxOcupacao;
 	}
 
 	public void setMaxOcupacao(Long maxOcupacao) {
 		this.maxOcupacao = maxOcupacao;
+	}
+
+	public List<Processos> getListProcessos() {
+		return ListProcessos;
+	}
+
+	public void setListProcessos(List<Processos> listProcessos) {
+		ListProcessos = listProcessos;
 	}
 
 	@Override
@@ -92,6 +96,5 @@ public class Setor {
 			return false;
 		return true;
 	}
-	
-	
+
 }

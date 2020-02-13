@@ -1,52 +1,116 @@
 package com.example.BackEnd.web;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.BackEnd.domain.Cliente;
 import com.example.BackEnd.domain.HoraExtra;
 import com.example.BackEnd.repository.HoraExtraRepository;
+import com.example.BackEnd.repository.TurnoRepository;
 
 @RestController
 @RequestMapping(value = "/horaExtra")
 public class HoraExtraResource {
-	
+
 	@Autowired
-    private HoraExtraRepository horaExtraRepository;
-	
+	private HoraExtraRepository horaExtraRepository;
+
+	@Autowired
+	private TurnoRepository turnoRepository;
+
 	@GetMapping
-	public ResponseEntity<List<HoraExtra>> listar(){
-		List<HoraExtra> horaExtra = horaExtraRepository.findAll();	
-		return !horaExtra.isEmpty() ? ResponseEntity.ok(horaExtra) : ResponseEntity.noContent().build();	
+	public ResponseEntity<List<HoraExtra>> listar() {
+		List<HoraExtra> horaExtra = horaExtraRepository.findAll();
+		return !horaExtra.isEmpty() ? ResponseEntity.ok(horaExtra) : ResponseEntity.noContent().build();
 	}
-	
-	
+
 	@GetMapping("/lastID")
-	public ResponseEntity<?>  pegarUltimoID(){
+	public ResponseEntity<?> pegarUltimoID() {
 		HoraExtra horaExtra = horaExtraRepository.findTopByOrderByIdDesc();
 		if (horaExtra != null)
-			return ResponseEntity.ok(horaExtra.getId()+1);
+			return ResponseEntity.ok(horaExtra.getId() + 1);
 		else
 			return ResponseEntity.ok(1);
 	}
-	
-	
+
+	@GetMapping("/setor/{id}")
+	public ResponseEntity<List<HoraExtra>> HoraExtraPorSetor(@PathVariable("id") Long id) {
+		List<HoraExtra> list = horaExtraRepository.findAllHoraExtraPorSetor(id);
+		return ResponseEntity.ok(list);
+	}
+
+	@GetMapping("/{id}/finalizados")
+	public ResponseEntity<List<HoraExtra>> listarHoraExtraFinalizadasPorSetor(@PathVariable("id") Long id) {
+		List<HoraExtra> horaExtra = horaExtraRepository.findAllFinalizadas(id);
+		return ResponseEntity.ok(horaExtra);
+	}
+
+	@GetMapping("/{id}/pendentes")
+	public ResponseEntity<List<HoraExtra>> listarHoraExtraPendentesPorSetor(@PathVariable("id") Long id) {
+		List<HoraExtra> horaExtra = horaExtraRepository.findAllPendentes(id);
+		return ResponseEntity.ok(horaExtra);
+	}
+
 	@PostMapping()
-    public ResponseEntity<HoraExtra> criarHoraExtra(@Valid @RequestBody  HoraExtra horaExtra,HttpServletResponse responseEntity){
+	public ResponseEntity<?> criarHoraExtra(@Valid @RequestBody HoraExtra horaExtra, HttpServletResponse responseEntity)
+			throws ParseException {
+		/*
+		 * Date dataDeHoje = new Date();
+		 * 
+		 * SimpleDateFormat formatadorDataDeHoje = new SimpleDateFormat("dd/MM/yyyy");
+		 * SimpleDateFormat formatadorDataDoObjeto = new SimpleDateFormat("dd/MM/yyyy");
+		 * 
+		 * Date dataFormatada = formatadorDataDoObjeto.parse(horaExtra.getData());
+		 * 
+		 * formatadorDataDeHoje.format( dataDeHoje );
+		 * System.out.println("Data do Objeto: " + dataFormatada);
+		 * System.out.println("Data de hoje: " + dataDeHoje);
+		 * if(dataFormatada.before(dataDeHoje) == true) { return
+		 * ResponseEntity.noContent().build(); }
+		 */
+
 		HoraExtra horaExtraSalva = horaExtraRepository.save(horaExtra);
-    	return ResponseEntity.status(HttpStatus.OK).body(horaExtraSalva);
-    }
-	
-	
+		return ResponseEntity.status(HttpStatus.OK).body(horaExtraSalva);
+	}
+
+	@DeleteMapping("/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deleteHoraExtra(@PathVariable Long id) {
+		horaExtraRepository.deleteById(id);
+	}
+	@PutMapping("/{id}") 
+    public ResponseEntity<HoraExtra> atualizaHoraExtra(@PathVariable("id") Long id,@RequestBody HoraExtra horaExtra,HttpServletResponse responseEntity){
+    	return horaExtraRepository.findById(id).map(record -> {
+			    		record.setCapacidade(horaExtra.getCapacidade());;
+			    		record.setData(horaExtra.getData());
+			    		record.setMomento(horaExtra.getMomento());
+			    		record.setQtdHoras(horaExtra.getQtdHoras());
+			    		record.setStatus(horaExtra.getStatus());
+			    		HoraExtra updated = horaExtraRepository.save(record);
+    	                return ResponseEntity.ok().body(updated);
+    	                   	               
+    	           }).orElse(ResponseEntity.notFound().build());
+    }    
 }

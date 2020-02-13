@@ -9,11 +9,10 @@ import com.example.BackEnd.domain.Cliente;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
-
 	List<Cliente> findByCor(String cor);
+
 	Cliente save(Optional<Cliente> cliente);
 
 	Cliente findTopByOrderByIdDesc();
 
-	
 }

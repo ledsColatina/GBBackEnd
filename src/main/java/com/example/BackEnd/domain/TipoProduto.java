@@ -10,15 +10,13 @@ import javax.persistence.Entity;
 @Entity
 public class TipoProduto {
 	@Id
-	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotEmpty(message = "Grupo(Promo,Line) do produto deve ser informado")
 	@NotNull(message = "Grupo(Promo,Line) do produto deve ser informado")
 	private String descricao;
 
-	
-	
 	public Long getId() {
 		return id;
 	}
@@ -34,6 +32,5 @@ public class TipoProduto {
 	public void setDescricao(String grupo) {
 		this.descricao = grupo;
 	}
-	
-	
+
 }

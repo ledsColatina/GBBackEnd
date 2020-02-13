@@ -16,23 +16,20 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class Usuario {
 	@Id
-	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotEmpty(message = "Nome do Usuario deve ser informado")
 	@NotNull(message = "Nome do Usuario deve ser informado")
 	private String nome;
-	
-	
+
 	private String senha;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "usuario_setor",
-				joinColumns={@JoinColumn(name="usuario_id")},
-				inverseJoinColumns={@JoinColumn(name="setor_id")}
-	)
+	@JoinTable(name = "usuario_setor", joinColumns = { @JoinColumn(name = "usuario_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "setor_id") })
 	private List<Setor> setores;
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -90,6 +87,4 @@ public class Usuario {
 		return true;
 	}
 
-	
-	
 }
