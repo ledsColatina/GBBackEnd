@@ -1,6 +1,8 @@
 package com.example.BackEnd.web;
 
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -8,16 +10,22 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import com.example.BackEnd.domain.Cliente;
 import com.example.BackEnd.domain.Processos;
+import com.example.BackEnd.domain.Setor;
+import com.example.BackEnd.domain.ValorGrupo;
 import com.example.BackEnd.repository.ProcessosRepository;
+import com.example.BackEnd.repository.SetorRepository;
 
 @RestController
 @RequestMapping(value = "/processos")
@@ -27,7 +35,7 @@ public class ProcessosResource {
 	private ProcessosRepository processosRepository;
 	
 	
-	@PostMapping()
+	@PostMapping
     protected ResponseEntity<Processos> criarProcesso(@Valid @RequestBody  Processos processos,HttpServletResponse responseEntity){
 		Processos processosSalvo = processosRepository.save(processos);
 		System.out.println(processosSalvo.getId());
@@ -41,9 +49,35 @@ public class ProcessosResource {
 		return !processos.isEmpty() ? ResponseEntity.ok(processos) : ResponseEntity.noContent().build();
 	}
 	
-	@GetMapping()
+	@GetMapping
 	protected ResponseEntity<List<Processos>> listarProcessos(){
 		List<Processos> processos = processosRepository.findAll();
 		return !processos.isEmpty() ? ResponseEntity.ok(processos) : ResponseEntity.noContent().build();
 	}
+	
+	@PutMapping("/{id}") 
+    public ResponseEntity<Processos> atualizaProcessos(@PathVariable("id") Long id,@RequestBody Processos processos,HttpServletResponse responseEntity){
+    	return processosRepository.findById(id).map(record -> {
+			    		record.setDescricao(processos.getDescricao());
+			    		Processos updated = processosRepository.save(record);
+    	                return ResponseEntity.ok().body(updated);
+    	                   	               
+    	           }).orElse(ResponseEntity.notFound().build());
+    }   
+	
+	@DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public String deleteProcessos(@PathVariable Long id)throws SQLException{
+			processosRepository.deleteById(id);
+		
+		return null;
+    }
+	
+	/*
+	@GetMapping("/valorGrupo/{id}")
+	public ResponseEntity<List<ValorGrupo>> listarTodosOsValorGrupoDeUmProcesso(@PathVariable("id") Long id){
+		List<ValorGrupo> listValorGrupo = processosRepository.findAllValorGrupoPorProcesso(id);
+		return !listValorGrupo.isEmpty() ? ResponseEntity.ok(listValorGrupo) : ResponseEntity.noContent().build();
+	}*/
+	
 }

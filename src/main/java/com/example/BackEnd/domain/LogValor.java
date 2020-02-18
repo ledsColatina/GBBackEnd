@@ -12,9 +12,10 @@ import javax.persistence.ManyToOne;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
+
 public class LogValor {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	// USAR DOUBLE
@@ -22,10 +23,11 @@ public class LogValor {
 
 	// @DateTimeFormat(pattern = "dd/MM/yyyy")
 	private String data;
+	private String descricao;
 
-	// @ManyToOne
-	// @JoinColumn(name = "valorGrupo_id")
-	// private ValorGrupo valorGrupo;
+	 @ManyToOne
+	 @JoinColumn(name = "valorGrupo_id")
+	 private ValorGrupo valorGrupo;
 
 	public Long getId() {
 		return id;
@@ -52,4 +54,21 @@ public class LogValor {
 		this.data = data;
 	}
 
+	public ValorGrupo getValorGrupo() {
+		return valorGrupo;
+	}
+
+	public void setValorGrupo(ValorGrupo valorGrupo) {
+		this.valorGrupo = valorGrupo;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	
 }

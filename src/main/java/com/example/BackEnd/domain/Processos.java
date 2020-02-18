@@ -8,21 +8,24 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 //REMOVER IMPORTS DESNECESSARIO
 @Entity
 public class Processos {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private String descricao;
 	
 	
-	@OneToMany(cascade = { CascadeType.ALL })
-	@JoinColumn(name = "processos_id")
-	private List<ValorGrupo>listValorGrupo;
-	
+	//@OneToMany(cascade = { CascadeType.ALL })
+	//@JoinColumn(name = "processos_id")
+	//private List<ValorGrupo>listValorGrupo;
+	@ManyToOne
+	@JoinColumn(name = "setor_id")
+	private Setor setor;
 	
 	public Long getId() {
 		return id;
@@ -40,12 +43,12 @@ public class Processos {
 		this.descricao = descricao;
 	}
 
-	public List<ValorGrupo> getListValorGrupo() {
-		return listValorGrupo;
+	public Setor getSetor() {
+		return setor;
 	}
 
-	public void setListValorGrupo(List<ValorGrupo> listValorGrupo) {
-		this.listValorGrupo = listValorGrupo;
+	public void setSetor(Setor setor) {
+		this.setor = setor;
 	}
 	
 }

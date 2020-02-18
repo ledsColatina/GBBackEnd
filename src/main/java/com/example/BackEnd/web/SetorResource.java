@@ -118,6 +118,7 @@ public class SetorResource {
 	}
 
 //-----------------------------------------------------------------------------------------------------------------------	
+	/*
 	@PutMapping("/{id}")
 	protected ResponseEntity<Setor> atualizaSetor(@PathVariable("id") Long id, @RequestBody Setor setor,HttpServletResponse responseEntity) {
 		System.out.println(setor.getListProcessos().get(0).getListValorGrupo().get(0).getValorAtual());
@@ -135,7 +136,7 @@ public class SetorResource {
 		// }
 
 	}
-
+*/
 //----------------------------------------------------------------------------------------------------------------------	
 	public int verficarRegrasDeNegocio(Setor setor) {
 		int totalDeHorasDoSetor = 0;

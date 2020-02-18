@@ -15,4 +15,5 @@ public interface SetorRepository extends JpaRepository<Setor, Long> {
 
 
 	Setor findTopByOrderByIdDesc();
+	
 }

@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.BackEnd.domain.LogValor;
+import com.example.BackEnd.domain.Processos;
 import com.example.BackEnd.domain.ValorGrupo;
 import com.example.BackEnd.repository.LogValorRepository;
 import com.example.BackEnd.repository.ValorGrupoRepository;
@@ -41,17 +43,22 @@ public class ValorGrupoResource {
 		ValorGrupo valorGrupoSalvo = valorGrupoRepository.save(valorGrupo);
 		LogValor logValor = new LogValor();
 		  
-		SimpleDateFormat formatadorDataDeHoje = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat formatadorDataDeHoje = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		String dataDeHoje = formatadorDataDeHoje.format(new Date());
-		 
+		
+		
 		float valor = valorGrupoSalvo.getValorAtual();
-
+		
 		logValor.setValorNovo(valor);
 		logValor.setData(dataDeHoje);
+		
+		logValor.setDescricao(valorGrupoSalvo.getProcessos().getDescricao() + "/"+ valorGrupoSalvo.getLinha().getDescricao() + "/" + valorGrupoSalvo.getTipoProduto().getDescricao());
+		logValor.setValorGrupo(valorGrupoSalvo);
 		logValorRepository.save(logValor);
-		valorGrupoRepository.save(valorGrupoSalvo);
 		return ResponseEntity.status(HttpStatus.OK).body(valorGrupoSalvo);
 	}
+
+	
 
 	@GetMapping()
 	protected ResponseEntity<List<ValorGrupo>> listar() {
@@ -72,6 +79,15 @@ public class ValorGrupoResource {
 		else
 			return ResponseEntity.ok(1);
 
+	}
+	
+	
+
+	@GetMapping("/{id}")
+	public ResponseEntity<List<ValorGrupo>> listarTodosOsValorGrupoDeUmProcesso(@PathVariable("id") Long id){
+		List<ValorGrupo> listValorGrupo = valorGrupoRepository.findByProcessoId(id);
+		return !listValorGrupo.isEmpty() ? ResponseEntity.ok(listValorGrupo) : ResponseEntity.noContent().build();
+	
 	}
 
 	@DeleteMapping("/{id}")

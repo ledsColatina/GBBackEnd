@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 
 import com.example.BackEnd.domain.Processos;
+import com.example.BackEnd.domain.ValorGrupo;
 
 public interface ProcessosRepository extends JpaRepository<Processos, Long> {
 	@Query(value = "SELECT P.id, P.descricao, P.setor_id\n" + 
@@ -15,5 +16,11 @@ public interface ProcessosRepository extends JpaRepository<Processos, Long> {
 			"  WHERE P.setor_id = S.id AND\n" + 
 			"	S.id = :id", nativeQuery = true)
 	List<Processos> findAllProcessosDoSetor(@Param("id") Long id);
+	
+	
+
+
+	
+	
 
 }

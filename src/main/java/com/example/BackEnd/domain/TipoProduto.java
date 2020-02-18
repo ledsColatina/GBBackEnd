@@ -12,9 +12,9 @@ public class TipoProduto {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	@NotEmpty(message = "Grupo(Promo,Line) do produto deve ser informado")
-	@NotNull(message = "Grupo(Promo,Line) do produto deve ser informado")
+	
+	@NotEmpty(message = "Descricao do tipoProduto deve ser informado")
+	@NotNull(message = "Descricao do tipoProduto deve ser informado")
 	private String descricao;
 
 	public Long getId() {

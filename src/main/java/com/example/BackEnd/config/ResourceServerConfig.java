@@ -89,7 +89,9 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 		web.ignoring().antMatchers("/tipoProduto/lastID");
 
 		web.ignoring().antMatchers("/processos");
+		web.ignoring().antMatchers("/valorGrupo/{id}");
 		web.ignoring().antMatchers("/processos/**");
+		web.ignoring().antMatchers("/processos/{id}");
 		web.ignoring().antMatchers("/processos/lastID");
 		web.ignoring().antMatchers("/processos/setor/{id}");
 

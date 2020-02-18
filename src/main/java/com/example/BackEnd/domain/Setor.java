@@ -27,11 +27,11 @@ public class Setor {
 	@OneToMany(cascade = { CascadeType.ALL })
 	@JoinColumn(name = "setor_id")
 	private List<Turno> ListTurno;
-
+	/*
 	@OneToMany(cascade = { CascadeType.ALL })
 	@JoinColumn(name = "setor_id")
 	private List<Processos> ListProcessos;
-
+    */
 	public List<Turno> getListTurno() {
 		return ListTurno;
 	}
@@ -64,13 +64,7 @@ public class Setor {
 		this.maxOcupacao = maxOcupacao;
 	}
 
-	public List<Processos> getListProcessos() {
-		return ListProcessos;
-	}
-
-	public void setListProcessos(List<Processos> listProcessos) {
-		ListProcessos = listProcessos;
-	}
+	
 
 	@Override
 	public int hashCode() {

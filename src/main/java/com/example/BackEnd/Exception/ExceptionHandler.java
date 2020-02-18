@@ -1,9 +1,11 @@
 package com.example.BackEnd.Exception;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -16,8 +18,12 @@ import org.springframework.jca.cci.RecordTypeNotSupportedException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 @SuppressWarnings({"unchecked","rawtypes"})
 @ControllerAdvice
@@ -52,6 +58,16 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler{
         ErrorResponse error = new ErrorResponse("Falha na validaçao do objeto", details);
         return new ResponseEntity<Object>(error, HttpStatus.BAD_REQUEST);
     }
+	
+	
+	@org.springframework.web.bind.annotation.ExceptionHandler({  org.springframework.dao.DataIntegrityViolationException.class})
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ResponseEntity<Object> handleSQLException( org.springframework.dao.DataIntegrityViolationException ex,WebRequest req){
+		String mensagemUsuario = messageSource.getMessage("objeto.nao-pode-ser-excluido",null,LocaleContextHolder.getLocale());
+		String mensagemDesenvolvedor = ExceptionUtils.getRootCauseMessage(ex);
+		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario,mensagemDesenvolvedor));
+		return handleExceptionInternal(ex,erros,new HttpHeaders(),HttpStatus.BAD_REQUEST,req);
+	}
 	
 	
 	@org.springframework.web.bind.annotation.ExceptionHandler({RecordTypeNotSupportedException.class})

@@ -4,25 +4,35 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 @Entity
+
 public class ValorGrupo {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private float valorAtual;
-
+	
+	
+	
 	@ManyToOne
 	@JoinColumn(name = "linha_id")
 	private Linha linha;
-
+	
+	
 	@ManyToOne
 	@JoinColumn(name = "tipoProduto_id")
 	private TipoProduto tipoProduto;
-
+	
+	
+	@ManyToOne
+	@JoinColumn(name = "processos_id")
+	private Processos processo;
 	
 
 	public Long getId() {
@@ -56,6 +66,16 @@ public class ValorGrupo {
 	public void setTipoProduto(TipoProduto tipoProduto) {
 		this.tipoProduto = tipoProduto;
 	}
+
+	public Processos getProcessos() {
+		return processo;
+	}
+
+	public void setProcessos(Processos processos) {
+		this.processo = processos;
+	}
+	
+	
 
 	
 
