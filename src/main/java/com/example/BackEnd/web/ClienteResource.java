@@ -76,7 +76,7 @@ public class ClienteResource {
     public void deleteCliente(@PathVariable Long id){
     	clienteRepository.deleteById(id);
     }
-    
+    //fg
     @PutMapping("/{id}") 
     public ResponseEntity<Cliente> atualizaCliente(@PathVariable("id") Long id,@RequestBody Cliente cliente,HttpServletResponse responseEntity){
     	return clienteRepository.findById(id).map(record -> {
