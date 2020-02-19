@@ -15,15 +15,6 @@ import com.example.BackEnd.domain.ValorGrupo;
 public interface ValorGrupoRepository extends JpaRepository<ValorGrupo, Long> {
 
 	ValorGrupo findTopByOrderByIdDesc();
-	
-	
-	@Query(value = "SELECT Pr.descricao,Pr.id " + 
-			"FROM valor_grupo as VG " + 
-			"INNER JOIN processos as Pr " + 
-			"ON Pr.id = VG.processos_id " + 
-			"AND VG.id = :id ", nativeQuery = true)
-	String findByString(@Param("id") Long id);
-
 
 	List<ValorGrupo> findByProcessoId(Long id);
 	

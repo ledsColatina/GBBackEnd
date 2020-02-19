@@ -98,16 +98,18 @@ public class ValorGrupoResource {
 
 	@PutMapping("/{id}")
 	public ResponseEntity<ValorGrupo> atualizaValorGrupo(@PathVariable("id") Long id,@RequestBody ValorGrupo valorGrupo, HttpServletResponse responseEntity) {
-		ValorGrupo valorGrupoSalvo = valorGrupoRepository.save(valorGrupo);
+		//ValorGrupo valorGrupoSalvo = valorGrupoRepository.save(valorGrupo);
 		LogValor logValor = new LogValor();
 		  
 		SimpleDateFormat formatadorDataDeHoje = new SimpleDateFormat("dd/MM/yyyy");
 		String dataDeHoje = formatadorDataDeHoje.format(new Date());
 		 
-		float valor = valorGrupoSalvo.getValorAtual();
+		float valor = valorGrupo.getValorAtual();
 
 		logValor.setValorNovo(valor);
 		logValor.setData(dataDeHoje);
+		logValor.setDescricao(valorGrupo.getProcessos().getDescricao() + "/"+ valorGrupo.getLinha().getDescricao() + "/" + valorGrupo.getTipoProduto().getDescricao());
+		logValor.setValorGrupo(valorGrupo);
 		logValorRepository.save(logValor);
 		
 		

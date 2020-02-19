@@ -33,7 +33,7 @@ public class LogValorResource {
 	
 	@GetMapping()
 	protected ResponseEntity<List<LogValor>> listarLogValor(){
-		List<LogValor> logValor = logValorRepository.findAll();
+		List<LogValor> logValor = logValorRepository.OrderByIdDesc();
 		return !logValor.isEmpty() ? ResponseEntity.ok(logValor) : ResponseEntity.noContent().build();
 	}
 }
