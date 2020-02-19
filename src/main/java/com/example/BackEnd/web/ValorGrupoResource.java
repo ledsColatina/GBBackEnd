@@ -43,14 +43,14 @@ public class ValorGrupoResource {
 		//Salva o Objeto de valorGrupo
 		ValorGrupo valorGrupoSalvo = valorGrupoRepository.save(valorGrupo);
 		
-		SimpleDateFormat formatadorDataDeHoje = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-		String dataDeHoje = formatadorDataDeHoje.format(new Date());
+		//SimpleDateFormat formatadorDataDeHoje = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		//String dataDeHoje = formatadorDataDeHoje.format(new Date());
 		
 		LogValor logValor = new LogValor();
 		float valor = valorGrupoSalvo.getValorAtual();
 		
 		logValor.setValorNovo(valor);
-		logValor.setData(dataDeHoje);
+		logValor.setData(new java.util.Date(System.currentTimeMillis()));
 		
 		logValor.setDescricao(valorGrupoSalvo.getProcessos().getDescricao() + "/"+ valorGrupoSalvo.getLinha().getDescricao() + "/" + valorGrupoSalvo.getTipoProduto().getDescricao());
 		logValor.setValorGrupo(valorGrupoSalvo);
@@ -101,13 +101,13 @@ public class ValorGrupoResource {
 		//ValorGrupo valorGrupoSalvo = valorGrupoRepository.save(valorGrupo);
 		LogValor logValor = new LogValor();
 		  
-		SimpleDateFormat formatadorDataDeHoje = new SimpleDateFormat("dd/MM/yyyy");
-		String dataDeHoje = formatadorDataDeHoje.format(new Date());
+		//SimpleDateFormat formatadorDataDeHoje = new SimpleDateFormat("dd/MM/yyyy");
+		//String dataDeHoje = formatadorDataDeHoje.format(new Date());
 		 
 		float valor = valorGrupo.getValorAtual();
 
 		logValor.setValorNovo(valor);
-		logValor.setData(dataDeHoje);
+		logValor.setData(new java.util.Date(System.currentTimeMillis()));
 		logValor.setDescricao(valorGrupo.getProcessos().getDescricao() + "/"+ valorGrupo.getLinha().getDescricao() + "/" + valorGrupo.getTipoProduto().getDescricao());
 		logValor.setValorGrupo(valorGrupo);
 		logValorRepository.save(logValor);

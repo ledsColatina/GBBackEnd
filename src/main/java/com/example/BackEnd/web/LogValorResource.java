@@ -24,6 +24,7 @@ public class LogValorResource {
 	@Autowired
 	private LogValorRepository logValorRepository;
 	
+	
 	@PostMapping()
     protected ResponseEntity<LogValor> criarLogValor(@Valid @RequestBody  LogValor logValor,HttpServletResponse responseEntity){
 		LogValor logValorSalvo = logValorRepository.save(logValor);

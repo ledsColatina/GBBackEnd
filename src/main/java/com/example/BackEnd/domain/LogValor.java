@@ -1,6 +1,8 @@
 package com.example.BackEnd.domain;
 
-import java.sql.Date;
+
+
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,8 +23,8 @@ public class LogValor {
 	// USAR DOUBLE
 	private float ValorNovo;
 
-	// @DateTimeFormat(pattern = "dd/MM/yyyy")
-	private String data;
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	private Date data;
 	private String descricao;
 
 	 @ManyToOne
@@ -46,12 +48,12 @@ public class LogValor {
 		ValorNovo = valorNovo;
 	}
 
-	public String getData() {
+	public Date getData() {
 		return data;
 	}
 
-	public void setData(String data) {
-		this.data = data;
+	public void setData(java.util.Date date) {
+		this.data = date;
 	}
 
 	public ValorGrupo getValorGrupo() {
