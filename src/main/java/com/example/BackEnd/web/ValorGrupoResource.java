@@ -40,13 +40,13 @@ public class ValorGrupoResource {
 
 	@PostMapping()
 	protected ResponseEntity<ValorGrupo> criarValorGrupo(@Valid @RequestBody ValorGrupo valorGrupo,HttpServletResponse responseEntity) {
+		//Salva o Objeto de valorGrupo
 		ValorGrupo valorGrupoSalvo = valorGrupoRepository.save(valorGrupo);
-		LogValor logValor = new LogValor();
-		  
+		
 		SimpleDateFormat formatadorDataDeHoje = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		String dataDeHoje = formatadorDataDeHoje.format(new Date());
 		
-		
+		LogValor logValor = new LogValor();
 		float valor = valorGrupoSalvo.getValorAtual();
 		
 		logValor.setValorNovo(valor);
