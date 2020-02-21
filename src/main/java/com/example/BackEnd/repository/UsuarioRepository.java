@@ -8,6 +8,8 @@ import com.example.BackEnd.domain.Usuario;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-	Optional<Usuario> findBySenha(String senha);
+
+
+	public Optional<Usuario> findByLogin(String login);
 
 }

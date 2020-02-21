@@ -27,13 +27,16 @@ public class TipoProdutoResource {
 	
 	@Autowired
 	private TipoProdutoRepository tipoProdutoRepository;
+
+	//----------------------------------------------------------------------------------------------------------------------
 	
-	@GetMapping()
+	@GetMapping
 	protected ResponseEntity<List<TipoProduto>> listar(){
 		List<TipoProduto> tipoProduto = tipoProdutoRepository.findAll();
-		
 		return !tipoProduto.isEmpty() ? ResponseEntity.ok(tipoProduto) : ResponseEntity.noContent().build();
 	}
+	
+	//----------------------------------------------------------------------------------------------------------------------
 	
 	@GetMapping("/lastID")
 	protected ResponseEntity<?> pegarUltimoID(){
@@ -45,17 +48,23 @@ public class TipoProdutoResource {
 
 	}
 	
-	@PostMapping()
+	//----------------------------------------------------------------------------------------------------------------------
+	
+	@PostMapping
     protected ResponseEntity<TipoProduto> criarLinha(@Valid @RequestBody  TipoProduto tipoProduto,HttpServletResponse responseEntity){		
 		TipoProduto tipoProdutoSalvo = tipoProdutoRepository.save(tipoProduto);
     	return ResponseEntity.status(HttpStatus.OK).body(tipoProdutoSalvo);
     }
+	
+	//----------------------------------------------------------------------------------------------------------------------
 	
 	@DeleteMapping("/{id}")	
     @ResponseStatus(HttpStatus.NO_CONTENT)
     protected void deleteTipoProduto(@PathVariable Long id){
 		tipoProdutoRepository.deleteById(id);
     }
+	
+	//----------------------------------------------------------------------------------------------------------------------
 	
 	@PutMapping("/{id}")
     protected ResponseEntity<TipoProduto> atualizaTipoProduto(@PathVariable("id") Long id,@RequestBody TipoProduto tipoProduto,HttpServletResponse responseEntity){
@@ -64,5 +73,7 @@ public class TipoProdutoResource {
 			    		TipoProduto updated = tipoProdutoRepository.save(record);
     	                return ResponseEntity.ok().body(updated); 	               
     	           }).orElse(ResponseEntity.notFound().build());
-    }   
+    }  
+	
+	//----------------------------------------------------------------------------------------------------------------------
 }

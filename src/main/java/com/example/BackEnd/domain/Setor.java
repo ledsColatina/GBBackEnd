@@ -23,15 +23,12 @@ public class Setor {
 	private String nome;
 
 	private Long maxOcupacao;
+	private String role;
 
 	@OneToMany(cascade = { CascadeType.ALL })
 	@JoinColumn(name = "setor_id")
 	private List<Turno> ListTurno;
-	/*
-	@OneToMany(cascade = { CascadeType.ALL })
-	@JoinColumn(name = "setor_id")
-	private List<Processos> ListProcessos;
-    */
+
 	public List<Turno> getListTurno() {
 		return ListTurno;
 	}
@@ -65,6 +62,14 @@ public class Setor {
 	}
 
 	
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
 
 	@Override
 	public int hashCode() {

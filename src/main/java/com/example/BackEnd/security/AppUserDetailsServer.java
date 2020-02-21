@@ -1,4 +1,4 @@
-/*
+
 package com.example.BackEnd.security;
 
 import java.util.Collection;
@@ -13,7 +13,9 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.BackEnd.domain.Usuario;
 import com.example.BackEnd.repository.UsuarioRepository;
@@ -27,20 +29,21 @@ public class AppUserDetailsServer implements UserDetailsService{
 	
 	
 	@Override
-	public UserDetails loadUserByUsername(String senha) throws UsernameNotFoundException {
-		Optional<Usuario> usuarioOptional = usuarioRepository.findBySenha(senha);
+	@Transactional(readOnly = true)
+	public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+		Optional<Usuario> usuarioOptional = usuarioRepository.findByLogin(login);
 		Usuario usuario = usuarioOptional.orElseThrow(() -> new UsernameNotFoundException("Usuario e/ou senha incorretos"));
-		return new User(senha,usuario.getSenha(),getSetores(usuario));
+		return new User(login,usuario.getSenha(),getSetores(usuario));
 	}
 
 
 	private Collection<? extends GrantedAuthority> getSetores(Usuario usuario) {
 		Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-		usuario.getSetores().forEach(p -> authorities.add(new SimpleGrantedAuthority(p.getNome())));
+		usuario.getSetores().forEach(p -> authorities.add(new SimpleGrantedAuthority(p.getNome().toUpperCase())));
 		return authorities;
 	}
+	
 
 
 	
 }
-*/

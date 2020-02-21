@@ -1,5 +1,6 @@
 package com.example.BackEnd.domain;
 
+
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -22,13 +23,24 @@ public class Usuario {
 	@NotEmpty(message = "Nome do Usuario deve ser informado")
 	@NotNull(message = "Nome do Usuario deve ser informado")
 	private String nome;
-
+	private String login;
 	private String senha;
-
+	private Boolean tipo; 
+	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "usuario_setor", joinColumns = { @JoinColumn(name = "usuario_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "setor_id") })
 	private List<Setor> setores;
+	
+
+	
+	public List<Setor> getSetores() {
+		return setores;
+	}
+
+	public void setSetores(List<Setor> setores) {
+		this.setores = setores;
+	}
 
 	public Long getId() {
 		return id;
@@ -54,12 +66,21 @@ public class Usuario {
 		this.senha = senha;
 	}
 
-	public List<Setor> getSetores() {
-		return setores;
+
+	public String getLogin() {
+		return login;
 	}
 
-	public void setSetores(List<Setor> setores) {
-		this.setores = setores;
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public Boolean getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(Boolean tipo) {
+		this.tipo = tipo;
 	}
 
 	@Override
@@ -86,5 +107,7 @@ public class Usuario {
 			return false;
 		return true;
 	}
+
+	
 
 }

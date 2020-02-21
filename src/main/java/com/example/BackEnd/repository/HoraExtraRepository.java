@@ -12,8 +12,6 @@ public interface HoraExtraRepository extends JpaRepository<HoraExtra, Long> {
 
 	HoraExtra findTopByOrderByIdDesc();
 
-	
-
 	@Query(value = "SELECT id, capacidade, data, momento, qtd_horas, status, turno\n" + "  FROM public.hora_extra\n"
 			+ "  WHERE status = 'Pendente';", nativeQuery = true)
 	List<HoraExtra> findAllPendentes();

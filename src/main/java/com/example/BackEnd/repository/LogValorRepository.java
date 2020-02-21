@@ -9,9 +9,4 @@ import com.example.BackEnd.domain.LogValor;
 public interface LogValorRepository extends JpaRepository<LogValor, Long> {
 
 	List<LogValor> OrderByIdDesc();
-
-
-
-
-
 }

@@ -46,11 +46,13 @@ public class RefreshTokenCookiePreProcessorFilter implements Filter{
 		chain.doFilter(req, response);
 	}
 	
-	
+	//----------------------------------------------------------------------------------------------------------------------
 	
 	@Override
 	public void destroy() {
 	}
+	
+	//----------------------------------------------------------------------------------------------------------------------
 	
 	@Override
 	public void  init(FilterConfig arg0) throws ServletException{	
@@ -65,6 +67,7 @@ public class RefreshTokenCookiePreProcessorFilter implements Filter{
 			// TODO Auto-generated constructor stub
 		}
 		
+		//----------------------------------------------------------------------------------------------------------------------
 		
 		@Override
 		public Map<String, String[]> getParameterMap() {

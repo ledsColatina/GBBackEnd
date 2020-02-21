@@ -17,12 +17,16 @@ public class TurnoResource {
 	@Autowired
 	private TurnoRepository turnoRepository;
 
+	//----------------------------------------------------------------------------------------------------------------------
+	
 	@GetMapping
 	public ResponseEntity<List<Turno>> listar() {
 		List<Turno> turno = turnoRepository.findAll();
 		return !turno.isEmpty() ? ResponseEntity.ok(turno) : ResponseEntity.noContent().build();
 	}
 
+	//----------------------------------------------------------------------------------------------------------------------
+	
 	@GetMapping("/lastID")
 	public ResponseEntity<?> pegarUltimoID() {
 		Turno turno = turnoRepository.findTopByOrderByIdDesc();
@@ -32,4 +36,6 @@ public class TurnoResource {
 			return ResponseEntity.ok(1);
 	}
 
+	//----------------------------------------------------------------------------------------------------------------------
+	
 }

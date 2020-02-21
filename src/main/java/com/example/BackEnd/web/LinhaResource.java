@@ -29,12 +29,15 @@ public class LinhaResource {
 	@Autowired
 	private LinhaRepository linhaRepository;
 
-	// PARENTESES DESNECESSARIO
-	@GetMapping()
+	//----------------------------------------------------------------------------------------------------------------------------
+	
+	@GetMapping
 	protected ResponseEntity<List<Linha>> listar() {
 		List<Linha> linha = linhaRepository.findAll();
 		return !linha.isEmpty() ? ResponseEntity.ok(linha) : ResponseEntity.noContent().build();
 	}
+	
+	//----------------------------------------------------------------------------------------------------------------------------
 
 	@GetMapping("/lastID")
 	protected ResponseEntity<?> pegarUltimoIDLinha() {
@@ -42,23 +45,28 @@ public class LinhaResource {
 		if (linha != null)
 			return ResponseEntity.ok(linha.getId() + 1);
 		else
-			return ResponseEntity.ok(1); // ELSE DESNECESSARIO
+			return ResponseEntity.ok(1); 
 
 	}
 
-	// PARENTESES DESNECESSARIO
-	@PostMapping()
+	//----------------------------------------------------------------------------------------------------------------------------
+	
+	@PostMapping
 	protected ResponseEntity<Linha> criarLinha(@Valid @RequestBody Linha linha, HttpServletResponse responseEntity) {
 		Linha linhaSalvo = linhaRepository.save(linha);
 		return ResponseEntity.status(HttpStatus.OK).body(linhaSalvo);
 	}
 
+	//----------------------------------------------------------------------------------------------------------------------------
+	
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	protected void deleteLinha(@PathVariable Long id) {
 		linhaRepository.deleteById(id);
 	}
 
+	//----------------------------------------------------------------------------------------------------------------------------
+	
 	@PutMapping("/{id}")
 	protected ResponseEntity<Linha> atualizaLinha(@PathVariable("id") Long id, @RequestBody Linha linha,
 			HttpServletResponse responseEntity) {
@@ -69,4 +77,6 @@ public class LinhaResource {
 
 		}).orElse(ResponseEntity.notFound().build());
 	}
+	
+	//----------------------------------------------------------------------------------------------------------------------------
 }

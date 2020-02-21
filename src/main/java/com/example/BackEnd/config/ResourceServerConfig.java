@@ -2,7 +2,6 @@
 package com.example.BackEnd.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.JwtAccessTokenConverterConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -19,9 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
-import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
@@ -31,9 +28,9 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 @EnableAuthorizationServer
 public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 
-	// @Autowired
-	// private UserDetailsService useDetailsService;
-	// arroba
+	@Autowired
+	private UserDetailsService userDetailsService;
+	
 	@Bean
 	@Override
 	protected AuthenticationManager authenticationManager() throws Exception {
@@ -43,8 +40,8 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("admin").password(passwordEncoder().encode("admin")).roles("ADMIN");
-		// auth.userDetailsService(useDetailsService).passwordEncoder(passwordEncoder());
+		//auth.inMemoryAuthentication().withUser("admin").password(passwordEncoder().encode("admin")).roles("ADMIN");
+		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 
 	}
 
@@ -57,65 +54,21 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				// .antMatchers("/cliente").permitAll()
 				.antMatchers(HttpMethod.OPTIONS).permitAll().anyRequest().authenticated().and()
-				// .httpBasic().and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().csrf().disable();
 	}
-
+	
+	// --------------------------------------------------------------------------------------------------------
+	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-
-		// web.ignoring().antMatchers(HttpMethod.OPTIONS ).antMatchers("/oauth/token");
-		web.ignoring().antMatchers("/cliente");
-		web.ignoring().antMatchers("/cliente/**");
-
-		web.ignoring().antMatchers("/usuario");
-		web.ignoring().antMatchers("/usuario/**");
-
-		web.ignoring().antMatchers("/setor");
-
 		web.ignoring().antMatchers("/setor/**");
 		web.ignoring().antMatchers("/setor/{id}/turnos/lastID");
 		web.ignoring().antMatchers("/setor/lastID");
 		web.ignoring().antMatchers("/setor/{id}");
-
-		web.ignoring().antMatchers("/linha");
-		web.ignoring().antMatchers("/linha/**");
-		web.ignoring().antMatchers("/linha/lastID");
-
-		web.ignoring().antMatchers("/tipoProduto");
-		web.ignoring().antMatchers("/tipoProduto/**");
-		web.ignoring().antMatchers("/tipoProduto/lastID");
-
-		web.ignoring().antMatchers("/processos");
-		web.ignoring().antMatchers("/valorGrupo/{id}");
-		web.ignoring().antMatchers("/processos/**");
-		web.ignoring().antMatchers("/processos/{id}");
-		web.ignoring().antMatchers("/processos/lastID");
-		web.ignoring().antMatchers("/processos/setor/{id}");
-
-		web.ignoring().antMatchers("/turno");
-		web.ignoring().antMatchers("/turno/**");
-		// web.ignoring().antMatchers("https://smartzune.herokuapp.com/setor");
-
-		web.ignoring().antMatchers("/actuator/**");
-
-		web.ignoring().antMatchers("/horaExtra");
-		web.ignoring().antMatchers("/horaExtra/setor/{id}");
-		web.ignoring().antMatchers("/horaExtra/{id}/finalizados");
-		web.ignoring().antMatchers("/horaExtra/{id}/pendentes");
-		web.ignoring().antMatchers("/horaExtra/lastID");
-		web.ignoring().antMatchers("/horaExtra/{id}");
-
-		web.ignoring().antMatchers("/logValor");
-		web.ignoring().antMatchers("/logValor/lastID");
-		// web.ignoring().antMatchers("/horaExtra/pendentes");
-
-		web.ignoring().antMatchers("/valorGrupo");
-		web.ignoring().antMatchers("/valorGrupo/lastID");
-
 	}
+	
+	// --------------------------------------------------------------------------------------------------------
 
 	// Preciso armazenar o token em algum lugar pois a aplicação vira buscar um
 	// token pra poder acessar a API de verdade(/setor de exemplo)
@@ -124,14 +77,17 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 				.authenticationManager(authenticationManager());
 	}
 
+	// --------------------------------------------------------------------------------------------------------
+	
 	@Bean
 	public JwtAccessTokenConverter accessTokenConverter() {
 		JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
 		accessTokenConverter.setSigningKey("gb");
 		return accessTokenConverter;
 	}
-	// sdfgsdg
+	
 
+	// --------------------------------------------------------------------------------------------------------
 	// lugar onde vou armazenar o token
 	@Bean
 	public TokenStore tokenStore() {

@@ -1,6 +1,6 @@
 package com.example.BackEnd.Exception;
 
-import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,14 +23,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 @SuppressWarnings({"unchecked","rawtypes"})
 @ControllerAdvice
 public class ExceptionHandler extends ResponseEntityExceptionHandler{
-		//dsfdsfg
+	
 	@Autowired
 	private MessageSource messageSource;
+	
+	//----------------------------------------------------------------------------------------------------------------------
 	
 	protected ResponseEntity<Object> handlerHttpMessageNotReadable(HttpMessageNotReadableException ex,
 										HttpHeaders headers,HttpStatus status,WebRequest request){
@@ -40,6 +41,7 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler{
 		return handleExceptionInternal(ex,new Erro(mensagemUsuario,mensagemDesenvolvedor), headers, HttpStatus.BAD_REQUEST, request);
 	}
 	
+	//----------------------------------------------------------------------------------------------------------------------
 	
 	@org.springframework.web.bind.annotation.ExceptionHandler({EmptyResultDataAccessException.class})
 	public ResponseEntity<Object> handleEmptyResultDataAccessException(EmptyResultDataAccessException ex ,WebRequest request) {
@@ -48,6 +50,8 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler{
 		List <Erro> erros = Arrays.asList(new Erro(mensagemUsuario,mensagemDesenvolvedor));
 		return handleExceptionInternal(ex,erros, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
+	
+	//----------------------------------------------------------------------------------------------------------------------
 	
 	@Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -59,6 +63,7 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler{
         return new ResponseEntity<Object>(error, HttpStatus.BAD_REQUEST);
     }
 	
+	//----------------------------------------------------------------------------------------------------------------------
 	
 	@org.springframework.web.bind.annotation.ExceptionHandler({  org.springframework.dao.DataIntegrityViolationException.class})
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -69,6 +74,7 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler{
 		return handleExceptionInternal(ex,erros,new HttpHeaders(),HttpStatus.BAD_REQUEST,req);
 	}
 	
+	//----------------------------------------------------------------------------------------------------------------------
 	
 	@org.springframework.web.bind.annotation.ExceptionHandler({RecordTypeNotSupportedException.class})
     public final ResponseEntity<Object> handleUserNotFoundException(RecordTypeNotSupportedException ex, WebRequest request) {
@@ -77,6 +83,8 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler{
         ErrorResponse error = new ErrorResponse("Registro nao encontrado", details);
         return new ResponseEntity(error, HttpStatus.NOT_FOUND);
     }
+	
+	//----------------------------------------------------------------------------------------------------------------------
 	
 	public static class Erro {
 		String mensagemUsuario;
@@ -110,5 +118,6 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler{
 		
 		
 	}
+	//----------------------------------------------------------------------------------------------------------------------
 }
 

@@ -33,28 +33,13 @@ public class ClienteResource {
 	@Autowired
     private ClienteRepository clienteRepository;
 	
-	//@CrossOrigin(origins = "http://172.16.36.14:9098")
 	@GetMapping
 	public ResponseEntity<List<Cliente>> listar(){
 		List<Cliente> cliente = clienteRepository.findAll();	
 		return !cliente.isEmpty() ? ResponseEntity.ok(cliente) : ResponseEntity.noContent().build();	
 	}
-	/*
-	@GetMapping("/{cor}")
-	protected ResponseEntity<List<Cliente>> listarCor(@PathVariable String cor){
-		List<Cliente> cliente = clienteRepository.findByCor(cor);
-		if(cliente == null) 
-			throw new ResourceNotFoundException("Cliente não encontrado pela a COR " + cor);
-		
-		return new ResponseEntity<>(cliente,HttpStatus.OK);
-	}*/
-	/*
-	@GetMapping("/{id}")
-	protected ResponseEntity<?> listarPorId(@PathVariable Long id){
-		Optional<Cliente> cliente  = clienteRepository.findById(id);
-		return  cliente.isPresent() ? ResponseEntity.ok(cliente) : ResponseEntity.noContent().build();
-		
-	}*/
+	
+	//------------------------------------------------------------------------------------------------------------------------------
 	
 	@GetMapping("/lastID")
 	public ResponseEntity<?>  pegarUltimoID(){
@@ -65,18 +50,24 @@ public class ClienteResource {
 			return ResponseEntity.ok(1);
 	}
 	
-    @PostMapping()
+	//------------------------------------------------------------------------------------------------------------------------------
+	
+    @PostMapping
     public ResponseEntity<Cliente> criarCliente(@Valid @RequestBody  Cliente cliente,HttpServletResponse responseEntity){
     	Cliente clienteSalvo = clienteRepository.save(cliente);
     	return ResponseEntity.status(HttpStatus.OK).body(clienteSalvo);
     }
-	
+
+  //----------------------------------------------------------------------------------------------------------------------------    
+    
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCliente(@PathVariable Long id){
     	clienteRepository.deleteById(id);
     }
-    //fg
+   
+    //----------------------------------------------------------------------------------------------------------------------------   
+    
     @PutMapping("/{id}") 
     public ResponseEntity<Cliente> atualizaCliente(@PathVariable("id") Long id,@RequestBody Cliente cliente,HttpServletResponse responseEntity){
     	return clienteRepository.findById(id).map(record -> {
@@ -86,6 +77,7 @@ public class ClienteResource {
     	                return ResponseEntity.ok().body(updated);
     	                   	               
     	           }).orElse(ResponseEntity.notFound().build());
-    }    
+    }   
+  //----------------------------------------------------------------------------------------------------------------------------
 }
 

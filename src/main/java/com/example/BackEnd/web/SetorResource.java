@@ -3,10 +3,8 @@ package com.example.BackEnd.web;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.example.BackEnd.domain.HoraExtra;
 import com.example.BackEnd.domain.Setor;
 import com.example.BackEnd.domain.Turno;
 import com.example.BackEnd.repository.SetorRepository;
@@ -35,22 +31,25 @@ public class SetorResource {
 
 	@Autowired
 	private TurnoRepository turnoRepository;
-
+	
+	//----------------------------------------------------------------------------------------------------------------------------
+	
 	@GetMapping()
 	protected ResponseEntity<List<Setor>> listar() {
 		List<Setor> setor = setorRepository.findAll();
 		return !setor.isEmpty() ? ResponseEntity.ok(setor) : ResponseEntity.noContent().build();
 	}
 
-//-----------------------------------------------------------------------------------------------------------------------	
-	// listando turnos do setor
+	//-----------------------------------------------------------------------------------------------------------------------	
+	
 	@GetMapping("/{id}/turnos")
 	protected ResponseEntity<?> listarTurnos(@PathVariable Long id) {
 		Optional<Setor> setor = setorRepository.findById(id);
 		return setor.isPresent() ? ResponseEntity.ok(setor.get().getListTurno()) : ResponseEntity.noContent().build();
 	}
 
-//-----------------------------------------------------------------------------------------------------------------------	
+	//-----------------------------------------------------------------------------------------------------------------------	
+	
 	@GetMapping("/lastID")
 	public ResponseEntity<?> pegarUltimoIDSetor() {
 		Setor setor = setorRepository.findTopByOrderByIdDesc();
@@ -60,7 +59,8 @@ public class SetorResource {
 			return ResponseEntity.ok(1);
 	}
 
-//-----------------------------------------------------------------------------------------------------------------------	
+	//-----------------------------------------------------------------------------------------------------------------------	
+	
 	@GetMapping("/{id}/turnos/lastID")
 	public ResponseEntity<?> pegarUltimoIDTurno() {
 		Turno turno = turnoRepository.findTopByOrderByIdDesc();
@@ -70,35 +70,31 @@ public class SetorResource {
 			return ResponseEntity.ok(1);
 	}
 
-//---------------------------------------------------
+	//---------------------------------------------------
+	
 	@GetMapping("/{id}")
 	public boolean searchSetorById(@PathVariable Long id) {
 		System.out.println(setorRepository.existsById(id));
 		return setorRepository.existsById(id);
 	}
 
-//-----------------------------------------------------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------------------------------------------
+	
 	@PostMapping("turno")
 	public void criarTurno(@Valid @RequestBody Turno turno) {
 		turnoRepository.save(turno);
 	}
 
-	/*
-	 @GetMapping("/horaExtra") 
-	 public ResponseEntity<List<HoraExtra>> listarHoraExtraPorSetor(){ 
-		 List<HoraExtra> horaExtra = setorRepository.findAllHoraExtraPorSetor(); return
-	  ResponseEntity.ok(horaExtra); }
-	  */
-	 
-//-----------------------------------------------------------------------------------------------------------------------
+	//----------------------------------------------------------------------------------------------------------------------------
 
-	@PostMapping()
+	@PostMapping
 	public ResponseEntity<Setor> criarSetor(@Valid @RequestBody Setor setor, HttpServletResponse responseEntity) {
 		Setor setorSalvo = setorRepository.save(setor);
 		return ResponseEntity.ok(setorSalvo);
 	}
 
-//-----------------------------------------------------------------------------------------------------------------------	
+	//-----------------------------------------------------------------------------------------------------------------------	
+	
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	protected ResponseEntity<?> deleteSetor(@PathVariable Long id) {
@@ -114,30 +110,25 @@ public class SetorResource {
 			}
 		}
 		return !setorEncontrado.isEmpty() ? ResponseEntity.ok(setorEncontrado) : ResponseEntity.noContent().build();
-		// return ResponseEntity.status(HttpStatus.OK).body(clienteExcluido);
 	}
 
-//-----------------------------------------------------------------------------------------------------------------------	
-	/*
+	//-----------------------------------------------------------------------------------------------------------------------	
+	
 	@PutMapping("/{id}")
 	protected ResponseEntity<Setor> atualizaSetor(@PathVariable("id") Long id, @RequestBody Setor setor,HttpServletResponse responseEntity) {
-		System.out.println(setor.getListProcessos().get(0).getListValorGrupo().get(0).getValorAtual());
 		return setorRepository.findById(id).map(record -> {
 			record.setNome(setor.getNome());
 			record.setMaxOcupacao(setor.getMaxOcupacao());
+			record.setRole(setor.getRole());
 			record.setListTurno(setor.getListTurno());
-			record.setListProcessos(setor.getListProcessos());
-			
 			Setor updated = setorRepository.save(record);
-
 			return ResponseEntity.ok().body(updated);
 
 		}).orElse(ResponseEntity.notFound().build());
-		// }
-
 	}
-*/
-//----------------------------------------------------------------------------------------------------------------------	
+
+	//----------------------------------------------------------------------------------------------------------------------	
+	
 	public int verficarRegrasDeNegocio(Setor setor) {
 		int totalDeHorasDoSetor = 0;
 		int minutosInicio = 0;
@@ -153,7 +144,7 @@ public class SetorResource {
 		}
 
 		if (totalDeTurnos == 1) {
-			turnoRepository.save(setor);
+			//turnoRepository.save(setor);
 			return 0;
 		}
 
@@ -161,7 +152,7 @@ public class SetorResource {
 		for (int c = 0; c < setor.getListTurno().size(); c++) {
 			totalDeHorasDoSetor = totalDeHorasDoSetor + setor.getListTurno().get(c).getTotalHoras();
 		}
-		// System.out.println(totalDeHorasDoSetor);
+		
 
 		for (int i = 0; i < setor.getListTurno().size(); i++) {
 			totalDeHorasDoTurno = totalDeHorasDoTurno + setor.getListTurno().get(i).getTotalHoras();
@@ -178,7 +169,7 @@ public class SetorResource {
 				minutosFim = minutosFim - 24 * 60;
 			}
 
-			// System.out.println("minutoFim: " + minutosFim/60);
+			
 			if (cont > 0) {
 				for (int j = 0; j < vetorHorasInicio.size(); j++) {
 
@@ -192,7 +183,7 @@ public class SetorResource {
 								+ minutosInicio / 60 + " >= " + vetorHorasFinal.get(j) / 60 + ")");
 
 						if (minutosInicio >= vetorHorasFinal.get(j)) {
-							turnoRepository.save(setor);
+							//turnoRepository.save(setor);
 							return 0;
 						}
 						return 1;
@@ -224,7 +215,7 @@ public class SetorResource {
 										+ "totalDeTurnos" + totalDeTurnos);
 								if (contadorDeVerificacaoEntreOsTurnos + 1 == totalDeTurnos) {
 									if (totalDeHorasDoSetor < 24) {
-										turnoRepository.save(setor);
+										//turnoRepository.save(setor);
 										return 0;
 									} else {
 										return 1;
@@ -233,11 +224,9 @@ public class SetorResource {
 							}
 						}
 					}
-
 				}
 			}
 			contadorDeVerificacaoEntreOsTurnos = 0;
-			// System.out.println(minutosInicio);
 			vetorHorasInicio.add(minutosInicio);
 			vetorHorasFinal.add((totalDeHorasDoTurno * 60) + minutosInicio);
 			cont = cont + 1;
@@ -245,14 +234,10 @@ public class SetorResource {
 
 		}
 		if (cont == 1) {
-			turnoRepository.save(setor);
+			//turnoRepository.save(setor);
 			return 0;
 		}
 
-		/*
-		
-		*/
-		// clienteRepository.save(cliente);
 		return 1;
 	}
 }
