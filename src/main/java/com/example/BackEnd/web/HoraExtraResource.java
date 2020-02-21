@@ -35,17 +35,6 @@ public class HoraExtraResource {
 		return !horaExtra.isEmpty() ? ResponseEntity.ok(horaExtra) : ResponseEntity.noContent().build();
 	}
 
-	//----------------------------------------------------------------------------------------------------------------------------   	
-	
-	@GetMapping("/lastID")
-	public ResponseEntity<?> pegarUltimoID() {
-		HoraExtra horaExtra = horaExtraRepository.findTopByOrderByIdDesc();
-		if (horaExtra != null)
-			return ResponseEntity.ok(horaExtra.getId() + 1);
-		else
-			return ResponseEntity.ok(1);
-	}
-	
 	//----------------------------------------------------------------------------------------------------------------------------   
 	
 	@GetMapping("/setor/{id}")

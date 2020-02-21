@@ -33,21 +33,12 @@ public class ClienteResource {
 	@Autowired
     private ClienteRepository clienteRepository;
 	
+	//----------------------------------------------------------------------------------------------------------------------
+	
 	@GetMapping
 	public ResponseEntity<List<Cliente>> listar(){
 		List<Cliente> cliente = clienteRepository.findAll();	
 		return !cliente.isEmpty() ? ResponseEntity.ok(cliente) : ResponseEntity.noContent().build();	
-	}
-	
-	//------------------------------------------------------------------------------------------------------------------------------
-	
-	@GetMapping("/lastID")
-	public ResponseEntity<?>  pegarUltimoID(){
-		Cliente cliente = clienteRepository.findTopByOrderByIdDesc();
-		if (cliente != null)
-			return ResponseEntity.ok(cliente.getId()+1);
-		else
-			return ResponseEntity.ok(1);
 	}
 	
 	//------------------------------------------------------------------------------------------------------------------------------

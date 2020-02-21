@@ -8,5 +8,5 @@ public class GeradorSenha {
 			BCryptPasswordEncoder encoder =  new BCryptPasswordEncoder();
 			System.out.println(encoder.encode("2102"));
 		}
-		//$2a$10$7a9Rejv7C/im9O/O.dV/mOdq7ERvVFsFepnGjsu.Jd15yDdXGxBKW
+		
 }

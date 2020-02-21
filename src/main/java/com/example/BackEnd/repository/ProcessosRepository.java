@@ -9,7 +9,6 @@ import org.springframework.data.repository.query.Param;
 
 import com.example.BackEnd.domain.Processos;
 
-
 public interface ProcessosRepository extends JpaRepository<Processos, Long> {
 	@Query(value = "SELECT P.id, P.descricao, P.setor_id\n" + 
 			"  FROM processos as P, setor as S\n" + 

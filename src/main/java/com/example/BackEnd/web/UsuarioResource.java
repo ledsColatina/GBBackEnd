@@ -21,15 +21,17 @@
   public class UsuarioResource { 
 	  
 	  private UsuarioRepository usuarioRepasitory;
-  
+	  
+	  //----------------------------------------------------------------------------------------------------------------------
+	  
 	  @PostMapping
 	  protected ResponseEntity<Usuario> criarUsuario(@Valid @RequestBody Usuario usuario,HttpServletResponse responseEntity){ 
 		  Usuario usuarioSalvo = usuarioRepasitory.save(usuario);
 		  return ResponseEntity.status(HttpStatus.OK).body(usuarioSalvo); 
 	  }
-  
  
-  
+	  //----------------------------------------------------------------------------------------------------------------------
+	  
 	  @GetMapping 
 	  public ResponseEntity<List<Usuario>> listar(){ 
 		  List<Usuario> usuario = usuarioRepasitory.findAll(); 

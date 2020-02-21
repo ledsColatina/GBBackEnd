@@ -27,6 +27,7 @@ public class AppUserDetailsServer implements UserDetailsService{
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	
+	//----------------------------------------------------------------------------------------------------------------------
 	
 	@Override
 	@Transactional(readOnly = true)
@@ -36,6 +37,7 @@ public class AppUserDetailsServer implements UserDetailsService{
 		return new User(login,usuario.getSenha(),getSetores(usuario));
 	}
 
+	//----------------------------------------------------------------------------------------------------------------------
 
 	private Collection<? extends GrantedAuthority> getSetores(Usuario usuario) {
 		Set<SimpleGrantedAuthority> authorities = new HashSet<>();
@@ -43,7 +45,5 @@ public class AppUserDetailsServer implements UserDetailsService{
 		return authorities;
 	}
 	
-
-
-	
+	//----------------------------------------------------------------------------------------------------------------------
 }

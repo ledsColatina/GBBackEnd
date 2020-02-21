@@ -36,18 +36,6 @@ public class LinhaResource {
 		List<Linha> linha = linhaRepository.findAll();
 		return !linha.isEmpty() ? ResponseEntity.ok(linha) : ResponseEntity.noContent().build();
 	}
-	
-	//----------------------------------------------------------------------------------------------------------------------------
-
-	@GetMapping("/lastID")
-	protected ResponseEntity<?> pegarUltimoIDLinha() {
-		Linha linha = linhaRepository.findTopByOrderByIdDesc();
-		if (linha != null)
-			return ResponseEntity.ok(linha.getId() + 1);
-		else
-			return ResponseEntity.ok(1); 
-
-	}
 
 	//----------------------------------------------------------------------------------------------------------------------------
 	
