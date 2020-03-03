@@ -82,7 +82,7 @@ public class HoraExtraResource {
     	return horaExtraRepository.findById(id).map(record -> {
 			    		record.setCapacidade(horaExtra.getCapacidade());;
 			    		record.setData(horaExtra.getData());
-			    		record.setMomento(horaExtra.getMomento());
+			    		record.setTurnoFunciona(horaExtra.isTurnoFunciona());
 			    		record.setQtdHoras(horaExtra.getQtdHoras());
 			    		record.setStatus(horaExtra.getStatus());
 			    		HoraExtra updated = horaExtraRepository.save(record);

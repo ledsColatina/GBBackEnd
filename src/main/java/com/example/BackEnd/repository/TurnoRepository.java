@@ -8,4 +8,6 @@ import com.example.BackEnd.domain.Turno;
 public interface TurnoRepository extends JpaRepository<Turno, Long> {
 
 	Turno findTopByOrderByIdDesc();
+
+	Turno findAllById(Long id);
 }

@@ -128,7 +128,7 @@ public class SetorResource {
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------	
-	
+	/*
 	public int verficarRegrasDeNegocio(Setor setor) {
 		int totalDeHorasDoSetor = 0;
 		int minutosInicio = 0;
@@ -240,4 +240,5 @@ public class SetorResource {
 
 		return 1;
 	}
+	*/
 }

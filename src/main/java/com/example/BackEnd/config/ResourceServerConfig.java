@@ -66,6 +66,8 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 		web.ignoring().antMatchers("/setor/{id}/turnos/lastID");
 		web.ignoring().antMatchers("/setor/lastID");
 		web.ignoring().antMatchers("/setor/{id}");
+		
+	
 	}
 	
 	// --------------------------------------------------------------------------------------------------------

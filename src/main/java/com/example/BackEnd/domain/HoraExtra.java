@@ -23,7 +23,8 @@ public class HoraExtra {
 	
 	private String status;
 	
-	private String momento;
+	private boolean turnoFunciona;
+	//private String momento;
 	
 	@ManyToOne
 	@JoinColumn(name = "turno")
@@ -31,7 +32,15 @@ public class HoraExtra {
 
 	
 	
-	
+	public boolean isTurnoFunciona() {
+		return turnoFunciona;
+	}
+
+	public void setTurnoFunciona(boolean turnoFunciona) {
+		this.turnoFunciona = turnoFunciona;
+	}
+
+	/*
 	public String getMomento() {
 		return momento;
 	}
@@ -39,7 +48,7 @@ public class HoraExtra {
 	public void setMomento(String momento) {
 		this.momento = momento;
 	}
-
+	*/
 	public String getStatus() {
 		return status;
 	}

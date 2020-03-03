@@ -1,5 +1,8 @@
 package com.example.BackEnd.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,9 +15,10 @@ public class Turno {
 	private Long id;
 
 	private String descricaoTurno;
-	private String horaInicio;
+	//private String horaInicio;
 	private int totalHoras;
 	private Long capacidadeTurno;
+	private ArrayList<String> diasDaSemana;
 
 	// @ManyToOne
 	// @JoinColumn(name = "setor_id")
@@ -35,7 +39,7 @@ public class Turno {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	/*
 	public String getHoraInicio() {
 		return horaInicio;
 	}
@@ -43,7 +47,7 @@ public class Turno {
 	public void setHoraInicio(String horaInicio) {
 		this.horaInicio = horaInicio;
 	}
-
+*/
 	public int getTotalHoras() {
 		return totalHoras;
 	}
@@ -60,4 +64,13 @@ public class Turno {
 		this.capacidadeTurno = capacidadeTurno;
 	}
 
+	public List<String> getDiasDaSemana() {
+		return diasDaSemana;
+	}
+
+	public void setDiasDaSemana(List<String> diasDaSemana) {
+		this.diasDaSemana = (ArrayList<String>) diasDaSemana;
+	}
+
+	
 }
