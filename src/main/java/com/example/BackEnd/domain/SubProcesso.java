@@ -1,7 +1,6 @@
 package com.example.BackEnd.domain;
 
 
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,27 +10,19 @@ import javax.persistence.ManyToOne;
 
 import lombok.Data;
 
+
 @Entity
 @Data
-public class HoraExtra {
+public class SubProcesso {
 	@Id
-	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	private String data;
-	
-	private Long capacidade;
-	
-	private float qtdHoras;
-	
-	private String status;
-	
-	private boolean turnoFunciona;
-	//private String momento;
+
+	private String descricao;
 	
 	@ManyToOne
-	@JoinColumn(name = "turno")
-	private Turno turno;
-
-
+	@JoinColumn(name = "processo_id")
+	private Processo processo;
+	
+	
 }

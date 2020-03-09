@@ -30,8 +30,8 @@ public class ValorGrupo {
 	
 	
 	@ManyToOne
-	@JoinColumn(name = "processos_id")
-	private Processos processo;
+	@JoinColumn(name = "SubProcesso_id")
+	private SubProcesso subProcesso;
 	
 
 	public Long getId() {
@@ -66,13 +66,15 @@ public class ValorGrupo {
 		this.tipoProduto = tipoProduto;
 	}
 
-	public Processos getProcessos() {
-		return processo;
+	public SubProcesso getSubProcesso() {
+		return subProcesso;
 	}
 
-	public void setProcessos(Processos processos) {
-		this.processo = processos;
+	public void setSubProcesso(SubProcesso subProcesso) {
+		this.subProcesso = subProcesso;
 	}
+
+	
 	
 	
 

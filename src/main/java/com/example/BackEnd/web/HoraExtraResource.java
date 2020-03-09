@@ -22,7 +22,7 @@ import com.example.BackEnd.repository.HoraExtraRepository;
 
 
 @RestController
-@RequestMapping(value = "/horaExtra")
+@RequestMapping(value = "/horaextra")
 public class HoraExtraResource {
 
 	@Autowired

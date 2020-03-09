@@ -22,7 +22,7 @@ import com.example.BackEnd.repository.LogValorRepository;
 import com.example.BackEnd.repository.ValorGrupoRepository;
 
 @RestController
-@RequestMapping(value = "/valorGrupo")
+@RequestMapping(value = "/valorgrupo")
 public class ValorGrupoResource {
 
 	@Autowired
@@ -43,7 +43,7 @@ public class ValorGrupoResource {
 		logValor.setValorNovo(valor);
 		logValor.setData(new java.util.Date(System.currentTimeMillis()));
 		
-		logValor.setDescricao(valorGrupoSalvo.getProcessos().getDescricao() + "/"+ valorGrupoSalvo.getLinha().getDescricao() + "/" + valorGrupoSalvo.getTipoProduto().getDescricao());
+		logValor.setDescricao(valorGrupoSalvo.getSubProcesso().getDescricao() + "/"+ valorGrupoSalvo.getLinha().getDescricao() + "/" + valorGrupoSalvo.getTipoProduto().getDescricao());
 		logValor.setValorGrupo(valorGrupoSalvo);
 		logValorRepository.save(logValor);
 		return ResponseEntity.status(HttpStatus.OK).body(valorGrupoSalvo);
@@ -60,22 +60,13 @@ public class ValorGrupoResource {
 		return !valorGrupo.isEmpty() ? ResponseEntity.ok(valorGrupo) : ResponseEntity.noContent().build();
 	}
 
-	//----------------------------------------------------------------------------------------------------------------------
 	
-	@GetMapping("/lastID")
-	protected ResponseEntity<?> pegarUltimoID() {
-		ValorGrupo valorGrupo = valorGrupoRepository.findTopByOrderByIdDesc();
-		if (valorGrupo != null)
-			return ResponseEntity.ok(valorGrupo.getId() + 1);
-		else
-			return ResponseEntity.ok(1);
-	}
 	
 	//----------------------------------------------------------------------------------------------------------------------
 
 	@GetMapping("/{id}")
 	public ResponseEntity<List<ValorGrupo>> listarTodosOsValorGrupoDeUmProcesso(@PathVariable("id") Long id){
-		List<ValorGrupo> listValorGrupo = valorGrupoRepository.findByProcessoId(id);
+		List<ValorGrupo> listValorGrupo = valorGrupoRepository.findBySubProcessoId(id);
 		return !listValorGrupo.isEmpty() ? ResponseEntity.ok(listValorGrupo) : ResponseEntity.noContent().build();
 	
 	}
@@ -97,7 +88,7 @@ public class ValorGrupoResource {
 
 		logValor.setValorNovo(valor);
 		logValor.setData(new java.util.Date(System.currentTimeMillis()));
-		logValor.setDescricao(valorGrupo.getProcessos().getDescricao() + "/"+ valorGrupo.getLinha().getDescricao() + "/" + valorGrupo.getTipoProduto().getDescricao());
+		logValor.setDescricao(valorGrupo.getSubProcesso().getDescricao() + "/"+ valorGrupo.getLinha().getDescricao() + "/" + valorGrupo.getTipoProduto().getDescricao());
 		logValor.setValorGrupo(valorGrupo);
 		logValorRepository.save(logValor);
 		

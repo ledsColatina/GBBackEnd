@@ -21,6 +21,7 @@ import com.example.BackEnd.domain.Setor;
 import com.example.BackEnd.domain.Turno;
 import com.example.BackEnd.repository.SetorRepository;
 import com.example.BackEnd.repository.TurnoRepository;
+import com.example.BackEnd.service.SetorService;
 
 @RestController
 @RequestMapping(value = "/setor")
@@ -31,6 +32,9 @@ public class SetorResource {
 
 	@Autowired
 	private TurnoRepository turnoRepository;
+	
+	@Autowired
+	private SetorService setorService;
 	
 	//----------------------------------------------------------------------------------------------------------------------------
 	
@@ -98,17 +102,7 @@ public class SetorResource {
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	protected ResponseEntity<?> deleteSetor(@PathVariable Long id) {
-		List<Setor> listaSetor = setorRepository.findAll();
-		List<Setor> setorEncontrado = new ArrayList<Setor>();
-		int cont = 0;
-
-		for (int i = 0; i < listaSetor.size(); i++) {
-			if (listaSetor.get(i).getId() == id) {
-				setorEncontrado.add(listaSetor.get(i));
-				setorRepository.deleteById(id);
-				cont = cont + 1;
-			}
-		}
+		List<Setor> setorEncontrado = setorService.deleteSetor(id);
 		return !setorEncontrado.isEmpty() ? ResponseEntity.ok(setorEncontrado) : ResponseEntity.noContent().build();
 	}
 

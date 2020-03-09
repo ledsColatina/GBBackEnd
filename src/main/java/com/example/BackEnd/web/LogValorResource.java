@@ -21,7 +21,7 @@ import com.example.BackEnd.domain.LogValor;
 import com.example.BackEnd.repository.LogValorRepository;
 
 @RestController
-@RequestMapping(value = "processos/logValor")
+@RequestMapping(value = "subprocesso/logvalor")
 public class LogValorResource {
 	
 	@Autowired

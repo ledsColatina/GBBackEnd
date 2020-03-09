@@ -8,7 +8,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import lombok.Data;
+
 @Entity
+@Data
 public class Turno {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,54 +26,5 @@ public class Turno {
 	// @ManyToOne
 	// @JoinColumn(name = "setor_id")
 	// private Setor setor;
-
-	public String getDescricaoTurno() {
-		return descricaoTurno;
-	}
-
-	public void setDescricaoTurno(String descricaoTurno) {
-		this.descricaoTurno = descricaoTurno;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-	/*
-	public String getHoraInicio() {
-		return horaInicio;
-	}
-
-	public void setHoraInicio(String horaInicio) {
-		this.horaInicio = horaInicio;
-	}
-*/
-	public int getTotalHoras() {
-		return totalHoras;
-	}
-
-	public void setTotalHoras(int totalHoras) {
-		this.totalHoras = totalHoras;
-	}
-
-	public Long getCapacidadeTurno() {
-		return capacidadeTurno;
-	}
-
-	public void setCapacidadeTurno(Long capacidadeTurno) {
-		this.capacidadeTurno = capacidadeTurno;
-	}
-
-	public List<String> getDiasDaSemana() {
-		return diasDaSemana;
-	}
-
-	public void setDiasDaSemana(List<String> diasDaSemana) {
-		this.diasDaSemana = (ArrayList<String>) diasDaSemana;
-	}
-
 	
 }

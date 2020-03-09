@@ -10,7 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import lombok.Data;
+
 @Entity
+@Data
 public class Partida {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,53 +32,5 @@ public class Partida {
 	@ManyToOne
 	@JoinColumn(name = "etapaDestino_id")
 	private EtapaProducao Destino;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Date getDataInicio() {
-		return dataInicio;
-	}
-
-	public void setDataInicio(Date dataInicio) {
-		this.dataInicio = dataInicio;
-	}
-
-	public Time getHoraInicio() {
-		return horaInicio;
-	}
-
-	public void setHoraInicio(Time horaInicio) {
-		this.horaInicio = horaInicio;
-	}
-
-	public Date getDataFim() {
-		return dataFim;
-	}
-
-	public void setDataFim(Date dataFim) {
-		this.dataFim = dataFim;
-	}
-
-	public Long getHoraFim() {
-		return horaFim;
-	}
-
-	public void setHoraFim(Long horaFim) {
-		this.horaFim = horaFim;
-	}
-
-	public Long getQuantidade() {
-		return Quantidade;
-	}
-
-	public void setQuantidade(Long quantidade) {
-		Quantidade = quantidade;
-	}
 
 }

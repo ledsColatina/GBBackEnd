@@ -22,7 +22,7 @@ import com.example.BackEnd.domain.TipoProduto;
 import com.example.BackEnd.repository.TipoProdutoRepository;
 
 @RestController
-@RequestMapping(value = "/tipoProduto")
+@RequestMapping(value = "/tipoproduto")
 public class TipoProdutoResource {
 	
 	@Autowired
