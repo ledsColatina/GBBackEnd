@@ -16,17 +16,17 @@ public interface HoraExtraRepository extends JpaRepository<HoraExtra, Long> {
 			+ "  WHERE status = 'Pendente';", nativeQuery = true)
 	List<HoraExtra> findAllPendentes();
 	//----------------------------------------------------------------------------------------------------------------------
-	@Query(value = "SELECT H.id,H.capacidade,H.turno,H.data,H.qtd_horas,H.momento,H.status FROM setor as S,turno as T,hora_extra as H WHERE T.setor_id = S.id AND H.turno = T.id AND  S.id = :id", nativeQuery = true)
+	@Query(value = "SELECT H.id,H.capacidade,H.turno,H.data,H.qtd_horas,H.status,H.turno_funciona FROM setor as S,turno as T,hora_extra as H WHERE T.setor_id = S.id AND H.turno = T.id AND  S.id = :id", nativeQuery = true)
 	List<HoraExtra> findAllHoraExtraPorSetor(@Param("id") Long id);
 	//----------------------------------------------------------------------------------------------------------------------
-	@Query(value = "SELECT H.id,H.capacidade,H.turno,H.data,H.qtd_horas,H.momento,H.status \n" + 
+	@Query(value = "SELECT H.id,H.capacidade,H.turno,H.data,H.qtd_horas,H.status,H.turno_funciona \n" + 
 			"FROM setor as S,turno as T,hora_extra as H \n" + 
 			"WHERE T.setor_id = S.id AND \n" + 
 			"	H.turno = T.id AND  \n" + 
 			"	S.id = :id AND H.status LIKE 'Finalizado'", nativeQuery = true)
 	List<HoraExtra> findAllFinalizadas(@Param("id") Long id);
 	//----------------------------------------------------------------------------------------------------------------------
-	@Query(value = "SELECT H.id,H.capacidade,H.turno,H.data,H.qtd_horas,H.momento,H.status \n" + 
+	@Query(value = "SELECT H.id,H.capacidade,H.turno,H.data,H.qtd_horas,H.status,H.turno_funciona\n" + 
 			"FROM setor as S,turno as T,hora_extra as H \n" + 
 			"WHERE T.setor_id = S.id AND \n" + 
 			"	H.turno = T.id AND  \n" + 
