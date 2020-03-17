@@ -1,6 +1,5 @@
 package com.example.BackEnd.web;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
@@ -17,30 +16,41 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.BackEnd.domain.Setor;
+import com.example.BackEnd.domain.Maquina;
+import com.example.BackEnd.domain.MaquinaTipoProduto;
+import com.example.BackEnd.domain.MaquinaTipoProdutoPK;
+import com.example.BackEnd.domain.TipoProduto;
 import com.example.BackEnd.domain.Turno;
-import com.example.BackEnd.repository.SetorRepository;
+import com.example.BackEnd.repository.MaquinaRepository;
+import com.example.BackEnd.repository.MaquinaTipoProdutoRepository;
+import com.example.BackEnd.repository.TipoProdutoRepository;
 import com.example.BackEnd.repository.TurnoRepository;
 import com.example.BackEnd.service.SetorService;
 
 @RestController
-@RequestMapping(value = "/setor")
-public class SetorResource {
+@RequestMapping(value = "/maquina")
+public class MaquinaResource {
 
 	@Autowired
-	private SetorRepository setorRepository;
+	private MaquinaRepository maquinaRepository;
 
 	@Autowired
 	private TurnoRepository turnoRepository;
 	
 	@Autowired
+	private TipoProdutoRepository tipoProdutoRepository;
+	
+	@Autowired
 	private SetorService setorService;
+	
+	@Autowired
+	private MaquinaTipoProdutoRepository maquinaTipoProdutoRepository;
 	
 	//----------------------------------------------------------------------------------------------------------------------------
 	
 	@GetMapping()
-	protected ResponseEntity<List<Setor>> listar() {
-		List<Setor> setor = setorRepository.findAll();
+	protected ResponseEntity<List<Maquina>> listar() {
+		List<Maquina> setor = maquinaRepository.findAll();
 		return !setor.isEmpty() ? ResponseEntity.ok(setor) : ResponseEntity.noContent().build();
 	}
 
@@ -48,7 +58,7 @@ public class SetorResource {
 	
 	@GetMapping("/{id}/turnos")
 	protected ResponseEntity<?> listarTurnos(@PathVariable Long id) {
-		Optional<Setor> setor = setorRepository.findById(id);
+		Optional<Maquina> setor = maquinaRepository.findById(id);
 		return setor.isPresent() ? ResponseEntity.ok(setor.get().getListTurno()) : ResponseEntity.noContent().build();
 	}
 
@@ -56,7 +66,7 @@ public class SetorResource {
 	
 	@GetMapping("/lastID")
 	public ResponseEntity<?> pegarUltimoIDSetor() {
-		Setor setor = setorRepository.findTopByOrderByIdDesc();
+		Maquina setor = maquinaRepository.findTopByOrderByIdDesc();
 		if (setor != null)
 			return ResponseEntity.ok(setor.getId() + 1);
 		else
@@ -78,23 +88,67 @@ public class SetorResource {
 	
 	@GetMapping("/{id}")
 	public boolean searchSetorById(@PathVariable Long id) {
-		System.out.println(setorRepository.existsById(id));
-		return setorRepository.existsById(id);
+		System.out.println(maquinaRepository.existsById(id));
+		return maquinaRepository.existsById(id);
+	}
+	
+	
+	//---------------------------------------------------
+	
+		@GetMapping("/capacidade/{id}")
+		public ResponseEntity<List<MaquinaTipoProduto>> pegarCapacidadeDeCadaMaquina(@PathVariable Long id) {
+			List<MaquinaTipoProduto> mtp = maquinaTipoProdutoRepository.findAllCapacidadeDeMaquinasPorTipoProduto(id);
+			return ResponseEntity.status(HttpStatus.OK).body(mtp);
+		}
+		
+		
+		
+	//-----------------------------------------------------------------------------------------------------------------------
+	
+	@PostMapping("/turno")
+	public ResponseEntity<Turno> criarTurno(@Valid @RequestBody Turno turno) {
+		Turno turnoSalvo = turnoRepository.save(turno);
+		return ResponseEntity.status(HttpStatus.OK).body(turnoSalvo);
 	}
 
 	//-----------------------------------------------------------------------------------------------------------------------
 	
-	@PostMapping("turno")
-	public void criarTurno(@Valid @RequestBody Turno turno) {
-		turnoRepository.save(turno);
-	}
+		@PostMapping("/maquinatipoproduto")
+		public ResponseEntity<?> criarMaquinaTipoProduto(@Valid @RequestBody Maquina maquina,TipoProduto tipoProduto,MaquinaTipoProduto maquinaTipoProduto) {
+			MaquinaTipoProdutoPK chavaComposta = new MaquinaTipoProdutoPK();
+			chavaComposta.setMaquina(maquina);
+			chavaComposta.setTipoProduto(tipoProduto);
+			
+			MaquinaTipoProduto tipoProd = new MaquinaTipoProduto();
+			tipoProd.setCapacidadeHora(maquinaTipoProduto.getCapacidadeHora());
+			tipoProd.setChaveComposta(chavaComposta);
+			MaquinaTipoProduto maquinaTP = maquinaTipoProdutoRepository.save(tipoProd);
+			
+			return ResponseEntity.status(HttpStatus.OK).body(maquinaTP);
+		}
 
+		
 	//----------------------------------------------------------------------------------------------------------------------------
 
 	@PostMapping
-	public ResponseEntity<Setor> criarSetor(@Valid @RequestBody Setor setor, HttpServletResponse responseEntity) {
-		Setor setorSalvo = setorRepository.save(setor);
-		return ResponseEntity.ok(setorSalvo);
+	public ResponseEntity<?> criarSetor(@Valid @RequestBody Maquina maquina, HttpServletResponse responseEntity) {
+		Maquina maquinaSalvo = maquinaRepository.save(maquina);
+		List<TipoProduto> listTipoProd = tipoProdutoRepository.findAll();
+		MaquinaTipoProdutoPK chaveComposta = new MaquinaTipoProdutoPK();
+		MaquinaTipoProduto MaquinaTipoProd = new MaquinaTipoProduto();
+		
+		System.out.println(listTipoProd.size());
+		for(int i=0;i<listTipoProd.size();i++) {
+			chaveComposta.setMaquina(maquinaSalvo);
+			System.out.println(chaveComposta.getMaquina().getNome());
+			chaveComposta.setTipoProduto(listTipoProd.get(i));
+			
+			MaquinaTipoProd.setCapacidadeHora(0);
+			MaquinaTipoProd.setChaveComposta(chaveComposta);
+			maquinaTipoProdutoRepository.save(MaquinaTipoProd);
+		}
+		
+		return ResponseEntity.ok(maquinaSalvo);
 	}
 
 	//-----------------------------------------------------------------------------------------------------------------------	
@@ -102,25 +156,35 @@ public class SetorResource {
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	protected ResponseEntity<?> deleteSetor(@PathVariable Long id) {
-		List<Setor> setorEncontrado = setorService.deleteSetor(id);
-		return !setorEncontrado.isEmpty() ? ResponseEntity.ok(setorEncontrado) : ResponseEntity.noContent().build();
+		List<Maquina> maquinaEncontrado = setorService.deleteSetor(id);
+		return !maquinaEncontrado.isEmpty() ? ResponseEntity.ok(maquinaEncontrado) : ResponseEntity.noContent().build();
 	}
-
+	
+	
+	//-----------------------------------------------------------------------------------------------------------------------	
+	
+		@DeleteMapping("/turno/{id}")
+		@ResponseStatus(HttpStatus.NO_CONTENT)
+		protected void deleteTurno(@PathVariable Long id) {
+			turnoRepository.deleteById(id);
+		}
+		
 	//-----------------------------------------------------------------------------------------------------------------------	
 	
 	@PutMapping("/{id}")
-	protected ResponseEntity<Setor> atualizaSetor(@PathVariable("id") Long id, @RequestBody Setor setor,HttpServletResponse responseEntity) {
-		return setorRepository.findById(id).map(record -> {
-			record.setNome(setor.getNome());
-			record.setMaxOcupacao(setor.getMaxOcupacao());
-			record.setRole(setor.getRole());
-			record.setListTurno(setor.getListTurno());
-			Setor updated = setorRepository.save(record);
+	protected ResponseEntity<Maquina> atualizaSetor(@PathVariable("id") Long id, @RequestBody Maquina maquina,HttpServletResponse responseEntity) {
+		return maquinaRepository.findById(id).map(record -> {
+			record.setNome(maquina.getNome());
+			record.setMaxOcupacao(maquina.getMaxOcupacao());
+			record.setRole(maquina.getRole());
+			record.setListTurno(maquina.getListTurno());
+			Maquina updated = maquinaRepository.save(record);
 			return ResponseEntity.ok().body(updated);
 
 		}).orElse(ResponseEntity.notFound().build());
 	}
 
+	
 	//----------------------------------------------------------------------------------------------------------------------	
 	/*
 	public int verficarRegrasDeNegocio(Setor setor) {

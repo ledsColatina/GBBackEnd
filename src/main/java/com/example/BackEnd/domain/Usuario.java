@@ -31,8 +31,8 @@ public class Usuario {
 	private Boolean tipo; 
 	
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "usuario_setor", joinColumns = { @JoinColumn(name = "usuario_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "setor_id") })
-	private List<Setor> setores;
+	@JoinTable(name = "usuario_maquina", joinColumns = { @JoinColumn(name = "usuario_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "maquina_id") })
+	private List<Maquina> maquinas;
 	
 }

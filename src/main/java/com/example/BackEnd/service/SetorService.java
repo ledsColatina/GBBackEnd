@@ -8,14 +8,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.example.BackEnd.domain.Setor;
-import com.example.BackEnd.repository.SetorRepository;
+import com.example.BackEnd.domain.Maquina;
+import com.example.BackEnd.repository.MaquinaRepository;
 import com.example.BackEnd.repository.TurnoRepository;
 
 @Service
 public class SetorService {
 	@Autowired
-	private SetorRepository setorRepository;
+	private MaquinaRepository setorRepository;
 
 	@Autowired
 	private TurnoRepository turnoRepository;
@@ -23,9 +23,9 @@ public class SetorService {
 	//----------------------------------------------------------------------------------------------------------------------	
 	
 	
-	public List<Setor> deleteSetor(@PathVariable Long id) {
-		List<Setor> listaSetor = setorRepository.findAll();
-		List<Setor> setorEncontrado = new ArrayList<Setor>();
+	public List<Maquina> deleteSetor(@PathVariable Long id) {
+		List<Maquina> listaSetor = setorRepository.findAll();
+		List<Maquina> setorEncontrado = new ArrayList<Maquina>();
 		int cont = 0;
 
 		for (int i = 0; i < listaSetor.size(); i++) {

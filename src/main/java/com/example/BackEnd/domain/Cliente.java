@@ -20,11 +20,11 @@ public class Cliente {
 	private Long id;
 
 	@NotEmpty(message = "Nome do Cliente deve ser informado")
-	@NotNull(message = "Nome do Cliente deve ser informado")
+	//@NotNull(message = "Nome do Cliente deve ser informado")
 	private String nome;
 
 	@NotEmpty(message = "Cor do Cliente deve ser informado")
-	@NotNull(message = "Nome do Cliente deve ser informado")
+	//@NotNull(message = "Nome do Cliente deve ser informado")
 	private String cor;
 
 	// @OneToMany

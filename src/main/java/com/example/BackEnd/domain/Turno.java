@@ -1,8 +1,6 @@
 package com.example.BackEnd.domain;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,11 +14,10 @@ public class Turno {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
 	private String descricaoTurno;
-	//private String horaInicio;
+	private String horaInicio;
 	private int totalHoras;
-	private Long capacidadeTurno;
+	
 	private ArrayList<String> diasDaSemana;
 
 	// @ManyToOne

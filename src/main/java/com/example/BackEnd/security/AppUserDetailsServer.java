@@ -34,14 +34,14 @@ public class AppUserDetailsServer implements UserDetailsService{
 	public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
 		Optional<Usuario> usuarioOptional = usuarioRepository.findByLogin(login);
 		Usuario usuario = usuarioOptional.orElseThrow(() -> new UsernameNotFoundException("Usuario e/ou senha incorretos"));
-		return new User(login,usuario.getSenha(),getSetores(usuario));
+		return new User(login,usuario.getSenha(),getMaquinas(usuario));
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------
 
-	private Collection<? extends GrantedAuthority> getSetores(Usuario usuario) {
+	private Collection<? extends GrantedAuthority> getMaquinas(Usuario usuario) {
 		Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-		usuario.getSetores().forEach(p -> authorities.add(new SimpleGrantedAuthority(p.getNome().toUpperCase())));
+		usuario.getMaquinas().forEach(p -> authorities.add(new SimpleGrantedAuthority(p.getNome().toUpperCase())));
 		return authorities;
 	}
 	

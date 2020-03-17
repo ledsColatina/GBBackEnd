@@ -27,7 +27,8 @@ public class HoraExtra {
 	private String status;
 	
 	private boolean turnoFunciona;
-	//private String momento;
+	
+	private String momento;
 	
 	@ManyToOne
 	@JoinColumn(name = "turno")

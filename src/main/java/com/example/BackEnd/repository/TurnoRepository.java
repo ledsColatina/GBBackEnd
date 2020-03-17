@@ -10,4 +10,6 @@ public interface TurnoRepository extends JpaRepository<Turno, Long> {
 	Turno findTopByOrderByIdDesc();
 
 	Turno findAllById(Long id);
+
+
 }

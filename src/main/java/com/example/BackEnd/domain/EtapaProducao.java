@@ -35,7 +35,7 @@ public class EtapaProducao {
 	
 	@ManyToOne
 	@JoinColumn(name = "setor_id")
-	private Setor setor;
+	private Maquina setor;
 	
 	/*
 	@ManyToMany()

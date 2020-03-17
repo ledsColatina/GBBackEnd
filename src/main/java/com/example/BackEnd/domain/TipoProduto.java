@@ -18,7 +18,7 @@ public class TipoProduto {
 	private Long id;
 	
 	@NotEmpty(message = "Descricao do tipoProduto deve ser informado")
-	@NotNull(message = "Descricao do tipoProduto deve ser informado")
+	//@NotNull(message = "Descricao do tipoProduto deve ser informado")
 	private String descricao;
 
 	
