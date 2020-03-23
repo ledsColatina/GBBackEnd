@@ -6,12 +6,9 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
-import com.example.BackEnd.domain.HoraExtra;
-import com.example.BackEnd.domain.Maquina;
 import com.example.BackEnd.domain.MaquinaTipoProduto;
-import com.example.BackEnd.domain.MaquinaTipoProdutoPK;
-import com.example.BackEnd.domain.TipoProduto;
+
+
 
 public interface MaquinaTipoProdutoRepository extends JpaRepository<MaquinaTipoProduto, Long> {
 
@@ -21,42 +18,10 @@ public interface MaquinaTipoProdutoRepository extends JpaRepository<MaquinaTipoP
 			"	and Ma.id = :id", nativeQuery = true)
 	List<MaquinaTipoProduto> findAllCapacidadeDeMaquinasPorTipoProduto(@Param("id") Long id);
 
+	Optional<MaquinaTipoProduto> findById(Long id);
+
+	List<MaquinaTipoProduto> findByMaquinaId(Long id);
 
 
-
-
-
-
-	Optional<MaquinaTipoProduto> findByChaveComposta(MaquinaTipoProduto maquinaTipoProduto);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-
-
-
-	
-
-
-
-	
 
 }

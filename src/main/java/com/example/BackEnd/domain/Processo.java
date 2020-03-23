@@ -25,7 +25,7 @@ public class Processo {
 	
 	@OneToMany
 	@JoinColumn(name = "setor_id")
-	private List<Maquina> listSetores;
+	private List<Maquina> listMaquina;
 	
 	
 

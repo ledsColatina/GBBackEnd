@@ -13,7 +13,7 @@ import com.example.BackEnd.repository.MaquinaRepository;
 import com.example.BackEnd.repository.TurnoRepository;
 
 @Service
-public class SetorService {
+public class MaquinaService {
 	@Autowired
 	private MaquinaRepository setorRepository;
 

@@ -28,6 +28,7 @@ public class LogValor {
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date data;
 	private String descricao;
+	private String status;
 
 	 @ManyToOne
 	 @JoinColumn(name = "valorGrupo_id")

@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.BackEnd.domain.Maquina;
 import com.example.BackEnd.domain.MaquinaTipoProduto;
-import com.example.BackEnd.domain.MaquinaTipoProdutoPK;
+
 import com.example.BackEnd.domain.TipoProduto;
 import com.example.BackEnd.domain.Turno;
 import com.example.BackEnd.repository.MaquinaRepository;
 import com.example.BackEnd.repository.MaquinaTipoProdutoRepository;
 import com.example.BackEnd.repository.TipoProdutoRepository;
 import com.example.BackEnd.repository.TurnoRepository;
-import com.example.BackEnd.service.SetorService;
+import com.example.BackEnd.service.MaquinaService;
 
 @RestController
 @RequestMapping(value = "/maquina")
@@ -41,7 +41,7 @@ public class MaquinaResource {
 	private TipoProdutoRepository tipoProdutoRepository;
 	
 	@Autowired
-	private SetorService setorService;
+	private MaquinaService maquinaService;
 	
 	@Autowired
 	private MaquinaTipoProdutoRepository maquinaTipoProdutoRepository;
@@ -93,16 +93,7 @@ public class MaquinaResource {
 	}
 	
 	
-	//---------------------------------------------------
 	
-		@GetMapping("/capacidade/{id}")
-		public ResponseEntity<List<MaquinaTipoProduto>> pegarCapacidadeDeCadaMaquina(@PathVariable Long id) {
-			List<MaquinaTipoProduto> mtp = maquinaTipoProdutoRepository.findAllCapacidadeDeMaquinasPorTipoProduto(id);
-			return ResponseEntity.status(HttpStatus.OK).body(mtp);
-		}
-		
-		
-		
 	//-----------------------------------------------------------------------------------------------------------------------
 	
 	@PostMapping("/turno")
@@ -111,40 +102,21 @@ public class MaquinaResource {
 		return ResponseEntity.status(HttpStatus.OK).body(turnoSalvo);
 	}
 
-	//-----------------------------------------------------------------------------------------------------------------------
-	
-		@PostMapping("/maquinatipoproduto")
-		public ResponseEntity<?> criarMaquinaTipoProduto(@Valid @RequestBody Maquina maquina,TipoProduto tipoProduto,MaquinaTipoProduto maquinaTipoProduto) {
-			MaquinaTipoProdutoPK chavaComposta = new MaquinaTipoProdutoPK();
-			chavaComposta.setMaquina(maquina);
-			chavaComposta.setTipoProduto(tipoProduto);
-			
-			MaquinaTipoProduto tipoProd = new MaquinaTipoProduto();
-			tipoProd.setCapacidadeHora(maquinaTipoProduto.getCapacidadeHora());
-			tipoProd.setChaveComposta(chavaComposta);
-			MaquinaTipoProduto maquinaTP = maquinaTipoProdutoRepository.save(tipoProd);
-			
-			return ResponseEntity.status(HttpStatus.OK).body(maquinaTP);
-		}
-
-		
 	//----------------------------------------------------------------------------------------------------------------------------
 
 	@PostMapping
-	public ResponseEntity<?> criarSetor(@Valid @RequestBody Maquina maquina, HttpServletResponse responseEntity) {
+	public ResponseEntity<?> criarMaquina(@Valid @RequestBody Maquina maquina, HttpServletResponse responseEntity) {
 		Maquina maquinaSalvo = maquinaRepository.save(maquina);
 		List<TipoProduto> listTipoProd = tipoProdutoRepository.findAll();
-		MaquinaTipoProdutoPK chaveComposta = new MaquinaTipoProdutoPK();
-		MaquinaTipoProduto MaquinaTipoProd = new MaquinaTipoProduto();
+		MaquinaTipoProduto MaquinaTipoProd;
 		
-		System.out.println(listTipoProd.size());
+		//System.out.println(listTipoProd.size());
 		for(int i=0;i<listTipoProd.size();i++) {
-			chaveComposta.setMaquina(maquinaSalvo);
-			System.out.println(chaveComposta.getMaquina().getNome());
-			chaveComposta.setTipoProduto(listTipoProd.get(i));
-			
+			MaquinaTipoProd = new MaquinaTipoProduto();
+			System.out.println("entrouuuuuuuuu");
+			MaquinaTipoProd.setMaquina(maquinaSalvo);
+			MaquinaTipoProd.setTipoProduto(listTipoProd.get(i));			
 			MaquinaTipoProd.setCapacidadeHora(0);
-			MaquinaTipoProd.setChaveComposta(chaveComposta);
 			maquinaTipoProdutoRepository.save(MaquinaTipoProd);
 		}
 		
@@ -156,7 +128,12 @@ public class MaquinaResource {
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	protected ResponseEntity<?> deleteSetor(@PathVariable Long id) {
-		List<Maquina> maquinaEncontrado = setorService.deleteSetor(id);
+		List<MaquinaTipoProduto> lisMTP = maquinaTipoProdutoRepository.findByMaquinaId(id);
+		
+		for(int i=0;i<lisMTP.size();i++) {
+			maquinaTipoProdutoRepository.deleteById(lisMTP.get(i).getId());
+		}
+		List<Maquina> maquinaEncontrado = maquinaService.deleteSetor(id);
 		return !maquinaEncontrado.isEmpty() ? ResponseEntity.ok(maquinaEncontrado) : ResponseEntity.noContent().build();
 	}
 	
@@ -172,7 +149,7 @@ public class MaquinaResource {
 	//-----------------------------------------------------------------------------------------------------------------------	
 	
 	@PutMapping("/{id}")
-	protected ResponseEntity<Maquina> atualizaSetor(@PathVariable("id") Long id, @RequestBody Maquina maquina,HttpServletResponse responseEntity) {
+	protected ResponseEntity<Maquina> atualizaMaquina(@PathVariable("id") Long id, @RequestBody Maquina maquina,HttpServletResponse responseEntity) {
 		return maquinaRepository.findById(id).map(record -> {
 			record.setNome(maquina.getNome());
 			record.setMaxOcupacao(maquina.getMaxOcupacao());

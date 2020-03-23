@@ -44,7 +44,9 @@ public class ValorGrupoResource {
 		logValor.setData(new java.util.Date(System.currentTimeMillis()));
 		
 		logValor.setDescricao(valorGrupoSalvo.getSubProcesso().getDescricao() + "/"+ valorGrupoSalvo.getLinha().getDescricao() + "/" + valorGrupoSalvo.getTipoProduto().getDescricao());
+		System.out.println(valorGrupoSalvo.getSubProcesso().getDescricao() + "/"+ valorGrupoSalvo.getLinha().getDescricao() + "/" + valorGrupoSalvo.getTipoProduto().getDescricao());
 		logValor.setValorGrupo(valorGrupoSalvo);
+		logValor.setStatus("Adicionado");
 		logValorRepository.save(logValor);
 		return ResponseEntity.status(HttpStatus.OK).body(valorGrupoSalvo);
 	}
@@ -86,16 +88,19 @@ public class ValorGrupoResource {
 		LogValor logValor = new LogValor();
 		float valor = valorGrupo.getValorAtual();
 
-		logValor.setValorNovo(valor);
-		logValor.setData(new java.util.Date(System.currentTimeMillis()));
-		logValor.setDescricao(valorGrupo.getSubProcesso().getDescricao() + "/"+ valorGrupo.getLinha().getDescricao() + "/" + valorGrupo.getTipoProduto().getDescricao());
-		logValor.setValorGrupo(valorGrupo);
-		logValorRepository.save(logValor);
+		
 		
 		return valorGrupoRepository.findById(id).map(record -> {
 			record.setValorAtual(valorGrupo.getValorAtual());
-			ValorGrupo updated = valorGrupoRepository.save(record);
-			return ResponseEntity.ok().body(updated);
+			ValorGrupo ValorGrupoALterado = valorGrupoRepository.save(record);
+			
+			logValor.setValorNovo(valor);
+			logValor.setData(new java.util.Date(System.currentTimeMillis()));
+			logValor.setDescricao(ValorGrupoALterado.getSubProcesso().getDescricao() + "/"+ ValorGrupoALterado.getLinha().getDescricao() + "/" + ValorGrupoALterado.getTipoProduto().getDescricao());
+			logValor.setValorGrupo(ValorGrupoALterado);
+			logValor.setStatus("Alterado");
+			logValorRepository.save(logValor);
+			return ResponseEntity.ok().body(ValorGrupoALterado);
 
 		}).orElse(ResponseEntity.notFound().build());
 	}

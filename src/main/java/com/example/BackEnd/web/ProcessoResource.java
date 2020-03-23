@@ -61,7 +61,7 @@ public class ProcessoResource {
 	   public ResponseEntity<Processo> atualizaProcessos(@PathVariable("id") Long id,@RequestBody Processo processos,HttpServletResponse responseEntity){
 	   	return processoRepository.findById(id).map(record -> {
 			    		record.setDescricao(processos.getDescricao());
-			    		record.setListSetores(processos.getListSetores());
+			    		record.setListMaquina(processos.getListMaquina());
 			    		Processo updated = processoRepository.save(record);
 	   	                return ResponseEntity.ok().body(updated);
     	                   	               
