@@ -113,7 +113,6 @@ public class MaquinaResource {
 		//System.out.println(listTipoProd.size());
 		for(int i=0;i<listTipoProd.size();i++) {
 			MaquinaTipoProd = new MaquinaTipoProduto();
-			System.out.println("entrouuuuuuuuu");
 			MaquinaTipoProd.setMaquina(maquinaSalvo);
 			MaquinaTipoProd.setTipoProduto(listTipoProd.get(i));			
 			MaquinaTipoProd.setCapacidadeHora(0);

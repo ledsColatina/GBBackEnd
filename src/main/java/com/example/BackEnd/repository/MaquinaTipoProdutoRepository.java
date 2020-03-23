@@ -18,8 +18,8 @@ public interface MaquinaTipoProdutoRepository extends JpaRepository<MaquinaTipoP
 			"	and Ma.id = :id", nativeQuery = true)
 	List<MaquinaTipoProduto> findAllCapacidadeDeMaquinasPorTipoProduto(@Param("id") Long id);
 
-	Optional<MaquinaTipoProduto> findById(Long id);
 
+	
 	List<MaquinaTipoProduto> findByMaquinaId(Long id);
 
 

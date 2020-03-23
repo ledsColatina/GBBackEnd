@@ -2,6 +2,8 @@ package com.example.BackEnd.web;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Optional;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -18,7 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.BackEnd.domain.HoraExtra;
+import com.example.BackEnd.domain.HoraExtraTipoProduto;
+import com.example.BackEnd.domain.Maquina;
+import com.example.BackEnd.domain.MaquinaTipoProduto;
 import com.example.BackEnd.repository.HoraExtraRepository;
+import com.example.BackEnd.repository.HoraExtraTipoProdutoRepository;
+import com.example.BackEnd.repository.MaquinaTipoProdutoRepository;
 
 
 @RestController
@@ -27,6 +34,12 @@ public class HoraExtraResource {
 
 	@Autowired
 	private HoraExtraRepository horaExtraRepository;
+	
+	@Autowired
+    private MaquinaTipoProdutoRepository maquinaTipoProdutoRepository;
+	
+	@Autowired
+    private HoraExtraTipoProdutoRepository horaExtraTipoProdutoRepository;
 
 	//----------------------------------------------------------------------------------------------------------------------------   
 	@GetMapping
@@ -62,8 +75,18 @@ public class HoraExtraResource {
 	//----------------------------------------------------------------------------------------------------------------------------
 	
 	@PostMapping
-	public ResponseEntity<?> criarHoraExtra(@Valid @RequestBody HoraExtra horaExtra, HttpServletResponse responseEntity)throws ParseException {
+	public ResponseEntity<?> criarHoraExtra(@Valid @RequestBody HoraExtra horaExtra,Maquina maquina, HttpServletResponse responseEntity)throws ParseException {
 		HoraExtra horaExtraSalva = horaExtraRepository.save(horaExtra);
+		
+		HoraExtraTipoProduto horaExtraTipoProduto = new HoraExtraTipoProduto();
+		
+		Optional<MaquinaTipoProduto> maquinaTP = maquinaTipoProdutoRepository.findById(maquina.getId());
+		horaExtraTipoProduto.setTipoProduto(maquinaTP.get().getTipoProduto());
+		horaExtraTipoProduto.setHoraExtra(horaExtraSalva);
+		horaExtraTipoProduto.setCapacidade(maquinaTP.get().getCapacidadeHora());
+		
+		
+		horaExtraTipoProdutoRepository.save(horaExtraTipoProduto);
 		return ResponseEntity.status(HttpStatus.OK).body(horaExtraSalva);
 	}
 
