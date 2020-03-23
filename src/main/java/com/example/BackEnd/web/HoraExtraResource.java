@@ -63,7 +63,16 @@ public class HoraExtraResource {
 		List<HoraExtra> horaExtra = horaExtraRepository.findAllFinalizadas(id);
 		return ResponseEntity.ok(horaExtra);
 	}
+	
+	//----------------------------------------------------------------------------------------------------------------------------
+	
+		@GetMapping("/capacidade/{id}")
+		public ResponseEntity<List<HoraExtraTipoProduto>> listarHoraExtraTipoProduto(@PathVariable("id") Long id) {
+			List<HoraExtraTipoProduto> horaExtra = horaExtraRepository.PegarHoraExtraTipoProduto(id);
+			return ResponseEntity.ok(horaExtra);
+		}
 
+		
 	//----------------------------------------------------------------------------------------------------------------------------
 	
 	@GetMapping("/{id}/pendentes")
@@ -80,13 +89,14 @@ public class HoraExtraResource {
 		
 		HoraExtraTipoProduto horaExtraTipoProduto = new HoraExtraTipoProduto();
 		
-		Optional<MaquinaTipoProduto> maquinaTP = maquinaTipoProdutoRepository.findById(maquina.getId());
-		horaExtraTipoProduto.setTipoProduto(maquinaTP.get().getTipoProduto());
-		horaExtraTipoProduto.setHoraExtra(horaExtraSalva);
-		horaExtraTipoProduto.setCapacidade(maquinaTP.get().getCapacidadeHora());
+		List<MaquinaTipoProduto> ListmaquinaTP = maquinaTipoProdutoRepository.findByMaquinaId(maquina.getId());
+		for(int i=0;i<ListmaquinaTP.size();i++) {
+			horaExtraTipoProduto.setTipoProduto(ListmaquinaTP.get(i).getTipoProduto());
+			horaExtraTipoProduto.setHoraExtra(horaExtraSalva);
+			horaExtraTipoProduto.setCapacidade(ListmaquinaTP.get(i).getCapacidadeHora());
+			horaExtraTipoProdutoRepository.save(horaExtraTipoProduto);
+		}
 		
-		
-		horaExtraTipoProdutoRepository.save(horaExtraTipoProduto);
 		return ResponseEntity.status(HttpStatus.OK).body(horaExtraSalva);
 	}
 
