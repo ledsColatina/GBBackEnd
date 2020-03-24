@@ -23,6 +23,7 @@ import com.example.BackEnd.domain.HoraExtra;
 import com.example.BackEnd.domain.HoraExtraTipoProduto;
 import com.example.BackEnd.domain.Maquina;
 import com.example.BackEnd.domain.MaquinaTipoProduto;
+import com.example.BackEnd.domain.ObjetoMaquinaHoraExtra;
 import com.example.BackEnd.repository.HoraExtraRepository;
 import com.example.BackEnd.repository.HoraExtraTipoProdutoRepository;
 import com.example.BackEnd.repository.MaquinaTipoProdutoRepository;
@@ -84,12 +85,13 @@ public class HoraExtraResource {
 	//----------------------------------------------------------------------------------------------------------------------------
 	
 	@PostMapping
-	public ResponseEntity<?> criarHoraExtra(@Valid @RequestBody HoraExtra horaExtra,Maquina maquina, HttpServletResponse responseEntity)throws ParseException {
-		HoraExtra horaExtraSalva = horaExtraRepository.save(horaExtra);
+	public ResponseEntity<?> criarHoraExtra(@Valid @RequestBody ObjetoMaquinaHoraExtra objetoMaquinaHoraExtra, HttpServletResponse responseEntity)throws ParseException {
+		HoraExtra horaExtraSalva = horaExtraRepository.save(objetoMaquinaHoraExtra.getHoraExtra());
 		
 		HoraExtraTipoProduto horaExtraTipoProduto = new HoraExtraTipoProduto();
 		
-		List<MaquinaTipoProduto> ListmaquinaTP = maquinaTipoProdutoRepository.findByMaquinaId(maquina.getId());
+		List<MaquinaTipoProduto> ListmaquinaTP = maquinaTipoProdutoRepository.findByMaquinaId(objetoMaquinaHoraExtra.getMaquina().getId());
+		System.out.println(ListmaquinaTP.get(0).getId());
 		for(int i=0;i<ListmaquinaTP.size();i++) {
 			horaExtraTipoProduto.setTipoProduto(ListmaquinaTP.get(i).getTipoProduto());
 			horaExtraTipoProduto.setHoraExtra(horaExtraSalva);
@@ -99,7 +101,14 @@ public class HoraExtraResource {
 		
 		return ResponseEntity.status(HttpStatus.OK).body(horaExtraSalva);
 	}
-
+	
+	//----------------------------------------------------------------------------------------------------------------------------
+	
+		@PostMapping("/hora")
+		public ResponseEntity<?> criarHoraExtr(@Valid @RequestBody HoraExtra horaExtra, HttpServletResponse responseEntity)throws ParseException {
+			HoraExtra horaExtraSalva = horaExtraRepository.save(horaExtra);
+			return ResponseEntity.status(HttpStatus.OK).body(horaExtraSalva);
+		}
 	//----------------------------------------------------------------------------------------------------------------------------
 	
 	@DeleteMapping("/{id}")
