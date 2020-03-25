@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.example.BackEnd.domain.HoraExtra;
-import com.example.BackEnd.domain.HoraExtraTipoProduto;
+
 
 public interface HoraExtraRepository extends JpaRepository<HoraExtra, Long> {
 
@@ -34,9 +34,5 @@ public interface HoraExtraRepository extends JpaRepository<HoraExtra, Long> {
 			"	S.id = :id AND H.status LIKE 'Pendente'", nativeQuery = true)
 	List<HoraExtra> findAllPendentes(@Param("id") Long id);
 	//----------------------------------------------------------------------------------------------------------------------
-	@Query(value = "SELECT HTP.id, HTP.capacidade, HTP.hora_extra_id, HTP.tipo_produto_id\r\n" + 
-			"	FROM public.hora_extra_tipo_produto as HTP, hora_extra as HE\r\n" + 
-			"	WHERE HE.id = HTP.hora_extra_id\r\n" + 
-			"	and HE.id = :id", nativeQuery = true)
-	List<HoraExtraTipoProduto> PegarHoraExtraTipoProduto(@Param("id")Long id);
+	
 }

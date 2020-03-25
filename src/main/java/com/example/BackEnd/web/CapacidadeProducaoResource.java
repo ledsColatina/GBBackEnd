@@ -17,15 +17,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.BackEnd.domain.Cliente;
-import com.example.BackEnd.domain.MaquinaTipoProduto;
-import com.example.BackEnd.repository.MaquinaTipoProdutoRepository;
+import com.example.BackEnd.domain.CapacidadeProducao;
+import com.example.BackEnd.repository.CapacidadeProducaoRepository;
 
 @RestController
 @RequestMapping(value = "/maquinatipoproduto")
-public class MaquinaTipoProdutoResource {
+public class CapacidadeProducaoResource {
 	
 	@Autowired
-    private MaquinaTipoProdutoRepository maquinaTipoProdutoRepository;
+    private CapacidadeProducaoRepository maquinaTipoProdutoRepository;
 	
 	
 	
@@ -33,10 +33,10 @@ public class MaquinaTipoProdutoResource {
 	//-----------------------------------------------------------------------------------------------------------------------	
 	
 			@PutMapping("/{id}")
-			protected ResponseEntity<MaquinaTipoProduto> atualizaCapacidade(@PathVariable("id") Long id,  @RequestBody MaquinaTipoProduto maquinaTipoProduto,HttpServletResponse responseEntity) {
+			protected ResponseEntity<CapacidadeProducao> atualizaCapacidade(@PathVariable("id") Long id,  @RequestBody CapacidadeProducao maquinaTipoProduto,HttpServletResponse responseEntity) {
 				return maquinaTipoProdutoRepository.findById(id).map(record -> {
 					record.setCapacidadeHora(maquinaTipoProduto.getCapacidadeHora());
-					MaquinaTipoProduto updated = maquinaTipoProdutoRepository.save(record);
+					CapacidadeProducao updated = maquinaTipoProdutoRepository.save(record);
 					return ResponseEntity.ok().body(updated);
 
 				}).orElse(ResponseEntity.notFound().build());
@@ -46,16 +46,16 @@ public class MaquinaTipoProdutoResource {
 		
 			
 			@GetMapping
-			public ResponseEntity<List<MaquinaTipoProduto>> listar(){
-				List<MaquinaTipoProduto> maquinaTipoProduto = maquinaTipoProdutoRepository.findAll();	
+			public ResponseEntity<List<CapacidadeProducao>> listar(){
+				List<CapacidadeProducao> maquinaTipoProduto = maquinaTipoProdutoRepository.findAll();	
 				return !maquinaTipoProduto.isEmpty() ? ResponseEntity.ok(maquinaTipoProduto) : ResponseEntity.noContent().build();	
 			}
 			
 	//-------------------------------------------------------------------------------------------------------------
 			
 	  @GetMapping("/{id}")
-			public ResponseEntity<List<MaquinaTipoProduto>> pegarCapacidadeDeCadaMaquina(@PathVariable Long id) {
-				List<MaquinaTipoProduto> mtp = maquinaTipoProdutoRepository.findByMaquinaId(id);
+			public ResponseEntity<List<CapacidadeProducao>> pegarCapacidadeDeCadaMaquina(@PathVariable Long id) {
+				List<CapacidadeProducao> mtp = maquinaTipoProdutoRepository.findByMaquinaId(id);
 				return ResponseEntity.status(HttpStatus.OK).body(mtp);
 			}
 			

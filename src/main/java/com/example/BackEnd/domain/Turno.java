@@ -1,10 +1,16 @@
 package com.example.BackEnd.domain;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 import lombok.Data;
 
@@ -16,12 +22,14 @@ public class Turno {
 	private Long id;
 	private String descricaoTurno;
 	private String horaInicio;
+	private String horaFim;
 	private int totalHoras;
 	
 	private ArrayList<String> diasDaSemana;
 
-	// @ManyToOne
-	// @JoinColumn(name = "setor_id")
-	// private Setor setor;
 	
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "maquina_turno", joinColumns = { @JoinColumn(name = "turno_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "maquina_id") }) 
+	private List<Maquina> listaMaquina;
 }

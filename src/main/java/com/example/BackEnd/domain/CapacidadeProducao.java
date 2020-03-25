@@ -12,7 +12,7 @@ import lombok.Data;
 
 @Entity
 @Data
-public class MaquinaTipoProduto {
+public class CapacidadeProducao {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)

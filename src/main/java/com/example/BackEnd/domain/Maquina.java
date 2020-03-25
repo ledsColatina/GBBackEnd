@@ -35,10 +35,7 @@ public class Maquina {
 	//private List<Turno> ListTurno;
 	
 	
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "maquina_turno", joinColumns = { @JoinColumn(name = "maquina_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "turno_id") }) 
-	private List<Turno> listTurno;
+	
 
 	
 }

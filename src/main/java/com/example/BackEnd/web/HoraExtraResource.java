@@ -20,13 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.BackEnd.domain.HoraExtra;
-import com.example.BackEnd.domain.HoraExtraTipoProduto;
 import com.example.BackEnd.domain.Maquina;
-import com.example.BackEnd.domain.MaquinaTipoProduto;
+import com.example.BackEnd.domain.CapacidadeProducao;
 import com.example.BackEnd.domain.ObjetoMaquinaHoraExtra;
 import com.example.BackEnd.repository.HoraExtraRepository;
-import com.example.BackEnd.repository.HoraExtraTipoProdutoRepository;
-import com.example.BackEnd.repository.MaquinaTipoProdutoRepository;
+
+import com.example.BackEnd.repository.CapacidadeProducaoRepository;
 
 
 @RestController
@@ -37,10 +36,9 @@ public class HoraExtraResource {
 	private HoraExtraRepository horaExtraRepository;
 	
 	@Autowired
-    private MaquinaTipoProdutoRepository maquinaTipoProdutoRepository;
+    private CapacidadeProducaoRepository maquinaTipoProdutoRepository;
 	
-	@Autowired
-    private HoraExtraTipoProdutoRepository horaExtraTipoProdutoRepository;
+
 
 	//----------------------------------------------------------------------------------------------------------------------------   
 	@GetMapping
@@ -67,11 +65,11 @@ public class HoraExtraResource {
 	
 	//----------------------------------------------------------------------------------------------------------------------------
 	
-		@GetMapping("/capacidade/{id}")
-		public ResponseEntity<List<HoraExtraTipoProduto>> listarHoraExtraTipoProduto(@PathVariable("id") Long id) {
-			List<HoraExtraTipoProduto> horaExtra = horaExtraRepository.PegarHoraExtraTipoProduto(id);
-			return ResponseEntity.ok(horaExtra);
-		}
+		//@GetMapping("/capacidade/{id}")
+		//public ResponseEntity<List<HoraExtraTipoProduto>> listarHoraExtraTipoProduto(@PathVariable("id") Long id) {
+		//	List<HoraExtraTipoProduto> horaExtra = horaExtraRepository.PegarHoraExtraTipoProduto(id);
+		//	return ResponseEntity.ok(horaExtra);
+		//}
 
 		
 	//----------------------------------------------------------------------------------------------------------------------------
@@ -88,16 +86,18 @@ public class HoraExtraResource {
 	public ResponseEntity<?> criarHoraExtra(@Valid @RequestBody ObjetoMaquinaHoraExtra objetoMaquinaHoraExtra, HttpServletResponse responseEntity)throws ParseException {
 		HoraExtra horaExtraSalva = horaExtraRepository.save(objetoMaquinaHoraExtra.getHoraExtra());
 		
-		HoraExtraTipoProduto horaExtraTipoProduto = new HoraExtraTipoProduto();
+		//HoraExtraTipoProduto horaExtraTipoProduto;
 		
-		List<MaquinaTipoProduto> ListmaquinaTP = maquinaTipoProdutoRepository.findByMaquinaId(objetoMaquinaHoraExtra.getMaquina().getId());
-		System.out.println(ListmaquinaTP.get(0).getId());
-		for(int i=0;i<ListmaquinaTP.size();i++) {
-			horaExtraTipoProduto.setTipoProduto(ListmaquinaTP.get(i).getTipoProduto());
-			horaExtraTipoProduto.setHoraExtra(horaExtraSalva);
-			horaExtraTipoProduto.setCapacidade(ListmaquinaTP.get(i).getCapacidadeHora());
-			horaExtraTipoProdutoRepository.save(horaExtraTipoProduto);
-		}
+		//List<CapacidadeProducao> ListmaquinaTP = maquinaTipoProdutoRepository.findByMaquinaId(objetoMaquinaHoraExtra.getMaquina().getId());
+		
+		//for(int i=0;i<ListmaquinaTP.size();i++) {
+			//horaExtraTipoProduto = new HoraExtraTipoProduto();
+			//horaExtraTipoProduto.setTipoProduto(ListmaquinaTP.get(i).getTipoProduto());
+			//horaExtraTipoProduto.setHoraExtra(horaExtraSalva);
+			//horaExtraTipoProduto.setCapacidade(ListmaquinaTP.get(i).getCapacidadeHora());
+
+			//horaExtraTipoProdutoRepository.save(horaExtraTipoProduto);
+		//}
 		
 		return ResponseEntity.status(HttpStatus.OK).body(horaExtraSalva);
 	}
@@ -122,11 +122,13 @@ public class HoraExtraResource {
 	@PutMapping("/{id}") 
     public ResponseEntity<HoraExtra> atualizaHoraExtra(@PathVariable("id") Long id,@RequestBody HoraExtra horaExtra,HttpServletResponse responseEntity){
     	return horaExtraRepository.findById(id).map(record -> {
-			    		record.setCapacidade(horaExtra.getCapacidade());;
+			    		
 			    		record.setData(horaExtra.getData());
-			    		record.setTurnoFunciona(horaExtra.isTurnoFunciona());
+			    		
 			    		record.setQtdHoras(horaExtra.getQtdHoras());
 			    		record.setStatus(horaExtra.getStatus());
+			    		record.setMomento(horaExtra.getMomento());
+			    		record.setTurno(horaExtra.getTurno());
 			    		HoraExtra updated = horaExtraRepository.save(record);
     	                return ResponseEntity.ok().body(updated);
     	                   	               

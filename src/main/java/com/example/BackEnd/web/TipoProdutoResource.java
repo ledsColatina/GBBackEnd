@@ -1,5 +1,6 @@
 package com.example.BackEnd.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.BackEnd.domain.CapacidadeProducao;
+import com.example.BackEnd.domain.Maquina;
 import com.example.BackEnd.domain.TipoProduto;
+import com.example.BackEnd.repository.CapacidadeProducaoRepository;
+import com.example.BackEnd.repository.MaquinaRepository;
 import com.example.BackEnd.repository.TipoProdutoRepository;
 
 @RestController
@@ -27,6 +32,12 @@ public class TipoProdutoResource {
 	
 	@Autowired
 	private TipoProdutoRepository tipoProdutoRepository;
+	
+	@Autowired
+	private MaquinaRepository maquinaRepository;
+	
+	@Autowired
+	private CapacidadeProducaoRepository capacidadeProducaoRepository;
 
 	//----------------------------------------------------------------------------------------------------------------------
 	
@@ -53,6 +64,23 @@ public class TipoProdutoResource {
 	@PostMapping
     protected ResponseEntity<TipoProduto> criarLinha(@Valid @RequestBody  TipoProduto tipoProduto,HttpServletResponse responseEntity){		
 		TipoProduto tipoProdutoSalvo = tipoProdutoRepository.save(tipoProduto);
+		List<Maquina> listmaquina = maquinaRepository.findAll();
+		List<CapacidadeProducao> listcapacidadeProducao = capacidadeProducaoRepository.findAll();
+		List<Maquina> maquinasNaoAcossiadasATipoProduto = new ArrayList<Maquina>();
+		CapacidadeProducao CapacidadeProducao;
+		
+		for(int i=0;i<listmaquina.size();i++) {
+			if(listmaquina.get(i).getId() != listcapacidadeProducao.get(i).getMaquina().getId()) {
+				maquinasNaoAcossiadasATipoProduto.add(listmaquina.get(i));
+			}
+		}
+		
+		//for(int j=0;j<listcapacidadeProducao.size();j++) {
+		//	if(listcapacidadeProducao.get(j).getTipoProduto().getId() != ) {
+		//		
+		//	}
+		//}
+		
     	return ResponseEntity.status(HttpStatus.OK).body(tipoProdutoSalvo);
     }
 	

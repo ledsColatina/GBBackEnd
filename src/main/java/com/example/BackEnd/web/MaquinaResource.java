@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.BackEnd.domain.Maquina;
-import com.example.BackEnd.domain.MaquinaTipoProduto;
+import com.example.BackEnd.domain.CapacidadeProducao;
 
 import com.example.BackEnd.domain.TipoProduto;
 import com.example.BackEnd.domain.Turno;
 import com.example.BackEnd.repository.MaquinaRepository;
-import com.example.BackEnd.repository.MaquinaTipoProdutoRepository;
+import com.example.BackEnd.repository.CapacidadeProducaoRepository;
 import com.example.BackEnd.repository.TipoProdutoRepository;
 import com.example.BackEnd.repository.TurnoRepository;
 import com.example.BackEnd.service.MaquinaService;
@@ -44,7 +44,7 @@ public class MaquinaResource {
 	private MaquinaService maquinaService;
 	
 	@Autowired
-	private MaquinaTipoProdutoRepository maquinaTipoProdutoRepository;
+	private CapacidadeProducaoRepository capacidadeProducaoRepository;
 	
 	//----------------------------------------------------------------------------------------------------------------------------
 	
@@ -56,11 +56,11 @@ public class MaquinaResource {
 
 	//-----------------------------------------------------------------------------------------------------------------------	
 	
-	@GetMapping("/{id}/turnos")
-	protected ResponseEntity<?> listarTurnos(@PathVariable Long id) {
-		Optional<Maquina> setor = maquinaRepository.findById(id);
-		return setor.isPresent() ? ResponseEntity.ok(setor.get().getListTurno()) : ResponseEntity.noContent().build();
-	}
+	//@GetMapping("/{id}/turnos")
+	//protected ResponseEntity<?> listarTurnos(@PathVariable Long id) {
+	//	Optional<Maquina> setor = maquinaRepository.findById(id);
+	//	return setor.isPresent() ? ResponseEntity.ok(setor.get().getListTurno()) : ResponseEntity.noContent().build();
+	//}
 
 	//-----------------------------------------------------------------------------------------------------------------------	
 	
@@ -108,15 +108,15 @@ public class MaquinaResource {
 	public ResponseEntity<?> criarMaquina(@Valid @RequestBody Maquina maquina, HttpServletResponse responseEntity) {
 		Maquina maquinaSalvo = maquinaRepository.save(maquina);
 		List<TipoProduto> listTipoProd = tipoProdutoRepository.findAll();
-		MaquinaTipoProduto MaquinaTipoProd;
+		CapacidadeProducao CapacidadeProducao;
 		
 		//System.out.println(listTipoProd.size());
 		for(int i=0;i<listTipoProd.size();i++) {
-			MaquinaTipoProd = new MaquinaTipoProduto();
-			MaquinaTipoProd.setMaquina(maquinaSalvo);
-			MaquinaTipoProd.setTipoProduto(listTipoProd.get(i));			
-			MaquinaTipoProd.setCapacidadeHora(0);
-			maquinaTipoProdutoRepository.save(MaquinaTipoProd);
+			CapacidadeProducao = new CapacidadeProducao();
+			CapacidadeProducao.setMaquina(maquinaSalvo);
+			CapacidadeProducao.setTipoProduto(listTipoProd.get(i));			
+			CapacidadeProducao.setCapacidadeHora(0);
+			capacidadeProducaoRepository.save(CapacidadeProducao);
 		}
 		
 		return ResponseEntity.ok(maquinaSalvo);
@@ -127,10 +127,10 @@ public class MaquinaResource {
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	protected ResponseEntity<?> deleteSetor(@PathVariable Long id) {
-		List<MaquinaTipoProduto> lisMTP = maquinaTipoProdutoRepository.findByMaquinaId(id);
+		List<CapacidadeProducao> lisMTP = capacidadeProducaoRepository.findByMaquinaId(id);
 		
 		for(int i=0;i<lisMTP.size();i++) {
-			maquinaTipoProdutoRepository.deleteById(lisMTP.get(i).getId());
+			capacidadeProducaoRepository.deleteById(lisMTP.get(i).getId());
 		}
 		List<Maquina> maquinaEncontrado = maquinaService.deleteSetor(id);
 		return !maquinaEncontrado.isEmpty() ? ResponseEntity.ok(maquinaEncontrado) : ResponseEntity.noContent().build();
@@ -153,7 +153,6 @@ public class MaquinaResource {
 			record.setNome(maquina.getNome());
 			record.setMaxOcupacao(maquina.getMaxOcupacao());
 			record.setRole(maquina.getRole());
-			record.setListTurno(maquina.getListTurno());
 			Maquina updated = maquinaRepository.save(record);
 			return ResponseEntity.ok().body(updated);
 
