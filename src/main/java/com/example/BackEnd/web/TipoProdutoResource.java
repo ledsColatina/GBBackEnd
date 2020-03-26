@@ -65,22 +65,16 @@ public class TipoProdutoResource {
     protected ResponseEntity<TipoProduto> criarLinha(@Valid @RequestBody  TipoProduto tipoProduto,HttpServletResponse responseEntity){		
 		TipoProduto tipoProdutoSalvo = tipoProdutoRepository.save(tipoProduto);
 		List<Maquina> listmaquina = maquinaRepository.findAll();
-		List<CapacidadeProducao> listcapacidadeProducao = capacidadeProducaoRepository.findAll();
-		List<Maquina> maquinasNaoAcossiadasATipoProduto = new ArrayList<Maquina>();
 		CapacidadeProducao CapacidadeProducao;
 		
 		for(int i=0;i<listmaquina.size();i++) {
-			if(listmaquina.get(i).getId() != listcapacidadeProducao.get(i).getMaquina().getId()) {
-				maquinasNaoAcossiadasATipoProduto.add(listmaquina.get(i));
-			}
+			CapacidadeProducao = new CapacidadeProducao();
+			CapacidadeProducao.setMaquina(listmaquina.get(i));
+			CapacidadeProducao.setTipoProduto(tipoProdutoSalvo);
+			CapacidadeProducao.setCapacidadeHora(0);
+			capacidadeProducaoRepository.save(CapacidadeProducao);
 		}
-		
-		//for(int j=0;j<listcapacidadeProducao.size();j++) {
-		//	if(listcapacidadeProducao.get(j).getTipoProduto().getId() != ) {
-		//		
-		//	}
-		//}
-		
+
     	return ResponseEntity.status(HttpStatus.OK).body(tipoProdutoSalvo);
     }
 	

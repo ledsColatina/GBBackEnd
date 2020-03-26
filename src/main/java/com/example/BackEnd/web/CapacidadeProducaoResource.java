@@ -21,7 +21,7 @@ import com.example.BackEnd.domain.CapacidadeProducao;
 import com.example.BackEnd.repository.CapacidadeProducaoRepository;
 
 @RestController
-@RequestMapping(value = "/maquinatipoproduto")
+@RequestMapping(value = "/capacidadeproducao")
 public class CapacidadeProducaoResource {
 	
 	@Autowired
@@ -59,7 +59,7 @@ public class CapacidadeProducaoResource {
 				return ResponseEntity.status(HttpStatus.OK).body(mtp);
 			}
 			
-//-------------------------------------------------------------------------------------------------------------------			
+	  //-------------------------------------------------------------------------------------------------------------------			
 			
 	  
 	    @DeleteMapping("/{id}")

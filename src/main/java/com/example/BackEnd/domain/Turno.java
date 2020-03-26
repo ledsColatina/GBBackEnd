@@ -23,7 +23,6 @@ public class Turno {
 	private String descricaoTurno;
 	private String horaInicio;
 	private String horaFim;
-	private int totalHoras;
 	
 	private ArrayList<String> diasDaSemana;
 

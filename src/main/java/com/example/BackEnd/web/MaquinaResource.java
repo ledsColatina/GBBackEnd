@@ -94,14 +94,7 @@ public class MaquinaResource {
 	
 	
 	
-	//-----------------------------------------------------------------------------------------------------------------------
 	
-	@PostMapping("/turno")
-	public ResponseEntity<Turno> criarTurno(@Valid @RequestBody Turno turno) {
-		Turno turnoSalvo = turnoRepository.save(turno);
-		return ResponseEntity.status(HttpStatus.OK).body(turnoSalvo);
-	}
-
 	//----------------------------------------------------------------------------------------------------------------------------
 
 	@PostMapping
@@ -137,14 +130,7 @@ public class MaquinaResource {
 	}
 	
 	
-	//-----------------------------------------------------------------------------------------------------------------------	
 	
-		@DeleteMapping("/turno/{id}")
-		@ResponseStatus(HttpStatus.NO_CONTENT)
-		protected void deleteTurno(@PathVariable Long id) {
-			turnoRepository.deleteById(id);
-		}
-		
 	//-----------------------------------------------------------------------------------------------------------------------	
 	
 	@PutMapping("/{id}")
