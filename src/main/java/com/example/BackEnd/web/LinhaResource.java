@@ -55,13 +55,23 @@ public class LinhaResource {
 	//----------------------------------------------------------------------------------------------------------------------------
 	
 	@PostMapping
-	protected ResponseEntity<Linha> criarLinha(@Valid @RequestBody Linha linha, HttpServletResponse responseEntity) {
-		Linha linhaSalvo = linhaRepository.save(linha);
+	protected ResponseEntity<?> criarLinha(@Valid @RequestBody Linha linha, HttpServletResponse responseEntity) {
+		
 		
 		List<TipoProduto> listTipoProd = tipoProdutoRepository.findAll();
 		List<SubProcesso> listSubProcesso = subProcessosRepository.findAll();
 		
 		ValorGrupo valorGrupoNovo;
+		
+		if(listTipoProd.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.OK).body("Lista de TipoProduto Vazia!!");
+		}
+		
+		if(listSubProcesso.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.OK).body("Lista de SubProcessos Vazia!!");
+		}
+		
+		Linha linhaSalvo = linhaRepository.save(linha);
 		
 		for(int i=0;i<listTipoProd.size();i++) {
 			
