@@ -93,7 +93,7 @@ public class HoraExtraResource {
 	//----------------------------------------------------------------------------------------------------------------------------
 	
 		@PostMapping
-		public ResponseEntity<?> criarHoraExtra(@Valid @RequestBody HoraExtra horaExtra, HttpServletResponse responseEntity)throws ParseException {
+		public ResponseEntity<?> criarHoraExtra(@Valid @RequestBody HoraExtra horaExtra, HttpServletResponse responseEntity){
 			HoraExtra horaExtraSalva = horaExtraRepository.save(horaExtra);
 			return ResponseEntity.status(HttpStatus.OK).body(horaExtraSalva);
 		}
