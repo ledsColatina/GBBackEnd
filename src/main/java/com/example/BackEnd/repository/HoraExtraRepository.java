@@ -13,8 +13,9 @@ public interface HoraExtraRepository extends JpaRepository<HoraExtra, Long> {
 
 	HoraExtra findTopByOrderByIdDesc();
 	//---------------------------------------------------------------------------------------------------------------------
-	@Query(value = "SELECT id, capacidade, data, momento, qtd_horas, status, turno\n" + "  FROM public.hora_extra\n"
-			+ "  WHERE status = 'Pendente';", nativeQuery = true)
+	@Query(value = "SELECT HE.id, HE.data, HE.hora_fim, HE.hora_inicio, HE.momento, HE.qtd_horas, HE.status, HE.turno\r\n" + 
+			"	FROM hora_extra as HE\r\n" + 
+			"	WHERE status = 'Pendente';", nativeQuery = true)
 	List<HoraExtra> findAllPendentes();
 	//----------------------------------------------------------------------------------------------------------------------
 	@Query(value = "SELECT H.id,H.capacidade,H.turno,H.data,H.qtd_horas,H.status,H.turno_funciona FROM setor as S,turno as T,hora_extra as H WHERE T.setor_id = S.id AND H.turno = T.id AND  S.id = :id", nativeQuery = true)
@@ -34,5 +35,16 @@ public interface HoraExtraRepository extends JpaRepository<HoraExtra, Long> {
 			"	S.id = :id AND H.status LIKE 'Pendente'", nativeQuery = true)
 	List<HoraExtra> findAllPendentes(@Param("id") Long id);
 	//----------------------------------------------------------------------------------------------------------------------
+	@Query(value = "SELECT HE.id, HE.data, HE.hora_fim, HE.hora_inicio, HE.momento, HE.qtd_horas, HE.status, HE.turno\r\n" + 
+			"	FROM hora_extra as HE\r\n" + 
+			"	WHERE HE.id = :id", nativeQuery = true)
+	List<HoraExtra> findByPegarHoraExtra(@Param("id") Long id);
+	
+	@Query(value = "SELECT HE.id, HE.data, HE.hora_fim, HE.hora_inicio, HE.momento, HE.qtd_horas, HE.status, HE.turno\r\n" + 
+			"	FROM hora_extra as HE\r\n" + 
+			"	WHERE status = 'Finalizada';", nativeQuery = true)
+	List<HoraExtra> findAllFinalizadas();
+	
+	
 	
 }

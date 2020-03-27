@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.BackEnd.domain.Cliente;
 import com.example.BackEnd.domain.LogValor;
 import com.example.BackEnd.domain.ValorGrupo;
 import com.example.BackEnd.repository.LogValorRepository;
@@ -52,17 +54,12 @@ public class ValorGrupoResource {
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------------------------------------------------
 	@GetMapping
-	protected ResponseEntity<List<ValorGrupo>> listar() {
-		List<ValorGrupo> valorGrupo = valorGrupoRepository.findAll();
-		if (valorGrupo.get(0).getId() == 0) {
-			return ResponseEntity.noContent().build();
-		}
-		return !valorGrupo.isEmpty() ? ResponseEntity.ok(valorGrupo) : ResponseEntity.noContent().build();
+	public ResponseEntity<List<ValorGrupo>> listar(){
+		List<ValorGrupo> valorGrupo = valorGrupoRepository.findAll();	
+		return !valorGrupo.isEmpty() ? ResponseEntity.ok(valorGrupo) : ResponseEntity.noContent().build();	
 	}
-
-	
 	
 	//----------------------------------------------------------------------------------------------------------------------
 

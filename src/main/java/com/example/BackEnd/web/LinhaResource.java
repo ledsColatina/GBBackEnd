@@ -75,12 +75,12 @@ public class LinhaResource {
 		
 		for(int i=0;i<listTipoProd.size();i++) {
 			
-			
 			for(int j=0;j<listSubProcesso.size();j++) {
 				valorGrupoNovo = new ValorGrupo();
 				valorGrupoNovo.setLinha(linhaSalvo);
 				valorGrupoNovo.setTipoProduto(listTipoProd.get(i));
 				valorGrupoNovo.setSubProcesso(listSubProcesso.get(j));
+				valorGrupoNovo.setValorAtual(0);
 				valorGrupoRepository.save(valorGrupoNovo);
 			}
 		}

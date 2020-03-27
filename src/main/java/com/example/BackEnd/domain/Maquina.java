@@ -30,9 +30,7 @@ public class Maquina {
 	private Long maxOcupacao;
 	private String role;
 
-	//@OneToMany(cascade = { CascadeType.ALL})
-	//@JoinColumn(name = "setor_id")
-	//private List<Turno> ListTurno;
+	
 	
 	
 	

@@ -20,11 +20,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.BackEnd.domain.CapacidadeProducao;
+import com.example.BackEnd.domain.Linha;
 import com.example.BackEnd.domain.Maquina;
+import com.example.BackEnd.domain.SubProcesso;
 import com.example.BackEnd.domain.TipoProduto;
+import com.example.BackEnd.domain.ValorGrupo;
 import com.example.BackEnd.repository.CapacidadeProducaoRepository;
+import com.example.BackEnd.repository.LinhaRepository;
 import com.example.BackEnd.repository.MaquinaRepository;
+import com.example.BackEnd.repository.SubProcessosRepository;
 import com.example.BackEnd.repository.TipoProdutoRepository;
+import com.example.BackEnd.repository.ValorGrupoRepository;
 
 @RestController
 @RequestMapping(value = "/tipoproduto")
@@ -38,6 +44,15 @@ public class TipoProdutoResource {
 	
 	@Autowired
 	private CapacidadeProducaoRepository capacidadeProducaoRepository;
+	
+	@Autowired
+	private SubProcessosRepository subProcessosRepository;
+	
+	@Autowired
+	private LinhaRepository linhaRepository;
+	
+	@Autowired
+	private ValorGrupoRepository valorGrupoRepository;
 
 	//----------------------------------------------------------------------------------------------------------------------
 	
@@ -62,10 +77,15 @@ public class TipoProdutoResource {
 	//----------------------------------------------------------------------------------------------------------------------
 	
 	@PostMapping
-    protected ResponseEntity<TipoProduto> criarLinha(@Valid @RequestBody  TipoProduto tipoProduto,HttpServletResponse responseEntity){		
+    protected ResponseEntity<TipoProduto> criarTipoProduto(@Valid @RequestBody  TipoProduto tipoProduto,HttpServletResponse responseEntity){		
 		TipoProduto tipoProdutoSalvo = tipoProdutoRepository.save(tipoProduto);
+		
+		List<SubProcesso> listSubProcesso = subProcessosRepository.findAll();
+		List<Linha> listLinha = linhaRepository.findAll();
+		
 		List<Maquina> listmaquina = maquinaRepository.findAll();
 		CapacidadeProducao CapacidadeProducao;
+		ValorGrupo valorGrupoNovo;
 		
 		for(int i=0;i<listmaquina.size();i++) {
 			CapacidadeProducao = new CapacidadeProducao();
@@ -73,6 +93,23 @@ public class TipoProdutoResource {
 			CapacidadeProducao.setTipoProduto(tipoProdutoSalvo);
 			CapacidadeProducao.setCapacidadeHora(0);
 			capacidadeProducaoRepository.save(CapacidadeProducao);
+		}
+		
+		
+		
+		
+		
+		
+		for(int k=0;k<listLinha.size();k++) {
+					
+			for(int j=0;j<listSubProcesso.size();j++) {
+				valorGrupoNovo = new ValorGrupo();
+				valorGrupoNovo.setLinha(listLinha.get(k));
+				valorGrupoNovo.setTipoProduto(tipoProdutoSalvo);
+				valorGrupoNovo.setSubProcesso(listSubProcesso.get(j));
+				valorGrupoNovo.setValorAtual(0);
+				valorGrupoRepository.save(valorGrupoNovo);
+			}
 		}
 
     	return ResponseEntity.status(HttpStatus.OK).body(tipoProdutoSalvo);

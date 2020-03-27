@@ -2,11 +2,8 @@ package com.example.BackEnd.web;
 
 import java.text.ParseException;
 import java.util.List;
-import java.util.Optional;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.BackEnd.domain.HoraExtra;
-import com.example.BackEnd.domain.Maquina;
-import com.example.BackEnd.domain.CapacidadeProducao;
 import com.example.BackEnd.domain.ObjetoMaquinaHoraExtra;
 import com.example.BackEnd.repository.HoraExtraRepository;
-
 import com.example.BackEnd.repository.CapacidadeProducaoRepository;
 
 
@@ -38,8 +32,6 @@ public class HoraExtraResource {
 	@Autowired
     private CapacidadeProducaoRepository maquinaTipoProdutoRepository;
 	
-
-
 	//----------------------------------------------------------------------------------------------------------------------------   
 	@GetMapping
 	public ResponseEntity<List<HoraExtra>> listar() {
@@ -55,6 +47,32 @@ public class HoraExtraResource {
 		return ResponseEntity.ok(list);
 	}
 	
+	//----------------------------------------------------------------------------------------------------------------------------   
+	
+		@GetMapping("/pendentes")
+		public ResponseEntity<List<HoraExtra>> HoraExtraPendentes() {
+			List<HoraExtra> list = horaExtraRepository.findAllPendentes();
+			return ResponseEntity.ok(list);
+		}
+		
+		
+		//----------------------------------------------------------------------------------------------------------------------------   
+		
+			@GetMapping("/finalizadas")
+			public ResponseEntity<List<HoraExtra>> HoraExtraFinalizadas() {
+				List<HoraExtra> list = horaExtraRepository.findAllFinalizadas();
+				return ResponseEntity.ok(list);
+			}
+			
+			
+	//----------------------------------------------------------------------------------------------------------------------------   
+	
+		@GetMapping("/{id}")
+		public ResponseEntity<List<HoraExtra>> HoraExtraPendentes(@PathVariable("id") Long id) {
+			List<HoraExtra> list = horaExtraRepository.findByPegarHoraExtra(id);
+			return ResponseEntity.ok(list);
+		}
+		
 	//----------------------------------------------------------------------------------------------------------------------------
 	
 	@GetMapping("/{id}/finalizados")
@@ -63,15 +81,7 @@ public class HoraExtraResource {
 		return ResponseEntity.ok(horaExtra);
 	}
 	
-	//----------------------------------------------------------------------------------------------------------------------------
 	
-		//@GetMapping("/capacidade/{id}")
-		//public ResponseEntity<List<HoraExtraTipoProduto>> listarHoraExtraTipoProduto(@PathVariable("id") Long id) {
-		//	List<HoraExtraTipoProduto> horaExtra = horaExtraRepository.PegarHoraExtraTipoProduto(id);
-		//	return ResponseEntity.ok(horaExtra);
-		//}
-
-		
 	//----------------------------------------------------------------------------------------------------------------------------
 	
 	@GetMapping("/{id}/pendentes")
