@@ -92,30 +92,8 @@ public class HoraExtraResource {
 
 	//----------------------------------------------------------------------------------------------------------------------------
 	
-	@PostMapping
-	public ResponseEntity<?> criarHoraExtra(@Valid @RequestBody ObjetoMaquinaHoraExtra objetoMaquinaHoraExtra, HttpServletResponse responseEntity)throws ParseException {
-		HoraExtra horaExtraSalva = horaExtraRepository.save(objetoMaquinaHoraExtra.getHoraExtra());
-		
-		//HoraExtraTipoProduto horaExtraTipoProduto;
-		
-		//List<CapacidadeProducao> ListmaquinaTP = maquinaTipoProdutoRepository.findByMaquinaId(objetoMaquinaHoraExtra.getMaquina().getId());
-		
-		//for(int i=0;i<ListmaquinaTP.size();i++) {
-			//horaExtraTipoProduto = new HoraExtraTipoProduto();
-			//horaExtraTipoProduto.setTipoProduto(ListmaquinaTP.get(i).getTipoProduto());
-			//horaExtraTipoProduto.setHoraExtra(horaExtraSalva);
-			//horaExtraTipoProduto.setCapacidade(ListmaquinaTP.get(i).getCapacidadeHora());
-
-			//horaExtraTipoProdutoRepository.save(horaExtraTipoProduto);
-		//}
-		
-		return ResponseEntity.status(HttpStatus.OK).body(horaExtraSalva);
-	}
-	
-	//----------------------------------------------------------------------------------------------------------------------------
-	
-		@PostMapping("/hora")
-		public ResponseEntity<?> criarHoraExtr(@Valid @RequestBody HoraExtra horaExtra, HttpServletResponse responseEntity)throws ParseException {
+		@PostMapping
+		public ResponseEntity<?> criarHoraExtra(@Valid @RequestBody HoraExtra horaExtra, HttpServletResponse responseEntity)throws ParseException {
 			HoraExtra horaExtraSalva = horaExtraRepository.save(horaExtra);
 			return ResponseEntity.status(HttpStatus.OK).body(horaExtraSalva);
 		}
