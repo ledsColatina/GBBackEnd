@@ -38,7 +38,7 @@ public interface HoraExtraRepository extends JpaRepository<HoraExtra, Long> {
 	@Query(value = "SELECT HE.id, HE.data, HE.hora_fim, HE.hora_inicio, HE.momento, HE.qtd_horas, HE.status, HE.turno\r\n" + 
 			"	FROM hora_extra as HE\r\n" + 
 			"	WHERE HE.id = :id", nativeQuery = true)
-	List<HoraExtra> findByPegarHoraExtra(@Param("id") Long id);
+	HoraExtra findByPegarHoraExtra(@Param("id") Long id);
 	
 	@Query(value = "SELECT HE.id, HE.data, HE.hora_fim, HE.hora_inicio, HE.momento, HE.qtd_horas, HE.status, HE.turno\r\n" + 
 			"	FROM hora_extra as HE\r\n" + 

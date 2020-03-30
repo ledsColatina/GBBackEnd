@@ -1,6 +1,4 @@
 package com.example.BackEnd.web;
-
-import java.text.ParseException;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -68,8 +66,8 @@ public class HoraExtraResource {
 	//----------------------------------------------------------------------------------------------------------------------------   
 	
 		@GetMapping("/{id}")
-		public ResponseEntity<List<HoraExtra>> HoraExtraPendentes(@PathVariable("id") Long id) {
-			List<HoraExtra> list = horaExtraRepository.findByPegarHoraExtra(id);
+		public ResponseEntity<HoraExtra> HoraExtraPendentes(@PathVariable("id") Long id) {
+			HoraExtra list = horaExtraRepository.findByPegarHoraExtra(id);
 			return ResponseEntity.ok(list);
 		}
 		//sdfs
