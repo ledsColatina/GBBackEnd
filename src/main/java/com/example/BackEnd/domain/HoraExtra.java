@@ -27,8 +27,8 @@ public class HoraExtra {
 	private float qtdHoras;
 	private String momento;
 	private String status;
-	private float horaInicio;
-	private float horaFim;
+	private String horaInicio;
+	private String horaFim;
 
 	
 	@ManyToOne
