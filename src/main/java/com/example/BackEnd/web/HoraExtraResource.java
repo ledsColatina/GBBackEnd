@@ -14,9 +14,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.BackEnd.domain.CapacidadeProducaoExtra;
 import com.example.BackEnd.domain.HoraExtra;
+import com.example.BackEnd.domain.Maquina;
 import com.example.BackEnd.domain.ObjetoMaquinaHoraExtra;
+import com.example.BackEnd.domain.TipoProduto;
 import com.example.BackEnd.repository.HoraExtraRepository;
+import com.example.BackEnd.repository.MaquinaRepository;
+import com.example.BackEnd.repository.TipoProdutoRepository;
 import com.example.BackEnd.repository.CapacidadeProducaoRepository;
 
 
@@ -27,8 +33,16 @@ public class HoraExtraResource {
 	@Autowired
 	private HoraExtraRepository horaExtraRepository;
 	
+	
+	
 	@Autowired
-    private CapacidadeProducaoRepository maquinaTipoProdutoRepository;
+    private com.example.BackEnd.repository.CapacidadeProducaoExtraRepository CapacidadeProducaoExtraRepository;
+	
+	@Autowired
+	private TipoProdutoRepository tipoProdutoRepository;
+	
+	@Autowired
+	private MaquinaRepository maquinaRepository;
 	
 	//----------------------------------------------------------------------------------------------------------------------------   
 	@GetMapping
@@ -65,9 +79,9 @@ public class HoraExtraResource {
 	//----------------------------------------------------------------------------------------------------------------------------   
 			
 	@GetMapping("/capacidade/{id}")
-		public ResponseEntity<List<Integer>> CapacidadeHoraExtra(@PathVariable("id") Long id) {
-			List<Integer> list = horaExtraRepository.findaAllCapacidadesPorHoraExtra(id);
-			return ResponseEntity.ok(list);
+		public ResponseEntity<?> CapacidadeHoraExtra(@PathVariable("id") Long id) {
+			int capacidade = horaExtraRepository.findAllCapacidadesPorHoraExtra(id);
+			return ResponseEntity.ok(capacidade);
 		}
 			
 						
@@ -101,6 +115,23 @@ public class HoraExtraResource {
 		@PostMapping
 		public ResponseEntity<?> criarHoraExtra(@Valid @RequestBody HoraExtra horaExtra, HttpServletResponse responseEntity){
 			HoraExtra horaExtraSalva = horaExtraRepository.save(horaExtra);
+			List<TipoProduto> listTipoProd = tipoProdutoRepository.findAll();
+			List<Maquina> listMaquina = horaExtraSalva.getListaMaquina();
+			CapacidadeProducaoExtra capacidadeProducaoExtra;
+			
+			for(int i = 0;i<listMaquina.size();i++) {
+				for(int j = 0;j<listTipoProd.size();j++) {
+					capacidadeProducaoExtra = new CapacidadeProducaoExtra();
+					capacidadeProducaoExtra.setHoraExtra(horaExtraSalva);
+					capacidadeProducaoExtra.setMaquina(listMaquina.get(i));
+					capacidadeProducaoExtra.setTipoProduto(listTipoProd.get(j));
+					capacidadeProducaoExtra.setCapacidadeHora(0);
+					CapacidadeProducaoExtraRepository.save(capacidadeProducaoExtra);
+				}
+			}
+			 
+			
+			
 			return ResponseEntity.status(HttpStatus.OK).body(horaExtraSalva);
 		}
 	//----------------------------------------------------------------------------------------------------------------------------

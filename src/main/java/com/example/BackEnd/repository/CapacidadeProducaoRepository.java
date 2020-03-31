@@ -18,9 +18,11 @@ public interface CapacidadeProducaoRepository extends JpaRepository<CapacidadePr
 			"	and Ma.id = :id", nativeQuery = true)
 	List<CapacidadeProducao> findAllCapacidadeDeMaquinasPorTipoProduto(@Param("id") Long id);
 
+	List<CapacidadeProducao> findByMaquinaId(Long id);
+
 
 	
-	List<CapacidadeProducao> findByMaquinaId(Long id);
+	
 
 
 

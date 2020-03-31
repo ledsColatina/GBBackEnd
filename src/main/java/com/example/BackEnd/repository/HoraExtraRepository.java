@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.example.BackEnd.domain.CapacidadeProducaoExtra;
 import com.example.BackEnd.domain.HoraExtra;
 
 
@@ -45,11 +46,13 @@ public interface HoraExtraRepository extends JpaRepository<HoraExtra, Long> {
 			"	WHERE status = 'Finalizada';", nativeQuery = true)
 	List<HoraExtra> findAllFinalizadas();
 	
-	@Query(value = "SELECT capacidade_hora\r\n" + 
+	@Query(value = "SELECT   CP.capacidade_hora\r\n" + 
 			"	FROM capacidade_producao as CP,hora_extra as HE\r\n" + 
 			"	WHERE CP.hora_extra_id = HE.id\r\n" + 
 			"	and HE.id = :id", nativeQuery = true)
-	List<Integer> findaAllCapacidadesPorHoraExtra(@Param("id") Long id);
+	int findAllCapacidadesPorHoraExtra(@Param("id") Long id);
+	//List<HoraExtra> findByHoraExtraId(Long id);
+	
 	
 	
 	

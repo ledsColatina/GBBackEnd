@@ -7,10 +7,13 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import lombok.Data;
+
 
 
 @Entity
-@DiscriminatorValue(value = "F")
+//@DiscriminatorValue(value = "F")
+@Data
 public class CapacidadeProducaoExtra extends CapacidadeProducao {
 	
 

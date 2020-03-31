@@ -25,7 +25,7 @@ import com.example.BackEnd.repository.CapacidadeProducaoRepository;
 public class CapacidadeProducaoResource {
 	
 	@Autowired
-    private CapacidadeProducaoRepository maquinaTipoProdutoRepository;
+    private CapacidadeProducaoRepository capacidadeProducaoRepository;
 	
 	
 	
@@ -33,10 +33,10 @@ public class CapacidadeProducaoResource {
 	//-----------------------------------------------------------------------------------------------------------------------	
 	
 			@PutMapping("/{id}")
-			protected ResponseEntity<CapacidadeProducao> atualizaCapacidade(@PathVariable("id") Long id,  @RequestBody CapacidadeProducao maquinaTipoProduto,HttpServletResponse responseEntity) {
-				return maquinaTipoProdutoRepository.findById(id).map(record -> {
-					record.setCapacidadeHora(maquinaTipoProduto.getCapacidadeHora());
-					CapacidadeProducao updated = maquinaTipoProdutoRepository.save(record);
+			protected ResponseEntity<CapacidadeProducao> atualizaCapacidade(@PathVariable("id") Long id,  @RequestBody CapacidadeProducao capacidadeProducao,HttpServletResponse responseEntity) {
+				return capacidadeProducaoRepository.findById(id).map(record -> {
+					record.setCapacidadeHora(capacidadeProducao.getCapacidadeHora());
+					CapacidadeProducao updated = capacidadeProducaoRepository.save(record);
 					return ResponseEntity.ok().body(updated);
 
 				}).orElse(ResponseEntity.notFound().build());
@@ -47,25 +47,20 @@ public class CapacidadeProducaoResource {
 			
 			@GetMapping
 			public ResponseEntity<List<CapacidadeProducao>> listar(){
-				List<CapacidadeProducao> maquinaTipoProduto = maquinaTipoProdutoRepository.findAll();	
+				List<CapacidadeProducao> maquinaTipoProduto = capacidadeProducaoRepository.findAll();	
 				return !maquinaTipoProduto.isEmpty() ? ResponseEntity.ok(maquinaTipoProduto) : ResponseEntity.noContent().build();	
 			}
 			
 	//-------------------------------------------------------------------------------------------------------------
 			
-	  @GetMapping("/{id}")
-			public ResponseEntity<List<CapacidadeProducao>> pegarCapacidadeDeCadaMaquina(@PathVariable Long id) {
-				List<CapacidadeProducao> mtp = maquinaTipoProdutoRepository.findByMaquinaId(id);
-				return ResponseEntity.status(HttpStatus.OK).body(mtp);
-			}
-			
+	 
 	  //-------------------------------------------------------------------------------------------------------------------			
 			
 	  
 	    @DeleteMapping("/{id}")
 	    @ResponseStatus(HttpStatus.NO_CONTENT)
-	    public void deleteMaquinaTipoProduto(@PathVariable Long id){
-	    	maquinaTipoProdutoRepository.deleteById(id);
+	    public void deleteCapacidadeProsucao(@PathVariable Long id){
+	    	capacidadeProducaoRepository.deleteById(id);
 	    }
 	   
 }
