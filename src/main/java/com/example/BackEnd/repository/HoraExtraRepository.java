@@ -50,8 +50,9 @@ public interface HoraExtraRepository extends JpaRepository<HoraExtra, Long> {
 			"	FROM capacidade_producao as CP,hora_extra as HE\r\n" + 
 			"	WHERE CP.hora_extra_id = HE.id\r\n" + 
 			"	and HE.id = :id", nativeQuery = true)
-	int findAllCapacidadesPorHoraExtra(@Param("id") Long id);
+	List<CapacidadeProducaoExtra> findAllCapacidadesPorHoraExtra(@Param("id") Long id);
 	//List<HoraExtra> findByHoraExtraId(Long id);
+	
 	
 	
 	

@@ -80,8 +80,8 @@ public class HoraExtraResource {
 			
 	@GetMapping("/capacidade/{id}")
 		public ResponseEntity<?> CapacidadeHoraExtra(@PathVariable("id") Long id) {
-			int capacidade = horaExtraRepository.findAllCapacidadesPorHoraExtra(id);
-			return ResponseEntity.ok(capacidade);
+			List<CapacidadeProducaoExtra> ListCapacidade = CapacidadeProducaoExtraRepository.findByHoraExtraId(id);
+			return ResponseEntity.ok(ListCapacidade);
 		}
 			
 						
