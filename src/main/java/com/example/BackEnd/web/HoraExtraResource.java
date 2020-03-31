@@ -62,7 +62,15 @@ public class HoraExtraResource {
 				return ResponseEntity.ok(list);
 			}
 			
+	//----------------------------------------------------------------------------------------------------------------------------   
 			
+	@GetMapping("/capacidade/{id}")
+		public ResponseEntity<List<Integer>> CapacidadeHoraExtra(@PathVariable("id") Long id) {
+			List<Integer> list = horaExtraRepository.findaAllCapacidadesPorHoraExtra(id);
+			return ResponseEntity.ok(list);
+		}
+			
+						
 	//----------------------------------------------------------------------------------------------------------------------------   
 	
 		@GetMapping("/{id}")
