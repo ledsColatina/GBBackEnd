@@ -30,9 +30,9 @@ public class LogValor {
 	private String descricao;
 	private String status;
 
-	 @ManyToOne
-	 @JoinColumn(name = "valorGrupo_id")
-	 private ValorGrupo valorGrupo;
+	 //@ManyToOne
+	// @JoinColumn(name = "valorGrupo_id")
+	 //private ValorGrupo valorGrupo;
 
 	
 }

@@ -7,4 +7,6 @@ import com.example.BackEnd.domain.OrdemProducao;
 
 public interface OrdemProducaoRepository extends JpaRepository<OrdemProducao, Long>{
 
+	boolean findByTipoProdutoId(Long id);
+
 }

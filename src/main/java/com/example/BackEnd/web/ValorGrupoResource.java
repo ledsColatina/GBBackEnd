@@ -46,8 +46,8 @@ public class ValorGrupoResource {
 		logValor.setData(new java.util.Date(System.currentTimeMillis()));
 		
 		logValor.setDescricao(valorGrupoSalvo.getSubProcesso().getDescricao() + "/"+ valorGrupoSalvo.getLinha().getDescricao() + "/" + valorGrupoSalvo.getTipoProduto().getDescricao());
-		System.out.println(valorGrupoSalvo.getSubProcesso().getDescricao() + "/"+ valorGrupoSalvo.getLinha().getDescricao() + "/" + valorGrupoSalvo.getTipoProduto().getDescricao());
-		logValor.setValorGrupo(valorGrupoSalvo);
+		//System.out.println(valorGrupoSalvo.getSubProcesso().getDescricao() + "/"+ valorGrupoSalvo.getLinha().getDescricao() + "/" + valorGrupoSalvo.getTipoProduto().getDescricao());
+		//logValor.setValorGrupo(valorGrupoSalvo);
 		logValor.setStatus("Adicionado");
 		logValorRepository.save(logValor);
 		return ResponseEntity.status(HttpStatus.OK).body(valorGrupoSalvo);
@@ -94,7 +94,7 @@ public class ValorGrupoResource {
 			logValor.setValorNovo(valor);
 			logValor.setData(new java.util.Date(System.currentTimeMillis()));
 			logValor.setDescricao(ValorGrupoALterado.getSubProcesso().getDescricao() + "/"+ ValorGrupoALterado.getLinha().getDescricao() + "/" + ValorGrupoALterado.getTipoProduto().getDescricao());
-			logValor.setValorGrupo(ValorGrupoALterado);
+			//logValor.setValorGrupo(ValorGrupoALterado);
 			logValor.setStatus("Alterado");
 			logValorRepository.save(logValor);
 			return ResponseEntity.ok().body(ValorGrupoALterado);

@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,13 +23,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.BackEnd.domain.CapacidadeProducao;
 import com.example.BackEnd.domain.Linha;
+import com.example.BackEnd.domain.LogValor;
 import com.example.BackEnd.domain.Maquina;
 import com.example.BackEnd.domain.OrdemProducao;
 import com.example.BackEnd.domain.SubProcesso;
 import com.example.BackEnd.domain.TipoProduto;
 import com.example.BackEnd.domain.ValorGrupo;
+import com.example.BackEnd.repository.CapacidadeProducaoExtraRepository;
 import com.example.BackEnd.repository.CapacidadeProducaoRepository;
 import com.example.BackEnd.repository.LinhaRepository;
+import com.example.BackEnd.repository.LogValorRepository;
 import com.example.BackEnd.repository.MaquinaRepository;
 import com.example.BackEnd.repository.OrdemProducaoRepository;
 import com.example.BackEnd.repository.SubProcessosRepository;
@@ -36,6 +41,7 @@ import com.example.BackEnd.repository.ValorGrupoRepository;
 
 @RestController
 @RequestMapping(value = "/tipoproduto")
+
 public class TipoProdutoResource {
 	
 	@Autowired
@@ -58,6 +64,12 @@ public class TipoProdutoResource {
 	
 	@Autowired
     private OrdemProducaoRepository ordemProducaoRepository;
+	
+	@Autowired
+    private CapacidadeProducaoExtraRepository capacidadeProducaoExtraRepository;
+	
+	@Autowired
+	private LogValorRepository logValorRepository;
 
 	//----------------------------------------------------------------------------------------------------------------------
 	
@@ -121,28 +133,30 @@ public class TipoProdutoResource {
     }
 	
 	//----------------------------------------------------------------------------------------------------------------------
-	
+	@Transactional
 	@DeleteMapping("/{id}")	
     @ResponseStatus(HttpStatus.NO_CONTENT)
     protected void deleteTipoProduto(@PathVariable Long id){
-		 tipoProdutoRepository.deleteById(id);
-		/*int verificacao=0;
-			List<OrdemProducao> ListOrdemProducao = ordemProducaoRepository.findAll();
-			TipoProduto tipoProduto = tipoProdutoRepository.findByTipoProdutoId(id);
-			for(int i=0;i<ListOrdemProducao.size();i++) {
-				if(ListOrdemProducao.get(i).getTipoProduto().getId() == tipoProduto.getId()) {
-					verificacao=1;
-				}else {
-					verificacao=0;
-				}
-			}
+		 //tipoProdutoRepository.deleteById(id);
+		//capacidadeProducaoExtraRepository.deleteByTipoProdutoId(id);
+		LogValor logValor = new LogValor();
 		
-		if(verificacao == 1) {
-			TipoProduto tp = tipoProdutoRepository.deleteById(id);
-			return  tp;
+		capacidadeProducaoRepository.deleteByTipoProdutoId(id);
+		//ValorGrupo valorGrupoExcluido = valorGrupoRepository.deleteByTipoProdutoId(id);
+		//logValor.setData(new java.util.Date(System.currentTimeMillis()));
+		//logValor.setDescricao(valorGrupoExcluido.getSubProcesso().getDescricao() + "/"+ valorGrupoExcluido.getLinha().getDescricao() + "/" + valorGrupoExcluido.getTipoProduto().getDescricao());
+		//logValor.setStatus("Excluido");
+		//logValorRepository.save(logValor);
+		tipoProdutoRepository.deleteById(id);
+		/*
+		if(ordemProducaoRepository.findByTipoProdutoId(id)) {
+			 tipoProdutoRepository.deleteById(id);
 		}else {
-			return ResponseEntity.noContent().build();	
-		}*/
+			capacidadeProducaoRepository.deleteByTipoProdutoId(id);
+			valorGrupoRepository.deleteByTipoProdutoId(id);
+			tipoProdutoRepository.deleteById(id);
+		}
+		*/
     }
 	
 	//----------------------------------------------------------------------------------------------------------------------

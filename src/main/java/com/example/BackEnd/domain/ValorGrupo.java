@@ -30,7 +30,7 @@ public class ValorGrupo {
 	private Linha linha;
 	
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "tipoProduto_id")
 	private TipoProduto tipoProduto;
 	

@@ -3,7 +3,6 @@ package com.example.BackEnd.domain;
 
 
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,7 +29,7 @@ public class CapacidadeProducao {
 	@JoinColumn(name = "maquina_id")
 	private Maquina maquina;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "tipoProduto_id")
 	private TipoProduto tipoProduto;
 }
