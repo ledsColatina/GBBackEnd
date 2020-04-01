@@ -1,17 +1,13 @@
 package com.example.BackEnd.domain;
 
 
-import java.io.Serializable;
 
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.DiscriminatorValue;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.Data;
@@ -34,7 +30,7 @@ public class CapacidadeProducao {
 	@JoinColumn(name = "maquina_id")
 	private Maquina maquina;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "tipoProduto_id")
 	private TipoProduto tipoProduto;
 }

@@ -7,4 +7,6 @@ import com.example.BackEnd.domain.TipoProduto;
 public interface TipoProdutoRepository extends JpaRepository<TipoProduto, Long>{
 
 	TipoProduto findTopByOrderByIdDesc();
+
+	//TipoProduto findByTipoProdutoId(Long id);
 }

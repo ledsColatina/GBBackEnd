@@ -22,12 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.BackEnd.domain.CapacidadeProducao;
 import com.example.BackEnd.domain.Linha;
 import com.example.BackEnd.domain.Maquina;
+import com.example.BackEnd.domain.OrdemProducao;
 import com.example.BackEnd.domain.SubProcesso;
 import com.example.BackEnd.domain.TipoProduto;
 import com.example.BackEnd.domain.ValorGrupo;
 import com.example.BackEnd.repository.CapacidadeProducaoRepository;
 import com.example.BackEnd.repository.LinhaRepository;
 import com.example.BackEnd.repository.MaquinaRepository;
+import com.example.BackEnd.repository.OrdemProducaoRepository;
 import com.example.BackEnd.repository.SubProcessosRepository;
 import com.example.BackEnd.repository.TipoProdutoRepository;
 import com.example.BackEnd.repository.ValorGrupoRepository;
@@ -53,6 +55,9 @@ public class TipoProdutoResource {
 	
 	@Autowired
 	private ValorGrupoRepository valorGrupoRepository;
+	
+	@Autowired
+    private OrdemProducaoRepository ordemProducaoRepository;
 
 	//----------------------------------------------------------------------------------------------------------------------
 	
@@ -120,7 +125,24 @@ public class TipoProdutoResource {
 	@DeleteMapping("/{id}")	
     @ResponseStatus(HttpStatus.NO_CONTENT)
     protected void deleteTipoProduto(@PathVariable Long id){
-		tipoProdutoRepository.deleteById(id);
+		 tipoProdutoRepository.deleteById(id);
+		/*int verificacao=0;
+			List<OrdemProducao> ListOrdemProducao = ordemProducaoRepository.findAll();
+			TipoProduto tipoProduto = tipoProdutoRepository.findByTipoProdutoId(id);
+			for(int i=0;i<ListOrdemProducao.size();i++) {
+				if(ListOrdemProducao.get(i).getTipoProduto().getId() == tipoProduto.getId()) {
+					verificacao=1;
+				}else {
+					verificacao=0;
+				}
+			}
+		
+		if(verificacao == 1) {
+			TipoProduto tp = tipoProdutoRepository.deleteById(id);
+			return  tp;
+		}else {
+			return ResponseEntity.noContent().build();	
+		}*/
     }
 	
 	//----------------------------------------------------------------------------------------------------------------------

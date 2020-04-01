@@ -93,23 +93,7 @@ public class HoraExtraResource {
 			return ResponseEntity.ok(list);
 		}
 		//sdfs
-	//----------------------------------------------------------------------------------------------------------------------------
 	
-	@GetMapping("/{id}/finalizados")
-	public ResponseEntity<List<HoraExtra>> listarHoraExtraFinalizadasPorSetor(@PathVariable("id") Long id) {
-		List<HoraExtra> horaExtra = horaExtraRepository.findAllFinalizadas(id);
-		return ResponseEntity.ok(horaExtra);
-	}
-	
-	
-	//----------------------------------------------------------------------------------------------------------------------------
-	
-	@GetMapping("/{id}/pendentes")
-	public ResponseEntity<List<HoraExtra>> listarHoraExtraPendentesPorSetor(@PathVariable("id") Long id) {
-		List<HoraExtra> horaExtra = horaExtraRepository.findAllPendentes(id);
-		return ResponseEntity.ok(horaExtra);
-	}
-
 	//----------------------------------------------------------------------------------------------------------------------------
 	
 		@PostMapping
