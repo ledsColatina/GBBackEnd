@@ -14,7 +14,11 @@ public interface ValorGrupoRepository extends JpaRepository<ValorGrupo, Long> {
 
 	List<ValorGrupo> findBySubProcessoId(Long id);
 
-	ValorGrupo deleteByTipoProdutoId(Long id);
+	
+
+	ValorGrupo findByTipoProdutoId(Long id);
+
+	void deleteByTipoProdutoId(Long id);
 
 
 

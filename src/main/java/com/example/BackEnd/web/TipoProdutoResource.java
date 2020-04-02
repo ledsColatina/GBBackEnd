@@ -137,16 +137,17 @@ public class TipoProdutoResource {
 	@DeleteMapping("/{id}")	
     @ResponseStatus(HttpStatus.NO_CONTENT)
     protected void deleteTipoProduto(@PathVariable Long id){
-		 //tipoProdutoRepository.deleteById(id);
+		 
 		capacidadeProducaoExtraRepository.deleteByTipoProdutoId(id);
 		LogValor logValor = new LogValor();
 		
 		capacidadeProducaoRepository.deleteByTipoProdutoId(id);
-		ValorGrupo valorGrupoExcluido = valorGrupoRepository.deleteByTipoProdutoId(id);
-		//logValor.setData(new java.util.Date(System.currentTimeMillis()));
-		//logValor.setDescricao(valorGrupoExcluido.getSubProcesso().getDescricao() + "/"+ valorGrupoExcluido.getLinha().getDescricao() + "/" + valorGrupoExcluido.getTipoProduto().getDescricao());
-		//logValor.setStatus("Excluido");
-		//logValorRepository.save(logValor);
+		ValorGrupo valorGrupoExcluido = valorGrupoRepository.findByTipoProdutoId(id);
+		 valorGrupoRepository.deleteByTipoProdutoId(id);
+		logValor.setData(new java.util.Date(System.currentTimeMillis()));
+		logValor.setDescricao(valorGrupoExcluido.getSubProcesso().getDescricao() + "/"+ valorGrupoExcluido.getLinha().getDescricao() + "/" + valorGrupoExcluido.getTipoProduto().getDescricao());
+		logValor.setStatus("Excluido");
+		logValorRepository.save(logValor);
 		tipoProdutoRepository.deleteById(id);
 		/*
 		if(ordemProducaoRepository.findByTipoProdutoId(id)) {

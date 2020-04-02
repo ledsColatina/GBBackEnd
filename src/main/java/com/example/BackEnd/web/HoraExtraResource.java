@@ -131,9 +131,9 @@ public class HoraExtraResource {
 	@PutMapping("/{id}") 
     public ResponseEntity<HoraExtra> atualizaHoraExtra(@PathVariable("id") Long id,@RequestBody HoraExtra horaExtra,HttpServletResponse responseEntity){
     	return horaExtraRepository.findById(id).map(record -> {
-			    		
+			    		record.setHoraInicio(horaExtra.getHoraInicio());
 			    		record.setData(horaExtra.getData());
-			    		
+			    		record.setHoraFim(horaExtra.getHoraFim());
 			    		record.setQtdHoras(horaExtra.getQtdHoras());
 			    		record.setStatus(horaExtra.getStatus());
 			    		record.setMomento(horaExtra.getMomento());
