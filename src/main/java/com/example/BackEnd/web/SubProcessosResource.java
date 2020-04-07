@@ -18,8 +18,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.BackEnd.domain.Linha;
 import com.example.BackEnd.domain.SubProcesso;
+import com.example.BackEnd.domain.TipoProduto;
+import com.example.BackEnd.domain.ValorGrupo;
+import com.example.BackEnd.repository.LinhaRepository;
 import com.example.BackEnd.repository.SubProcessosRepository;
+import com.example.BackEnd.repository.TipoProdutoRepository;
+import com.example.BackEnd.repository.ValorGrupoRepository;
 
 
 @RestController
@@ -29,11 +36,38 @@ public class SubProcessosResource {
 	@Autowired
 	private SubProcessosRepository subProcessosRepository;
 	
+	@Autowired
+	private TipoProdutoRepository tipoProdutoRepository;
+	
+	@Autowired
+	private LinhaRepository linhaRepository;
+	
+	@Autowired
+	private ValorGrupoRepository valorGrupoRepository;
+	
+	
 	//----------------------------------------------------------------------------------------------------------------------------
 	
 	@PostMapping
     protected ResponseEntity<SubProcesso> criarSubProcesso(@Valid @RequestBody  SubProcesso subProcesso,HttpServletResponse responseEntity){
 		SubProcesso subProcessoSalvo = subProcessosRepository.save(subProcesso);
+		
+		List<Linha> listLinha = linhaRepository.findAll();
+		List<TipoProduto> listTipoProd = tipoProdutoRepository.findAll();
+		ValorGrupo valorGrupoNovo;
+		
+		for(int k=0;k<listLinha.size();k++) {
+			
+			for(int j=0;j<listTipoProd.size();j++) {
+				valorGrupoNovo = new ValorGrupo();
+				valorGrupoNovo.setLinha(listLinha.get(k));
+				valorGrupoNovo.setTipoProduto(listTipoProd.get(j));
+				valorGrupoNovo.setSubProcesso(subProcesso);
+				valorGrupoNovo.setValorAtual(0);
+				valorGrupoRepository.save(valorGrupoNovo);
+			}
+		}
+		
     	return ResponseEntity.status(HttpStatus.OK).body(subProcessoSalvo);
     }
 	
