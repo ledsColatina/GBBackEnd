@@ -2,6 +2,8 @@ package com.example.BackEnd.web;
 
 
 import java.util.List;
+import java.util.Optional;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,12 +65,21 @@ public class SubProcessosResource {
     }   
 	
 	
-
+	//----------------------------------------------------------------------------------------------------------------------------
+	
 	@GetMapping("/processo/{id}")
 	protected ResponseEntity<?> listarSubProcessosDoProcesso(@PathVariable("id") Long id){
 		List<SubProcesso> SubProcessos = subProcessosRepository.findByProcessoId(id);
 		return ResponseEntity.ok(SubProcessos);
 	}
+	
+	//----------------------------------------------------------------------------------------------------------------------------
+	
+		@GetMapping("/{id}")
+		protected ResponseEntity<?> PegarSubProcesso(@PathVariable("id") Long id){
+			Optional<SubProcesso> SubProcessos = subProcessosRepository.findById(id);
+			return ResponseEntity.ok(SubProcessos);
+		}
 	
 	//----------------------------------------------------------------------------------------------------------------------------
 	
