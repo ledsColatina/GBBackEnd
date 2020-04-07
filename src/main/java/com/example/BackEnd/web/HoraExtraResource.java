@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.BackEnd.domain.CapacidadeProducaoExtra;
 import com.example.BackEnd.domain.HoraExtra;
 import com.example.BackEnd.domain.Maquina;
-import com.example.BackEnd.domain.ObjetoMaquinaHoraExtra;
+
 import com.example.BackEnd.domain.TipoProduto;
 import com.example.BackEnd.repository.HoraExtraRepository;
 import com.example.BackEnd.repository.MaquinaRepository;

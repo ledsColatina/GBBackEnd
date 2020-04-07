@@ -1,9 +1,10 @@
 package com.example.BackEnd.domain;
 
-import java.util.Date;
 
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import lombok.Data;
 
@@ -22,30 +24,23 @@ public class EtapaProducao {
 	private Long id;
 	//d
 	private Long sequencia;
-	private Date inicioPrevisto;
-	private Date fimPrevisto;
+	private String inicioPrevisto;
+	private String fimPrevisto;
 	private Long qtdEmEspera;
 	private Long qtdEmProducao;
 	private Long qtdFinalizado;
 	
-	@ManyToOne
-	@JoinColumn(name = "ordemProducao_id")
-	private OrdemProducao ordemProducao;
+	//@ManyToOne
+	//@JoinColumn(name = "ordemProducao_id")
+	//private OrdemProducao ordemProducao;
 	
+	@OneToMany
+	private List<Processo> listProcesso;
 	
-	@ManyToOne
-	@JoinColumn(name = "setor_id")
-	private Maquina setor;
-	
-	/*
-	@ManyToMany()
-	@JoinTable(name = "processo_etapaProducao",
-				joinColumns={@JoinColumn(name="etapaProducao_id")},
-				inverseJoinColumns={@JoinColumn(name="processo_id")}
-	)*/
-	//private List<Processos> processos;
-	
-	
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "Etapa_SubProcesso", joinColumns = { @JoinColumn(name = "subProcesso_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "etapaProducao_id") })
+	private List<SubProcesso> listSubProcesso;
 	
 	
 }

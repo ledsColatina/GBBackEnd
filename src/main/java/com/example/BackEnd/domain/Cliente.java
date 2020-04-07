@@ -27,7 +27,6 @@ public class Cliente {
 	//@NotNull(message = "Nome do Cliente deve ser informado")
 	private String cor;
 
-	// @OneToMany
-	// private List<OrdemProducao> OrdensDeProducao;
+	
 
 }

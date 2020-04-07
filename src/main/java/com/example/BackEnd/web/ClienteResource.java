@@ -46,10 +46,10 @@ public class ClienteResource {
     @PostMapping
     public ResponseEntity<Cliente> criarCliente(@Valid @RequestBody  Cliente cliente,HttpServletResponse responseEntity){
     	Cliente clienteSalvo = clienteRepository.save(cliente);
-    	return ResponseEntity.status(HttpStatus.OK).body(clienteSalvo);
+    	return ResponseEntity.status(HttpStatus.OK).body( clienteSalvo);
     }
 
-  //----------------------------------------------------------------------------------------------------------------------------    
+    //----------------------------------------------------------------------------------------------------------------------------    
     
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

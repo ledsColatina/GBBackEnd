@@ -112,11 +112,7 @@ public class TipoProdutoResource {
 			capacidadeProducaoRepository.save(CapacidadeProducao);
 		}
 		
-		
-		
-		
-		
-		
+
 		for(int k=0;k<listLinha.size();k++) {
 					
 			for(int j=0;j<listSubProcesso.size();j++) {
