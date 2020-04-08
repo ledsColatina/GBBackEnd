@@ -143,7 +143,7 @@ public class TipoProdutoResource {
 		for(int i=0;i<ListValorGrupoExcluido.size();i++) {
 			logValor = new LogValor();
 			logValor.setData(new java.util.Date(System.currentTimeMillis()));
-			logValor.setDescricao(ListValorGrupoExcluido.get(i).getSubProcesso().getDescricao() + "/"+ ListValorGrupoExcluido.get(i).getLinha().getDescricao() + "/" +ListValorGrupoExcluido.get(i).getTipoProduto().getDescricao());
+			logValor.setDescricao(ListValorGrupoExcluido.get(i).getSubProcesso().getDescricao() + ":\n"+ ListValorGrupoExcluido.get(i).getLinha().getDescricao() + ":\n" +ListValorGrupoExcluido.get(i).getTipoProduto().getDescricao());
 			logValor.setStatus("Excluido");
 			logValorRepository.save(logValor);
 			
