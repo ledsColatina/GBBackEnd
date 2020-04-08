@@ -35,7 +35,7 @@ public class OrdemProducaoResource {
 	
 	@Autowired
     private ValorGrupoRepository valorGrupoRespository;
-	
+	//poi
 	//----------------------------------------------------------------------------------------------------------------------
 	
 		@GetMapping
