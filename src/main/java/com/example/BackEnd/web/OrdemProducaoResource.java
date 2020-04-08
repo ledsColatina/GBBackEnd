@@ -46,7 +46,7 @@ public class OrdemProducaoResource {
 	
 	//----------------------------------------------------------------------------------------------------------------------
 		
-		@GetMapping("/valortotal")
+		@PostMapping("/valortotal")
 		public float listarValores(@Valid @RequestBody ObjetoPesquisaValorGrupo ObjetoPesquisaValorGrupo,HttpServletResponse responseEntity){
 			List<SubProcesso> listSubProcessos = ObjetoPesquisaValorGrupo.getListSubProcesso();
 			float total=0;
