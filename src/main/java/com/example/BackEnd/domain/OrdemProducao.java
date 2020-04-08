@@ -1,6 +1,5 @@
 package com.example.BackEnd.domain;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -27,9 +26,9 @@ public class OrdemProducao {
 	private Long quantidade;
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	private String emissao;
+	private String dataEmissao;
 	private int prioridadeAtual;
-	private int referencia;
+	private String referencia;
 	private boolean reprocesso;
 	private double valorTotal;
 	private int prioridadeInicial;
@@ -40,7 +39,7 @@ public class OrdemProducao {
 
 	@OneToMany
 	@JoinColumn(name = "etapaProducao_id")
-	private List<EtapaProducao> listEtapaProducao;
+	private List<EtapaProducao> listEtapas;
 	
 	@ManyToOne
 	@JoinColumn(name = "tipoProduto_id")
@@ -52,7 +51,7 @@ public class OrdemProducao {
 	
 	@OneToOne
 	@JoinColumn(name = "ordemProducao_id")
-	private EtapaProducao ordemProcucaoOriginal;
+	private OrdemProducao ordemProducaoOriginal;
 
 	
 }

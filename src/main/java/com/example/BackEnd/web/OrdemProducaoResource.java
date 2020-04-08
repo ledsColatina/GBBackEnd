@@ -85,10 +85,10 @@ public class OrdemProducaoResource {
 		    public ResponseEntity<OrdemProducao> atualizaOrdemProducao(@PathVariable("id") Long id,@RequestBody OrdemProducao ordemProducao,HttpServletResponse responseEntity){
 		    	return ordemProducaoRepository.findById(id).map(record -> {
 					    		record.setCliente(ordemProducao.getCliente());
-					    		record.setEmissao(ordemProducao.getEmissao());
+					    		record.setDataEmissao(ordemProducao.getDataEmissao());
 					    		record.setLinha(ordemProducao.getLinha());
-					    		record.setListEtapaProducao(ordemProducao.getListEtapaProducao());
-					    		record.setOrdemProcucaoOriginal(ordemProducao.getOrdemProcucaoOriginal());
+					    		record.setListEtapas(ordemProducao.getListEtapas());
+					    		record.setOrdemProducaoOriginal(ordemProducao.getOrdemProducaoOriginal());
 					    		record.setPrioridadeAtual(ordemProducao.getPrioridadeAtual());
 					    		record.setPrioridadeInicial(ordemProducao.getPrioridadeInicial());
 					    		record.setQuantidade(ordemProducao.getQuantidade());
