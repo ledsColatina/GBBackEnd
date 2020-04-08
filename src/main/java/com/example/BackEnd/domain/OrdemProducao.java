@@ -25,7 +25,7 @@ public class OrdemProducao {
 
 	private Long quantidade;
 
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	//@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private String dataEmissao;
 	private int prioridadeAtual;
 	private String referencia;
