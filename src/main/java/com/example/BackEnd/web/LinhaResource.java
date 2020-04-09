@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.BackEnd.domain.Linha;
 import com.example.BackEnd.domain.LogValor;
+import com.example.BackEnd.domain.OrdemProducao;
 import com.example.BackEnd.domain.SubProcesso;
 import com.example.BackEnd.domain.TipoProduto;
 import com.example.BackEnd.domain.ValorGrupo;
@@ -104,8 +105,8 @@ public class LinhaResource {
 		List<ValorGrupo> ListValorGrupoExcluido = valorGrupoRepository.findByLinhaId(id);
 		valorGrupoRepository.deleteByTipoProdutoId(id);
 		LogValor logValor;
-		
-		if(ordemProducaoRepository.findByLinhaId(id)) {
+		List<OrdemProducao> listOrdemProducao = ordemProducaoRepository.findByLinhaId(id);
+		if(listOrdemProducao.size()>0) {
 			linhaRepository.deleteById(id);
 		}else {
 			for(int i=0;i<ListValorGrupoExcluido.size();i++) {

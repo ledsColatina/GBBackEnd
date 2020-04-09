@@ -138,8 +138,8 @@ public class TipoProdutoResource {
 		capacidadeProducaoRepository.deleteByTipoProdutoId(id);
 		List<ValorGrupo> ListValorGrupoExcluido = valorGrupoRepository.findByTipoProdutoId(id);
 		valorGrupoRepository.deleteByTipoProdutoId(id);
-		
-		if(ordemProducaoRepository.findByTipoProdutoId(id)) {
+		List<OrdemProducao> listOrdemProducao = ordemProducaoRepository.findByTipoProdutoId(id);
+		if(listOrdemProducao.size()>0) {
 			 tipoProdutoRepository.deleteById(id);
 		}else {
 			
