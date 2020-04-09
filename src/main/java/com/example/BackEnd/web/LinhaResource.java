@@ -106,6 +106,7 @@ public class LinhaResource {
 		valorGrupoRepository.deleteByTipoProdutoId(id);
 		LogValor logValor;
 		List<OrdemProducao> listOrdemProducao = ordemProducaoRepository.findByLinhaId(id);
+		
 		if(listOrdemProducao.size()>0) {
 			linhaRepository.deleteById(id);
 		}else {
