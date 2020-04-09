@@ -9,4 +9,6 @@ public interface OrdemProducaoRepository extends JpaRepository<OrdemProducao, Lo
 
 	boolean findByTipoProdutoId(Long id);
 
+	boolean findByLinhaId(Long id);
+
 }

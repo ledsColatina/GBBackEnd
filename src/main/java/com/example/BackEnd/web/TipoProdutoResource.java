@@ -133,37 +133,28 @@ public class TipoProdutoResource {
 	@DeleteMapping("/{id}")	
     @ResponseStatus(HttpStatus.NO_CONTENT)
     protected void deleteTipoProduto(@PathVariable Long id){
-		 
 		capacidadeProducaoExtraRepository.deleteByTipoProdutoId(id);
 		LogValor logValor;
-		
 		capacidadeProducaoRepository.deleteByTipoProdutoId(id);
 		List<ValorGrupo> ListValorGrupoExcluido = valorGrupoRepository.findByTipoProdutoId(id);
 		valorGrupoRepository.deleteByTipoProdutoId(id);
-		for(int i=0;i<ListValorGrupoExcluido.size();i++) {
-			logValor = new LogValor();
-			logValor.setData(new java.util.Date(System.currentTimeMillis()));
-			logValor.setDescricao("SubProcesso: " + ListValorGrupoExcluido.get(i).getSubProcesso().getDescricao() + "\n"+ 
-									"Linha: " + ListValorGrupoExcluido.get(i).getLinha().getDescricao() + "\n" + 
-									"TipoProduto: " + ListValorGrupoExcluido.get(i).getTipoProduto().getDescricao());
-			logValor.setStatus("Excluido");
-			logValorRepository.save(logValor);
-			
-		}
 		
-		
-		
-		
-		tipoProdutoRepository.deleteById(id);
-		/*
 		if(ordemProducaoRepository.findByTipoProdutoId(id)) {
 			 tipoProdutoRepository.deleteById(id);
 		}else {
-			capacidadeProducaoRepository.deleteByTipoProdutoId(id);
-			valorGrupoRepository.deleteByTipoProdutoId(id);
+			
+			for(int i=0;i<ListValorGrupoExcluido.size();i++) {
+				logValor = new LogValor();
+				logValor.setData(new java.util.Date(System.currentTimeMillis()));
+				logValor.setDescricao("SubProcesso: " + ListValorGrupoExcluido.get(i).getSubProcesso().getDescricao() + "\n"+ 
+										"Linha: " + ListValorGrupoExcluido.get(i).getLinha().getDescricao() + "\n" + 
+										"TipoProduto: " + ListValorGrupoExcluido.get(i).getTipoProduto().getDescricao());
+				logValor.setStatus("Excluido");
+				logValorRepository.save(logValor);
+			}
+			
 			tipoProdutoRepository.deleteById(id);
 		}
-		*/
     }
 	
 	//----------------------------------------------------------------------------------------------------------------------

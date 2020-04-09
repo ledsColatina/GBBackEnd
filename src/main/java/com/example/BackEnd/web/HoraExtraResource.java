@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.BackEnd.domain.CapacidadeProducao;
 import com.example.BackEnd.domain.CapacidadeProducaoExtra;
 import com.example.BackEnd.domain.HoraExtra;
 import com.example.BackEnd.domain.Maquina;
@@ -23,6 +24,7 @@ import com.example.BackEnd.domain.TipoProduto;
 import com.example.BackEnd.repository.HoraExtraRepository;
 import com.example.BackEnd.repository.MaquinaRepository;
 import com.example.BackEnd.repository.TipoProdutoRepository;
+import com.example.BackEnd.repository.CapacidadeProducaoExtraRepository;
 import com.example.BackEnd.repository.CapacidadeProducaoRepository;
 
 
@@ -34,15 +36,17 @@ public class HoraExtraResource {
 	private HoraExtraRepository horaExtraRepository;
 	
 	
-	
 	@Autowired
-    private com.example.BackEnd.repository.CapacidadeProducaoExtraRepository CapacidadeProducaoExtraRepository;
+    private com.example.BackEnd.repository.CapacidadeProducaoExtraRepository capacidadeProducaoExtraRepository;
 	
 	@Autowired
 	private TipoProdutoRepository tipoProdutoRepository;
 	
 	@Autowired
 	private MaquinaRepository maquinaRepository;
+	
+	@Autowired
+	private CapacidadeProducaoRepository capacidadeProducaoRepository;
 	
 	//----------------------------------------------------------------------------------------------------------------------------   
 	@GetMapping
@@ -80,7 +84,7 @@ public class HoraExtraResource {
 			
 	@GetMapping("/capacidade/{id}")
 		public ResponseEntity<?> CapacidadeHoraExtra(@PathVariable("id") Long id) {
-			List<CapacidadeProducaoExtra> ListCapacidade = CapacidadeProducaoExtraRepository.findByHoraExtraId(id);
+			List<CapacidadeProducaoExtra> ListCapacidade = capacidadeProducaoExtraRepository.findByHoraExtraId(id);
 			return ResponseEntity.ok(ListCapacidade);
 		}
 			
@@ -110,7 +114,7 @@ public class HoraExtraResource {
 					capacidadeProducaoExtra.setMaquina(listMaquina.get(i));
 					capacidadeProducaoExtra.setTipoProduto(listTipoProd.get(j));
 					capacidadeProducaoExtra.setCapacidadeHora(0);
-					CapacidadeProducaoExtraRepository.save(capacidadeProducaoExtra);
+					capacidadeProducaoExtraRepository.save(capacidadeProducaoExtra);
 				}
 			}
 			 
@@ -123,6 +127,12 @@ public class HoraExtraResource {
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteHoraExtra(@PathVariable Long id) {
+		List<CapacidadeProducaoExtra> listCapacidades = capacidadeProducaoExtraRepository.findByHoraExtraId(id);
+		for(int i=0;i<listCapacidades.size();i++) {
+			capacidadeProducaoRepository.deleteById(listCapacidades.get(i).getId());
+		}
+		capacidadeProducaoExtraRepository.deleteByHoraExtraId(id);
+		
 		horaExtraRepository.deleteById(id);
 	}
 	

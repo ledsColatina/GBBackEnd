@@ -20,10 +20,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.BackEnd.domain.Linha;
+import com.example.BackEnd.domain.LogValor;
 import com.example.BackEnd.domain.SubProcesso;
 import com.example.BackEnd.domain.TipoProduto;
 import com.example.BackEnd.domain.ValorGrupo;
 import com.example.BackEnd.repository.LinhaRepository;
+import com.example.BackEnd.repository.LogValorRepository;
+import com.example.BackEnd.repository.OrdemProducaoRepository;
 import com.example.BackEnd.repository.SubProcessosRepository;
 import com.example.BackEnd.repository.TipoProdutoRepository;
 import com.example.BackEnd.repository.ValorGrupoRepository;
@@ -43,6 +46,12 @@ public class LinhaResource {
 	
 	@Autowired
 	private ValorGrupoRepository valorGrupoRepository;
+	
+	@Autowired
+    private OrdemProducaoRepository ordemProducaoRepository;
+	
+	@Autowired
+	private LogValorRepository logValorRepository;
 
 	//----------------------------------------------------------------------------------------------------------------------------
 	
@@ -92,7 +101,26 @@ public class LinhaResource {
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	protected void deleteLinha(@PathVariable Long id) {
-		linhaRepository.deleteById(id);
+		List<ValorGrupo> ListValorGrupoExcluido = valorGrupoRepository.findByLinhaId(id);
+		valorGrupoRepository.deleteByTipoProdutoId(id);
+		LogValor logValor;
+		
+		if(ordemProducaoRepository.findByLinhaId(id)) {
+			 tipoProdutoRepository.deleteById(id);
+		}else {
+			for(int i=0;i<ListValorGrupoExcluido.size();i++) {
+				logValor = new LogValor();
+				logValor.setData(new java.util.Date(System.currentTimeMillis()));
+				logValor.setDescricao("SubProcesso: " + ListValorGrupoExcluido.get(i).getSubProcesso().getDescricao() + "\n"+ 
+										"Linha: " + ListValorGrupoExcluido.get(i).getLinha().getDescricao() + "\n" + 
+										"TipoProduto: " + ListValorGrupoExcluido.get(i).getTipoProduto().getDescricao());
+				logValor.setStatus("Excluido");
+				logValorRepository.save(logValor);
+			}
+			
+			linhaRepository.deleteById(id);
+		}
+		
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------------

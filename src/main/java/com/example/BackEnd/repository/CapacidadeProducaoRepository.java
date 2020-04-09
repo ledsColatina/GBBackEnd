@@ -29,10 +29,4 @@ public interface CapacidadeProducaoRepository extends JpaRepository<CapacidadePr
 
 	
 
-
-	
-	
-
-
-
 }

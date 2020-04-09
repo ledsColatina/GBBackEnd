@@ -24,6 +24,8 @@ public interface ValorGrupoRepository extends JpaRepository<ValorGrupo, Long> {
 
 	ValorGrupo findByLinhaIdAndTipoProdutoIdAndSubProcessoId(Long id, Long id2, Long id3);
 
+	List<ValorGrupo> findByLinhaId(Long id);
+
 
 
 
