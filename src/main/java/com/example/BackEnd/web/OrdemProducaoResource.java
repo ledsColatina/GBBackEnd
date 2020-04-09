@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.BackEnd.domain.Cliente;
+import com.example.BackEnd.domain.EtapaProducao;
 import com.example.BackEnd.domain.ObjetoPesquisaValorGrupo;
 import com.example.BackEnd.domain.OrdemProducao;
 import com.example.BackEnd.domain.SubProcesso;
 import com.example.BackEnd.domain.ValorGrupo;
+import com.example.BackEnd.repository.EtapaProducaoRepository;
 import com.example.BackEnd.repository.OrdemProducaoRepository;
 import com.example.BackEnd.repository.ValorGrupoRepository;
 
@@ -32,6 +34,9 @@ public class OrdemProducaoResource {
 	
 	@Autowired
     private OrdemProducaoRepository ordemProducaoRepository;
+	
+	@Autowired
+    private EtapaProducaoRepository etapaProducaoRepository;
 	
 	@Autowired
     private ValorGrupoRepository valorGrupoRespository;
@@ -68,6 +73,10 @@ public class OrdemProducaoResource {
 
 		@PostMapping
 	    public ResponseEntity<OrdemProducao> criarOrdemProducao(@Valid @RequestBody  OrdemProducao ordemProducao,HttpServletResponse responseEntity){
+			List<EtapaProducao> listEtapas = ordemProducao.getListEtapas();
+			for(int i=0;i<listEtapas.size();i++) {
+				etapaProducaoRepository.save(listEtapas.get(i));
+			}
 			OrdemProducao ordemProducaoSalva = ordemProducaoRepository.save(ordemProducao);
 	    	return ResponseEntity.status(HttpStatus.OK).body(ordemProducaoSalva);
 	    }
