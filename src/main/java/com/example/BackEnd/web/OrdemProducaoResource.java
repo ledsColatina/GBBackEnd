@@ -73,10 +73,10 @@ public class OrdemProducaoResource {
 
 		@PostMapping
 	    public ResponseEntity<OrdemProducao> criarOrdemProducao(@Valid @RequestBody  OrdemProducao ordemProducao,HttpServletResponse responseEntity){
-			List<EtapaProducao> listEtapas = ordemProducao.getListEtapas();
-			for(int i=0;i<listEtapas.size();i++) {
-				etapaProducaoRepository.save(listEtapas.get(i));
-			}
+			//List<EtapaProducao> listEtapas = ordemProducao.getListEtapas();
+			//for(int i=0;i<listEtapas.size();i++) {
+			//	etapaProducaoRepository.save(listEtapas.get(i));
+			//}
 			OrdemProducao ordemProducaoSalva = ordemProducaoRepository.save(ordemProducao);
 	    	return ResponseEntity.status(HttpStatus.OK).body(ordemProducaoSalva);
 	    }

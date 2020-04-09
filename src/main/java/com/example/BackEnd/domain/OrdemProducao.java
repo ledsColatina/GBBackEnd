@@ -2,6 +2,7 @@ package com.example.BackEnd.domain;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -37,7 +39,7 @@ public class OrdemProducao {
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "etapaProducao_id")
 	private List<EtapaProducao> listEtapas;
 	
