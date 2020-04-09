@@ -113,7 +113,7 @@ public class HoraExtraResource {
 					capacidadeProducaoExtra.setHoraExtra(horaExtraSalva);
 					capacidadeProducaoExtra.setMaquina(listMaquina.get(i));
 					capacidadeProducaoExtra.setTipoProduto(listTipoProd.get(j));
-					CapacidadeProducao capProducao = capacidadeProducaoRepository.findAllByMaquinaIdAndTipoProdutoId(listMaquina.get(i).getId(),listTipoProd.get(j).getId());
+					CapacidadeProducao capProducao = capacidadeProducaoRepository.findByMaquinaIdAndTipoProdutoId(listMaquina.get(i).getId(),listTipoProd.get(j).getId());
 					capacidadeProducaoExtra.setCapacidadeHora(capProducao.getCapacidadeHora());
 					capacidadeProducaoExtraRepository.save(capacidadeProducaoExtra);
 				}
