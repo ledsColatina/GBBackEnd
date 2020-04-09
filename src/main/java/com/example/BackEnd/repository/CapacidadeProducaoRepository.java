@@ -25,6 +25,8 @@ public interface CapacidadeProducaoRepository extends JpaRepository<CapacidadePr
 	
 	void deleteByTipoProdutoId(Long id);
 
+	CapacidadeProducao findAllByMaquinaIdAndTipoProdutoId(Long id, Long id2);
+
 	
 
 	

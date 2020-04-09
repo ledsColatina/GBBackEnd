@@ -106,7 +106,7 @@ public class LinhaResource {
 		LogValor logValor;
 		
 		if(ordemProducaoRepository.findByLinhaId(id)) {
-			 tipoProdutoRepository.deleteById(id);
+			linhaRepository.deleteById(id);
 		}else {
 			for(int i=0;i<ListValorGrupoExcluido.size();i++) {
 				logValor = new LogValor();

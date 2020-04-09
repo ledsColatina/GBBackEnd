@@ -113,7 +113,8 @@ public class HoraExtraResource {
 					capacidadeProducaoExtra.setHoraExtra(horaExtraSalva);
 					capacidadeProducaoExtra.setMaquina(listMaquina.get(i));
 					capacidadeProducaoExtra.setTipoProduto(listTipoProd.get(j));
-					capacidadeProducaoExtra.setCapacidadeHora(0);
+					CapacidadeProducao capProducao = capacidadeProducaoRepository.findAllByMaquinaIdAndTipoProdutoId(listMaquina.get(i).getId(),listTipoProd.get(j).getId());
+					capacidadeProducaoExtra.setCapacidadeHora(capProducao.getCapacidadeHora());
 					capacidadeProducaoExtraRepository.save(capacidadeProducaoExtra);
 				}
 			}
@@ -128,6 +129,7 @@ public class HoraExtraResource {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteHoraExtra(@PathVariable Long id) {
 		List<CapacidadeProducaoExtra> listCapacidades = capacidadeProducaoExtraRepository.findByHoraExtraId(id);
+		
 		for(int i=0;i<listCapacidades.size();i++) {
 			capacidadeProducaoRepository.deleteById(listCapacidades.get(i).getId());
 		}
