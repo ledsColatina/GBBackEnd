@@ -120,6 +120,7 @@ public class SubProcessosResource {
 	@DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteSubProcessos(@PathVariable Long id){
+		valorGrupoRepository.deleteBySubProcessoId(id);
 		subProcessosRepository.deleteById(id);
     }
 	
