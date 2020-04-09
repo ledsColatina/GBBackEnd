@@ -25,6 +25,8 @@ import com.example.BackEnd.repository.EtapaProducaoRepository;
 @RestController
 @RequestMapping(value = "/etapaproducao")
 public class EtapaProducaoResource {
+
+
 	@Autowired
     private EtapaProducaoRepository etapaProducaoRepository;
 	
@@ -60,7 +62,7 @@ public class EtapaProducaoResource {
     	return etapaProducaoRepository.findById(id).map(record -> {
 			    		record.setFimPrevisto(etapaProducao.getFimPrevisto());
 			    		record.setInicioPrevisto(etapaProducao.getInicioPrevisto());
-			    		record.setListProcesso(etapaProducao.getListProcesso());
+			    		record.setProcesso(etapaProducao.getProcesso());
 			    		record.setListSubProcesso(etapaProducao.getListSubProcesso());
 			    		record.setQtdEmEspera(etapaProducao.getQtdEmEspera());
 			    		record.setQtdEmProducao(etapaProducao.getQtdEmProducao());

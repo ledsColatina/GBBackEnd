@@ -34,13 +34,14 @@ public class EtapaProducao {
 	//@JoinColumn(name = "ordemProducao_id")
 	//private OrdemProducao ordemProducao;
 	
-	@OneToMany
-	private List<Processo> listProcesso;
+	@ManyToOne
+	private Processo processo;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "Etapa_SubProcesso", joinColumns = { @JoinColumn(name = "subProcesso_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "etapaProducao_id") })
 	private List<SubProcesso> listSubProcesso;
 	
-	
+	@OneToMany
+	private List<Partida> listPartidas;
 }
