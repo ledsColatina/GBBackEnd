@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.BackEnd.domain.Cliente;
 import com.example.BackEnd.domain.LogValor;
 import com.example.BackEnd.domain.ValorGrupo;
+import com.example.BackEnd.repository.LinhaRepository;
 import com.example.BackEnd.repository.LogValorRepository;
 import com.example.BackEnd.repository.ValorGrupoRepository;
 
@@ -32,6 +33,9 @@ public class ValorGrupoResource {
 
 	@Autowired
 	private LogValorRepository logValorRepository;
+	
+	@Autowired
+	private LinhaRepository linhaRepository;
 
 	//----------------------------------------------------------------------------------------------------------------------
 	
@@ -70,6 +74,15 @@ public class ValorGrupoResource {
 	
 	}
 	
+	
+	//----------------------------------------------------------------------------------------------------------------------
+
+		@GetMapping("/ordenavalorgrupo")
+		public ResponseEntity<List<ValorGrupo>> ordenarValorGrupo(){
+			List<ValorGrupo> listValorGrupo = valorGrupoRepository.findAllByOrderByLinhaDescricaoAscTipoProdutoDescricaoAsc();
+			return !listValorGrupo.isEmpty() ? ResponseEntity.ok(listValorGrupo) : ResponseEntity.noContent().build();
+		}
+		
 	//----------------------------------------------------------------------------------------------------------------------
 
 	@DeleteMapping("/{id}")
@@ -78,10 +91,11 @@ public class ValorGrupoResource {
 		valorGrupoRepository.deleteById(id);
 	}
 
+	
 	//----------------------------------------------------------------------------------------------------------------------
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<ValorGrupo> atualizaValorGrupo(@PathVariable("id") Long id,@RequestBody ValorGrupo valorGrupo, HttpServletResponse responseEntity) {
+	public ResponseEntity<ValorGrupo> atualizaValorGrupo(@PathVariable("id") Long id,@RequestBody ValorGrupo valorGrupo) {
 		LogValor logValor = new LogValor();
 		float valor = valorGrupo.getValorAtual();
 
@@ -104,4 +118,10 @@ public class ValorGrupoResource {
 	
 	//----------------------------------------------------------------------------------------------------------------------
 	
+	@PutMapping("/alterarlista")
+	public ResponseEntity<ValorGrupo> atualizaListaValorGrupo(@RequestBody List<ValorGrupo> listValorGrupo, HttpServletResponse responseEntity) {
+		for(int i=0;i<listValorGrupo.size();i++) {
+			atualizaValorGrupo(listValorGrupo.get(i));
+		}
+	}
 }

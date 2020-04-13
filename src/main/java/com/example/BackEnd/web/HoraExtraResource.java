@@ -150,6 +150,7 @@ public class HoraExtraResource {
 			    		record.setStatus(horaExtra.getStatus());
 			    		record.setMomento(horaExtra.getMomento());
 			    		record.setTurno(horaExtra.getTurno());
+			    		record.setListaMaquina(horaExtra.getListaMaquina());
 			    		HoraExtra updated = horaExtraRepository.save(record);
     	                return ResponseEntity.ok().body(updated);
     	                   	               
