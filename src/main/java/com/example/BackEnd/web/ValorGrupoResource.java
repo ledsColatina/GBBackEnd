@@ -57,7 +57,7 @@ public class ValorGrupoResource {
 		return ResponseEntity.status(HttpStatus.OK).body(valorGrupoSalvo);
 	}
 
-	//----------------------------------------------------------------------------------------------------------------------
+	
 //------------------------------------------------------------------------------------------------------------------------
 	@GetMapping
 	public ResponseEntity<List<ValorGrupo>> listar(){
@@ -119,9 +119,11 @@ public class ValorGrupoResource {
 	//----------------------------------------------------------------------------------------------------------------------
 	
 	@PutMapping("/alterarlista")
-	public ResponseEntity<ValorGrupo> atualizaListaValorGrupo(@RequestBody List<ValorGrupo> listValorGrupo, HttpServletResponse responseEntity) {
+	public void atualizaListaValorGrupo(@RequestBody List<ValorGrupo> listValorGrupo, HttpServletResponse responseEntity) {
+		Long n;
 		for(int i=0;i<listValorGrupo.size();i++) {
-			atualizaValorGrupo(listValorGrupo.get(i));
+			n = (long) i;
+			atualizaValorGrupo(n, listValorGrupo.get(i));
 		}
 	}
 }
