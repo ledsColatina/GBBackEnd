@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.BackEnd.domain.CapacidadeProducao;
+import com.example.BackEnd.domain.CapacidadeProducaoExtra;
+import com.example.BackEnd.domain.HoraExtra;
 import com.example.BackEnd.domain.Linha;
 import com.example.BackEnd.domain.LogValor;
 import com.example.BackEnd.domain.Maquina;
@@ -31,6 +33,7 @@ import com.example.BackEnd.domain.TipoProduto;
 import com.example.BackEnd.domain.ValorGrupo;
 import com.example.BackEnd.repository.CapacidadeProducaoExtraRepository;
 import com.example.BackEnd.repository.CapacidadeProducaoRepository;
+import com.example.BackEnd.repository.HoraExtraRepository;
 import com.example.BackEnd.repository.LinhaRepository;
 import com.example.BackEnd.repository.LogValorRepository;
 import com.example.BackEnd.repository.MaquinaRepository;
@@ -70,6 +73,9 @@ public class TipoProdutoResource {
 	
 	@Autowired
 	private LogValorRepository logValorRepository;
+	
+	@Autowired
+	private HoraExtraRepository horaExtraRepository;
 
 	//----------------------------------------------------------------------------------------------------------------------
 	
@@ -122,8 +128,23 @@ public class TipoProdutoResource {
 				valorGrupoNovo.setSubProcesso(listSubProcesso.get(j));
 				valorGrupoNovo.setValorAtual(0);
 				valorGrupoRepository.save(valorGrupoNovo);
+				
 			}
 		}
+		
+		CapacidadeProducaoExtra capProducaoExtra;
+		List<HoraExtra> listHoraExtra = horaExtraRepository.findByStatusLike("Pendente");
+		
+		for(int i=0;i<listHoraExtra.size();i++) {
+			for(int j=0;j<listHoraExtra.get(i).getListaMaquina().size();j++) {
+				capProducaoExtra = new CapacidadeProducaoExtra();
+				capProducaoExtra.setHoraExtra(listHoraExtra.get(i));
+				capProducaoExtra.setMaquina(listHoraExtra.get(i).getListaMaquina().get(j));
+				capProducaoExtra.setTipoProduto(tipoProdutoSalvo);
+				capacidadeProducaoExtraRepository.save(capProducaoExtra);
+			}
+		}
+		
 
     	return ResponseEntity.status(HttpStatus.OK).body(tipoProdutoSalvo);
     }

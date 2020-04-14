@@ -53,6 +53,8 @@ public interface HoraExtraRepository extends JpaRepository<HoraExtra, Long> {
 	List<CapacidadeProducaoExtra> findAllCapacidadesPorHoraExtra(@Param("id") Long id);
 	//List<HoraExtra> findByHoraExtraId(Long id);
 	
+	List<HoraExtra> findByStatusLike(String string);
+	
 	
 	
 	

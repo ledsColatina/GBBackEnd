@@ -1,6 +1,7 @@
 package com.example.BackEnd.web;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -49,6 +50,15 @@ public class OrdemProducaoResource {
 			return !ordemProducao.isEmpty() ? ResponseEntity.ok(ordemProducao) : ResponseEntity.noContent().build();	
 		}
 	
+		
+		//----------------------------------------------------------------------------------------------------------------------
+		
+			@GetMapping("/{id}")
+			public ResponseEntity<Optional<OrdemProducao>> listarPorId(@PathVariable("id") Long id){
+				Optional<OrdemProducao> ordemProducao = ordemProducaoRepository.findById(id);
+				return ResponseEntity.ok(ordemProducao);	
+			}
+		
 	//----------------------------------------------------------------------------------------------------------------------
 		
 		@PostMapping("/valortotal")
