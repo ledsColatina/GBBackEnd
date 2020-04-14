@@ -18,11 +18,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.BackEnd.domain.Maquina;
 import com.example.BackEnd.domain.CapacidadeProducao;
-
+import com.example.BackEnd.domain.CapacidadeProducaoExtra;
+import com.example.BackEnd.domain.HoraExtra;
 import com.example.BackEnd.domain.TipoProduto;
 import com.example.BackEnd.domain.Turno;
 import com.example.BackEnd.repository.MaquinaRepository;
+import com.example.BackEnd.repository.CapacidadeProducaoExtraRepository;
 import com.example.BackEnd.repository.CapacidadeProducaoRepository;
+import com.example.BackEnd.repository.HoraExtraRepository;
 import com.example.BackEnd.repository.TipoProdutoRepository;
 import com.example.BackEnd.repository.TurnoRepository;
 import com.example.BackEnd.service.MaquinaService;
@@ -45,6 +48,12 @@ public class MaquinaResource {
 	
 	@Autowired
 	private CapacidadeProducaoRepository capacidadeProducaoRepository;
+	
+	@Autowired
+	private CapacidadeProducaoExtraRepository capacidadeProducaoExtraRepository;
+	
+	@Autowired
+	private HoraExtraRepository horaExtraRepository;
 	
 	//----------------------------------------------------------------------------------------------------------------------------
 	
@@ -118,6 +127,20 @@ public class MaquinaResource {
 			CapacidadeProducao.setTipoProduto(listTipoProd.get(i));			
 			CapacidadeProducao.setCapacidadeHora(0);
 			capacidadeProducaoRepository.save(CapacidadeProducao);
+		}
+		
+		
+		CapacidadeProducaoExtra capProducaoExtra;
+		List<HoraExtra> listHoraExtra = horaExtraRepository.findByStatusLike("Pendente");
+		
+		for(int i=0;i<listHoraExtra.size();i++) {
+			for(int j=0;j<listTipoProd.size();j++) {
+				capProducaoExtra = new CapacidadeProducaoExtra();
+				capProducaoExtra.setHoraExtra(listHoraExtra.get(i));
+				capProducaoExtra.setMaquina(maquinaSalvo);
+				capProducaoExtra.setTipoProduto(listTipoProd.get(j));
+				capacidadeProducaoExtraRepository.save(capProducaoExtra);
+			}
 		}
 		
 		return ResponseEntity.ok(maquinaSalvo);
