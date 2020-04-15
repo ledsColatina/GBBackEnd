@@ -33,6 +33,8 @@ public interface ValorGrupoRepository extends JpaRepository<ValorGrupo, Long> {
 
 	List<ValorGrupo> findAllByOrderByLinhaDescricaoAscTipoProdutoDescricaoAsc();
 
+	void deleteByLinhaId(Long id);
+
 	
 
 

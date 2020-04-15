@@ -103,13 +103,17 @@ public class LinhaResource {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	protected void deleteLinha(@PathVariable Long id) {
 		List<ValorGrupo> ListValorGrupoExcluido = valorGrupoRepository.findByLinhaId(id);
-		valorGrupoRepository.deleteByTipoProdutoId(id);
+		valorGrupoRepository.deleteByLinhaId(id);
 		LogValor logValor;
 		List<OrdemProducao> listOrdemProducao = ordemProducaoRepository.findByLinhaId(id);
 		
+		
+		System.out.println(listOrdemProducao.size());
 		if(listOrdemProducao.size()>0) {
 			linhaRepository.deleteById(id);
+			System.out.println("teemm");
 		}else {
+			
 			for(int i=0;i<ListValorGrupoExcluido.size();i++) {
 				logValor = new LogValor();
 				logValor.setData(new java.util.Date(System.currentTimeMillis()));
