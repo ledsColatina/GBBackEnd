@@ -86,7 +86,12 @@ public class HoraExtraResource {
 	@GetMapping("/capacidade/{id}")
 		public ResponseEntity<?> CapacidadeHoraExtra(@PathVariable("id") Long id) {
 			List<CapacidadeProducaoExtra> ListCapacidade = capacidadeProducaoExtraRepository.findByHoraExtraId(id);
-			return ResponseEntity.ok(ListCapacidade);
+			for(int k = 0;k<ListCapacidade.size();k++) {
+				if(ListCapacidade.get(k) instanceof CapacidadeProducao) {
+					return ResponseEntity.ok(ListCapacidade);
+				}
+			}	
+			return ResponseEntity.ok("ok");
 		}
 			
 						
