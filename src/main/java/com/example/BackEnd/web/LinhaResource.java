@@ -111,7 +111,6 @@ public class LinhaResource {
 		System.out.println(listOrdemProducao.size());
 		if(listOrdemProducao.size()>0) {
 			linhaRepository.deleteById(id);
-			System.out.println("teemm");
 		}else {
 			
 			for(int i=0;i<ListValorGrupoExcluido.size();i++) {

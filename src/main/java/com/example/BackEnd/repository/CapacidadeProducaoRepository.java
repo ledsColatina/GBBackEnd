@@ -27,7 +27,7 @@ public interface CapacidadeProducaoRepository extends JpaRepository<CapacidadePr
 
 	
 
-	CapacidadeProducao findByMaquinaIdAndTipoProdutoId(Long id, Long id2);
+	List<CapacidadeProducao> findByMaquinaIdAndTipoProdutoId(Long id, Long id2);
 
 	
 

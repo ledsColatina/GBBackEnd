@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -106,6 +107,7 @@ public class HoraExtraResource {
 			List<TipoProduto> listTipoProd = tipoProdutoRepository.findAll();
 			List<Maquina> listMaquina = horaExtraSalva.getListaMaquina();
 			CapacidadeProducaoExtra capacidadeProducaoExtra;
+			 
 			
 			for(int i = 0;i<listMaquina.size();i++) {
 				for(int j = 0;j<listTipoProd.size();j++) {
@@ -113,9 +115,13 @@ public class HoraExtraResource {
 					capacidadeProducaoExtra.setHoraExtra(horaExtraSalva);
 					capacidadeProducaoExtra.setMaquina(listMaquina.get(i));
 					capacidadeProducaoExtra.setTipoProduto(listTipoProd.get(j));
-					CapacidadeProducao capProducao = capacidadeProducaoRepository.findByMaquinaIdAndTipoProdutoId(listMaquina.get(i).getId(),listTipoProd.get(j).getId());
-					capacidadeProducaoExtra.setCapacidadeHora(capProducao.getCapacidadeHora());
-					capacidadeProducaoExtraRepository.save(capacidadeProducaoExtra);
+					List<CapacidadeProducao> listCapProducao = capacidadeProducaoRepository.findByMaquinaIdAndTipoProdutoId(listMaquina.get(i).getId(),listTipoProd.get(j).getId());
+					for(int k = 0;k<listCapProducao.size();k++) {
+						if(listCapProducao.get(k) instanceof CapacidadeProducao) {
+							capacidadeProducaoExtra.setCapacidadeHora(listCapProducao.get(k).getCapacidadeHora());
+							capacidadeProducaoExtraRepository.save(capacidadeProducaoExtra);
+						}
+					}	
 				}
 			}
 			 
