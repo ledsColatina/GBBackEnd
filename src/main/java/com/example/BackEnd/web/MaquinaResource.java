@@ -74,7 +74,7 @@ public class MaquinaResource {
 			//List<CapacidadeProducao> result = capacidades.stream()                
 	        //        .filter(elemento ->!(elemento instanceof CapacidadeProducaoExtra))     
 	        //        .collect(Collectors.toList());
-			
+			//
 			return !capacidades.isEmpty() ? ResponseEntity.ok(capacidades) : ResponseEntity.noContent().build();
 		}
 
