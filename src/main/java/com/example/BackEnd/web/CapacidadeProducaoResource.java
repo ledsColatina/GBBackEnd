@@ -32,7 +32,7 @@ public class CapacidadeProducaoResource {
 	
 			@GetMapping("/{id}")
 			protected ResponseEntity<List<CapacidadeProducao>> listar(@PathVariable Long id) {
-				List<CapacidadeProducao> capacidades = capacidadeProducaoRepository.findByMaquinaId(id);
+				List<CapacidadeProducao> capacidades = capacidadeProducaoRepository.findByMaquinaIdAndDtype(id);
 				return !capacidades.isEmpty() ? ResponseEntity.ok(capacidades) : ResponseEntity.noContent().build();
 			}
 
