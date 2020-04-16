@@ -66,9 +66,14 @@ public class MaquinaResource {
 	//----------------------------------------------------------------------------------------------------------------------------
 	
 		@GetMapping("/capacidade/{id}")
-		protected ResponseEntity<List<CapacidadeProducao>> listar(@PathVariable Long id) {
+		protected ResponseEntity<?> listar(@PathVariable Long id) {
 			List<CapacidadeProducao> capacidades = capacidadeProducaoRepository.findByMaquinaId(id);
-			return !capacidades.isEmpty() ? ResponseEntity.ok(capacidades) : ResponseEntity.noContent().build();
+			for(int k = 0;k<capacidades.size();k++) {
+				if(capacidades.get(k) instanceof CapacidadeProducao) {				
+					return !capacidades.isEmpty() ? ResponseEntity.ok(capacidades) : ResponseEntity.noContent().build();
+				}
+			}	
+			return ResponseEntity.ok("ok");
 		}
 
 	//-----------------------------------------------------------------------------------------------------------------------	

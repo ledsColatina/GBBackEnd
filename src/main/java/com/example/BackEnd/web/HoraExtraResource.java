@@ -88,7 +88,8 @@ public class HoraExtraResource {
 			List<CapacidadeProducaoExtra> ListCapacidade = capacidadeProducaoExtraRepository.findByHoraExtraId(id);
 			for(int k = 0;k<ListCapacidade.size();k++) {
 				if(ListCapacidade.get(k) instanceof CapacidadeProducao) {
-					return ResponseEntity.ok(ListCapacidade);
+					
+					return !ListCapacidade.isEmpty() ? ResponseEntity.ok(ListCapacidade) : ResponseEntity.noContent().build();
 				}
 			}	
 			return ResponseEntity.ok("ok");
