@@ -2,6 +2,8 @@ package com.example.BackEnd.web;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,13 +69,13 @@ public class MaquinaResource {
 	
 		@GetMapping("/capacidade/{id}")
 		protected ResponseEntity<?> listar(@PathVariable Long id) {
-			List<CapacidadeProducao> capacidades = capacidadeProducaoRepository.findByMaquinaId(id);
-			for(int k = 0;k<capacidades.size();k++) {
-				if(capacidades.get(k) instanceof CapacidadeProducao) {				
-					return !capacidades.isEmpty() ? ResponseEntity.ok(capacidades) : ResponseEntity.noContent().build();
-				}
-			}	
-			return ResponseEntity.ok("ok");
+			List<CapacidadeProducao> capacidades = capacidadeProducaoRepository.findByMaquinaIdAndDtype(id);
+			
+			//List<CapacidadeProducao> result = capacidades.stream()                
+	        //        .filter(elemento ->!(elemento instanceof CapacidadeProducaoExtra))     
+	        //        .collect(Collectors.toList());
+			
+			return !capacidades.isEmpty() ? ResponseEntity.ok(capacidades) : ResponseEntity.noContent().build();
 		}
 
 	//-----------------------------------------------------------------------------------------------------------------------	

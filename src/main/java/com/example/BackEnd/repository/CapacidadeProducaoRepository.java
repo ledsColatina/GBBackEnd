@@ -29,6 +29,14 @@ public interface CapacidadeProducaoRepository extends JpaRepository<CapacidadePr
 
 	List<CapacidadeProducao> findByMaquinaIdAndTipoProdutoId(Long id, Long id2);
 
+
+
+	@Query(value = "SELECT CAP.dtype, CAP.id, CAP.capacidade_hora, CAP.maquina_id, CAP.tipo_produto_id, CAP.hora_extra_id\r\n" + 
+			"	FROM capacidade_producao as CAP\r\n" + 
+			"	Where CAP.dtype LIKE 'CapacidadeProducao' \r\n" + 
+			"	and CAP.maquina_id = :id", nativeQuery = true)
+	List<CapacidadeProducao> findByMaquinaIdAndDtype(Long id);
+
 	
 
 	
