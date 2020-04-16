@@ -35,7 +35,7 @@ public class CapacidadeProducaoResource {
 				List<CapacidadeProducao> capacidades = capacidadeProducaoRepository.findByMaquinaIdAndDtype(id);
 				return !capacidades.isEmpty() ? ResponseEntity.ok(capacidades) : ResponseEntity.noContent().build();
 			}
-
+//
 	
 	//-----------------------------------------------------------------------------------------------------------------------	
 	
