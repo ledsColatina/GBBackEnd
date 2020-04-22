@@ -71,7 +71,7 @@ public class OrdemProducaoResource {
 				valorGrupo = valorGrupoRespository.findByLinhaIdAndTipoProdutoIdAndSubProcessoId(
 						ObjetoPesquisaValorGrupo.getLinha().getId(),ObjetoPesquisaValorGrupo.getTipoProduto().getId(),
 						listSubProcessos.get(i).getId());
-				
+			
 				total = total + valorGrupo.getValorAtual();
 			}
 			

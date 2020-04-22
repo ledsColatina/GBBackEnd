@@ -42,7 +42,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.inMemoryAuthentication().withUser("admin").password(passwordEncoder().encode("admin")).roles("ADMIN");
 		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-
+		
 	}
 
 	@Bean
@@ -62,10 +62,10 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/setor/**");
-		web.ignoring().antMatchers("/setor/{id}/turnos/lastID");
-		web.ignoring().antMatchers("/setor/lastID");
-		web.ignoring().antMatchers("/setor/{id}");
+		//web.ignoring().antMatchers("/setor/**");
+		//web.ignoring().antMatchers("/setor/{id}/turnos/lastID");
+		//web.ignoring().antMatchers("/setor/lastID");
+		//web.ignoring().antMatchers("/setor/{id}");
 		
 	
 	}
