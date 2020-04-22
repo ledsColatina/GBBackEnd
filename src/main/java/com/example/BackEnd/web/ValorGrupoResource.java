@@ -118,31 +118,11 @@ public class ValorGrupoResource {
 	
 	//----------------------------------------------------------------------------------------------------------------------
 	
-	@SuppressWarnings("unused")
 	@PutMapping("/alterarlista")
-	public ResponseEntity<?> atualizaListaValorGrupo(@RequestBody List<ValorGrupo> listValorGrupo, HttpServletResponse responseEntity) {
-		LogValor logValor = new LogValor();
-		float valor; 
-	
-		for(int i=0;i<listValorGrupo.size();i++) {	
-			
-			valor = listValorGrupo.get(i).getValorAtual();
-			return valorGrupoRepository.findById(listValorGrupo.get(i).getId()).map(record -> {
-				record.setValorAtual(listValorGrupo.get(i).getValorAtual());
-				ValorGrupo ValorGrupoALterado = valorGrupoRepository.save(record);
-				
-				logValor.setValorNovo(valor);
-				logValor.setData(new java.util.Date(System.currentTimeMillis()));
-				logValor.setDescricao(ValorGrupoALterado.getSubProcesso().getDescricao() + "/"+ ValorGrupoALterado.getLinha().getDescricao() + "/" + ValorGrupoALterado.getTipoProduto().getDescricao());
-				//logValor.setValorGrupo(ValorGrupoALterado);
-				logValor.setStatus("Alterado");
-				logValorRepository.save(logValor);
-				return ResponseEntity.ok().body(ValorGrupoALterado);
-
-			}).orElse(ResponseEntity.notFound().build());
-			
-		}
-		return ResponseEntity.ok("OK");
+	public void atualizaListaValorGrupo(@RequestBody List<ValorGrupo> listValorGrupo, HttpServletResponse responseEntity) {
+		for(ValorGrupo vg: listValorGrupo) {
+            atualizaValorGrupo(vg.getId(), vg);
+        }
 		
 	}
 }
