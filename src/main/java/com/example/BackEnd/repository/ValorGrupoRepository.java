@@ -1,6 +1,7 @@
 package com.example.BackEnd.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -36,6 +37,8 @@ public interface ValorGrupoRepository extends JpaRepository<ValorGrupo, Long> {
 	void deleteByLinhaId(Long id);
 
 	ValorGrupo findByLinhaIdAndTipoProdutoIdAndSubProcessoId(Long id, Long id2, Long id3);
+
+	
 
 	
 
