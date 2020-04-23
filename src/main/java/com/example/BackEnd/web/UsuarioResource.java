@@ -10,7 +10,8 @@
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus; 
   import org.springframework.http.ResponseEntity;
-  import org.springframework.web.bind.annotation.GetMapping; 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping; 
   import org.springframework.web.bind.annotation.PostMapping; 
   import org.springframework.web.bind.annotation.RequestBody; 
   import org.springframework.web.bind.annotation.RequestMapping;   
@@ -29,6 +30,8 @@ import org.springframework.http.HttpStatus;
 	  
 	  @PostMapping
 	  protected ResponseEntity<Usuario> criarUsuario(@Valid @RequestBody Usuario usuario,HttpServletResponse responseEntity){ 
+		  BCryptPasswordEncoder encoder =  new BCryptPasswordEncoder();
+		  usuario.setSenha(encoder.encode(usuario.getSenha()));
 		  Usuario usuarioSalvo = usuarioRepository.save(usuario);
 		  return ResponseEntity.status(HttpStatus.OK).body(usuarioSalvo); 
 	  }
