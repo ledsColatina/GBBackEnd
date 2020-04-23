@@ -23,8 +23,8 @@ public class Usuario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotEmpty(message = "Nome do Usuario deve ser informado")
-	@NotNull(message = "Nome do Usuario deve ser informado")
+	//@NotEmpty(message = "Nome do Usuario deve ser informado")
+	//@NotNull(message = "Nome do Usuario deve ser informado")
 	private String nome;
 	private String login;
 	private String senha;
