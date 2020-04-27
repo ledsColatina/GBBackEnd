@@ -43,11 +43,10 @@ public class AppUserDetailsServer implements UserDetailsService{
 		Set<SimpleGrantedAuthority> authorities = new HashSet<>();
 		if(usuario.getTipo() == true) {
 			authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));	
+			authorities.add(new SimpleGrantedAuthority("ROLE_CHEFE"));	
 		}else {
 			authorities.add(new SimpleGrantedAuthority("ROLE_CHEFE"));	
 		}
-		//usuario.getMaquinas().forEach(p -> authorities.add(new SimpleGrantedAuthority(p.getNome().toUpperCase())));
-		
 		return authorities;
 	}
 	
