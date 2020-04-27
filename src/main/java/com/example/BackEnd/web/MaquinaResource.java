@@ -176,7 +176,6 @@ public class MaquinaResource {
 		return maquinaRepository.findById(id).map(record -> {
 			record.setNome(maquina.getNome());
 			record.setMaxOcupacao(maquina.getMaxOcupacao());
-			record.setRole(maquina.getRole());
 			Maquina updated = maquinaRepository.save(record);
 			return ResponseEntity.ok().body(updated);
 
