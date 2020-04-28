@@ -3,8 +3,9 @@
  
   
   import java.util.List;
- 
-  import javax.servlet.http.HttpServletResponse; 
+import java.util.Optional;
+
+import javax.servlet.http.HttpServletResponse; 
   import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +58,14 @@ import com.example.BackEnd.domain.Usuario;
 	  public ResponseEntity<List<Usuario>> listar(){ 
 		  List<Usuario> usuario = usuarioRepository.findAll(); 
 		  return !usuario.isEmpty() ? ResponseEntity.ok(usuario) : ResponseEntity.noContent().build(); }
+  
+	  //----------------------------------------------------------------------------------------------------------------------
+	  
+	  @GetMapping("/{id}")
+	  public ResponseEntity<?> pegarPorId(@PathVariable("id") Long id){ 
+		  Optional<Usuario> usuario = usuarioRepository.findById(id); 
+		  return  ResponseEntity.ok(usuario); 
+	  }
   
 	//----------------------------------------------------------------------------------------------------------------------------    
 	    
