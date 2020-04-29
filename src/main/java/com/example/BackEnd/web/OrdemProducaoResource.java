@@ -23,10 +23,12 @@ import com.example.BackEnd.domain.Cliente;
 import com.example.BackEnd.domain.EtapaProducao;
 import com.example.BackEnd.domain.ObjetoPesquisaValorGrupo;
 import com.example.BackEnd.domain.OrdemProducao;
+import com.example.BackEnd.domain.Partida;
 import com.example.BackEnd.domain.SubProcesso;
 import com.example.BackEnd.domain.ValorGrupo;
 import com.example.BackEnd.repository.EtapaProducaoRepository;
 import com.example.BackEnd.repository.OrdemProducaoRepository;
+import com.example.BackEnd.repository.PartidaRepository;
 import com.example.BackEnd.repository.ValorGrupoRepository;
 
 @RestController
@@ -41,7 +43,10 @@ public class OrdemProducaoResource {
 	
 	@Autowired
     private ValorGrupoRepository valorGrupoRespository;
-	//poi
+	
+	@Autowired
+    private PartidaRepository partidaRepository;
+	
 	//----------------------------------------------------------------------------------------------------------------------
 	
 		@GetMapping
@@ -88,6 +93,18 @@ public class OrdemProducaoResource {
 			//	etapaProducaoRepository.save(listEtapas.get(i));
 			//}
 			OrdemProducao ordemProducaoSalva = ordemProducaoRepository.save(ordemProducao);
+			
+			List<EtapaProducao> listEtapas = ordemProducaoSalva.getListEtapas();
+			Partida partida;
+			for(EtapaProducao listE: listEtapas) {
+				partida = new Partida();
+				partida.setEtapaProducao(listE);
+				partida.setQuantidade(ordemProducaoSalva.getQuantidade());
+				partidaRepository.save(partida);
+	        }
+			
+				
+			
 	    	return ResponseEntity.status(HttpStatus.OK).body(ordemProducaoSalva);
 	    }
 		

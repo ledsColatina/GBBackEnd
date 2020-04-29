@@ -33,6 +33,6 @@ public class Usuario {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "usuario_maquina", joinColumns = { @JoinColumn(name = "usuario_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "maquina_id") })
-	private List<Maquina> maquinas;
+	private List<Maquina> listaMaquina;
 	
 }

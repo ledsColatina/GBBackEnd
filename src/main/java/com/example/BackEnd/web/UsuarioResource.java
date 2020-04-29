@@ -2,9 +2,13 @@
   package com.example.BackEnd.web;
  
   
-  import java.util.List;
+  import java.util.Base64;
+import java.util.List;
 import java.util.Optional;
 
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import javax.servlet.http.HttpServletResponse; 
   import javax.validation.Valid;
 
@@ -63,7 +67,7 @@ import com.example.BackEnd.domain.Usuario;
 	  
 	  @GetMapping("/{id}")
 	  public ResponseEntity<?> pegarPorId(@PathVariable("id") Long id){ 
-		  Optional<Usuario> usuario = usuarioRepository.findById(id); 
+		  Optional<Usuario> usuario = usuarioRepository.findById(id);
 		  return  ResponseEntity.ok(usuario); 
 	  }
   
@@ -81,9 +85,8 @@ import com.example.BackEnd.domain.Usuario;
 	    public ResponseEntity<Usuario> atualizaUsuario(@PathVariable("id") Long id,@RequestBody Usuario usuario,HttpServletResponse responseEntity){
 	    	return usuarioRepository.findById(id).map(record -> {
 				    		record.setLogin(usuario.getLogin());
-				    		record.setMaquinas(usuario.getMaquinas());
+				    		record.setListaMaquina(usuario.getListaMaquina());
 				    		record.setNome(usuario.getNome());
-				    		record.setSenha(usuario.getSenha());
 				    		record.setTipo(usuario.getTipo());
 				    		Usuario updated = usuarioRepository.save(record);
 	    	                return ResponseEntity.ok().body(updated);

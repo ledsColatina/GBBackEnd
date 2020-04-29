@@ -145,7 +145,6 @@ public class HoraExtraResource {
 			capacidadeProducaoRepository.deleteById(listCapacidades.get(i).getId());
 		}
 		capacidadeProducaoExtraRepository.deleteByHoraExtraId(id);
-		
 		horaExtraRepository.deleteById(id);
 	}
 	

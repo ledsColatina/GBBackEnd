@@ -19,18 +19,18 @@ public class Partida {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private Date dataInicio;
-	private Time horaInicio;
-	private Date dataFim;
-	private Long horaFim;
-	private Long Quantidade;
+	private String dataInicio;
+	private String horaInicio;
+	private String dataFim;
+	private String horaFim;
+	private Long quantidade;
 
 	@ManyToOne
-	@JoinColumn(name = "etapaOrigem_id")
-	private EtapaProducao origem;
+	@JoinColumn(name = "etapaProducao_id")
+	private EtapaProducao etapaProducao;
 
 	@ManyToOne
-	@JoinColumn(name = "etapaDestino_id")
-	private EtapaProducao Destino;
+	@JoinColumn(name = "maquina_id")
+	private Maquina maquina;
 
 }
