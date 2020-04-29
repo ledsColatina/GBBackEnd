@@ -67,6 +67,7 @@ public class PartidaResource {
 			    		record.setQuantidade(partida.getQuantidade());
 			    		Partida updated = partidaRepository.save(record);
     	                return ResponseEntity.ok().body(updated);
+    	                
     	                   	               
     	           }).orElse(ResponseEntity.notFound().build());
     }   
