@@ -42,6 +42,5 @@ public class EtapaProducao {
 			@JoinColumn(name = "etapaProducao_id") })
 	private List<SubProcesso> listSubProcesso;
 	
-	@OneToMany
-	private List<Partida> listPartidas;
+	
 }

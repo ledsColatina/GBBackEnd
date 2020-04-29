@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.BackEnd.dto.PartidaDTO;
+import com.example.BackEnd.repository.EtapaProducaoRepository;
 import com.example.BackEnd.repository.PartidaRepository;
 import com.example.BackEnd.service.mapper.PartidaListagemMapper;
 
@@ -18,12 +19,20 @@ public class PartidaService {
 	@Autowired
 	private PartidaRepository partidaRepository;
 	
+	@Autowired
+	private EtapaProducaoRepository etapaProducaoRepository;
+	
 	public PartidaService(PartidaRepository partidaRepository) {
 		this.partidaListagemMapper = new PartidaListagemMapper();
 		this.partidaRepository = partidaRepository;
 	}
 	
 	public List<PartidaDTO> consultar() {
-		return partidaListagemMapper.toDto(partidaRepository.findAll());	
+		List<PartidaDTO> lisPartidaDTO = partidaListagemMapper.toDto(partidaRepository.findAll());
+		
+		for(PartidaDTO partDTO : lisPartidaDTO) {
+			partDTO.setSequenciaEtapa(etapaProducaoRepository.buscarSequenciaDeEtapa(partDTO.getIdPartida()));
+		}
+		return 	lisPartidaDTO;
 	}
 }
