@@ -8,7 +8,7 @@ import lombok.Setter;
 public class PartidaDTO {
 	private Long idPartida;
 	private String referenciaOP;
-	private String sequenciaEtapa;
+	private Long sequenciaEtapa;
 	private String nomeCliente;
 	private String nomeMaquina;
 	private Long quantidadePartida;
