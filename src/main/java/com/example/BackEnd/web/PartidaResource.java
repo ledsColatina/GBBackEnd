@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.BackEnd.domain.Cliente;
 import com.example.BackEnd.domain.Partida;
+import com.example.BackEnd.dto.PartidaDTO;
 import com.example.BackEnd.repository.PartidaRepository;
+import com.example.BackEnd.service.PartidaService;
 
 @RestController
 @RequestMapping(value = "/partida")
@@ -29,6 +31,9 @@ public class PartidaResource {
 	@Autowired
     private PartidaRepository partidaRepository;
 	
+	@Autowired
+    private PartidaService partidaService;
+	
 	//----------------------------------------------------------------------------------------------------------------------
 	@GetMapping
 	public ResponseEntity<List<Partida>> listarPartidas(){
@@ -36,6 +41,12 @@ public class PartidaResource {
 		return !partida.isEmpty() ? ResponseEntity.ok(partida) : ResponseEntity.noContent().build();	
 	}
 	
+	//----------------------------------------------------------------------------------------------------------------------
+		@GetMapping("/inicio")
+		public ResponseEntity<List<PartidaDTO>> inicoPartidas(){ 	
+			return ResponseEntity.ok(partidaService.consultar());	
+		}
+		
 	//----------------------------------------------------------------------------------------------------------------------
 	
     @PostMapping
