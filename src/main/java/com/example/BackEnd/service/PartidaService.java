@@ -51,8 +51,8 @@ public class PartidaService {
 			ordeProducao  = ordemProducaoRepository.buscarReferenciOP(etapaProducao.getId());
 			partDTO.setReferenciaOP(ordeProducao.getReferencia());
 			partDTO.setNomeCliente(ordeProducao.getCliente().getNome());
-			cliente = clienteRepository.buscarNomeClientePorOrdemProducao(ordeProducao.getId());
-			partDTO.setNomeCliente(cliente.getNome());
+			//cliente = clienteRepository.buscarNomeClientePorOrdemProducao(ordeProducao.getId());
+			//partDTO.setNomeCliente(cliente.getNome());
 		}
 		return 	lisPartidaDTO;
 	}
