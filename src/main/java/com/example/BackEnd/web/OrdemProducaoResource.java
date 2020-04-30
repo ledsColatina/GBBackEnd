@@ -26,10 +26,12 @@ import com.example.BackEnd.domain.OrdemProducao;
 import com.example.BackEnd.domain.Partida;
 import com.example.BackEnd.domain.SubProcesso;
 import com.example.BackEnd.domain.ValorGrupo;
+import com.example.BackEnd.dto.PartidaDTO;
 import com.example.BackEnd.repository.EtapaProducaoRepository;
 import com.example.BackEnd.repository.OrdemProducaoRepository;
 import com.example.BackEnd.repository.PartidaRepository;
 import com.example.BackEnd.repository.ValorGrupoRepository;
+import com.example.BackEnd.service.PartidaService;
 
 @RestController
 @RequestMapping(value = "/ordemproducao")
@@ -46,6 +48,9 @@ public class OrdemProducaoResource {
 	
 	@Autowired
     private PartidaRepository partidaRepository;
+	
+	@Autowired
+    private PartidaService partidaService;
 	
 	//----------------------------------------------------------------------------------------------------------------------
 	
@@ -87,7 +92,7 @@ public class OrdemProducaoResource {
 	//----------------------------------------------------------------------------------------------------------------------
 
 		@PostMapping
-	    public ResponseEntity<OrdemProducao> criarOrdemProducao(@Valid @RequestBody  OrdemProducao ordemProducao,HttpServletResponse responseEntity){
+	    public ResponseEntity<?> criarOrdemProducao(@Valid @RequestBody  OrdemProducao ordemProducao,HttpServletResponse responseEntity){
 			//List<EtapaProducao> listEtapas = ordemProducao.getListEtapas();
 			//for(int i=0;i<listEtapas.size();i++) {
 			//	etapaProducaoRepository.save(listEtapas.get(i));
@@ -103,11 +108,16 @@ public class OrdemProducaoResource {
 				partidaRepository.save(partida);
 	        }
 			
+		
+			
+			List<PartidaDTO> lisPartidaDTO = partidaService.consultar(ordemProducaoSalva);
+			
 				
 			
-	    	return ResponseEntity.status(HttpStatus.OK).body(ordemProducaoSalva);
+	    	return ResponseEntity.status(HttpStatus.OK).body(lisPartidaDTO);
 	    }
 		
+	
 	//----------------------------------------------------------------------------------------------------------------------
 		
 		 @DeleteMapping("/{id}")

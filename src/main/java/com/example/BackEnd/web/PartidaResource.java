@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.BackEnd.domain.Cliente;
+import com.example.BackEnd.domain.OrdemProducao;
 import com.example.BackEnd.domain.Partida;
 import com.example.BackEnd.dto.PartidaDTO;
 import com.example.BackEnd.repository.PartidaRepository;
@@ -43,8 +44,8 @@ public class PartidaResource {
 	
 	//----------------------------------------------------------------------------------------------------------------------
 		@GetMapping("/inicio")
-		public ResponseEntity<List<PartidaDTO>> inicoPartidas(){ 	
-			return ResponseEntity.ok(partidaService.consultar());	
+		public ResponseEntity<List<PartidaDTO>> inicoPartidas(OrdemProducao op){ 	
+			return ResponseEntity.ok(partidaService.consultar(op));	
 		}
 		
 	//----------------------------------------------------------------------------------------------------------------------
