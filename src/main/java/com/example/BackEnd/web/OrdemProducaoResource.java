@@ -114,7 +114,7 @@ public class OrdemProducaoResource {
 			
 				
 			
-	    	return ResponseEntity.status(HttpStatus.OK).body(lisPartidaDTO);
+	    	return ResponseEntity.status(HttpStatus.OK).body(ordemProducaoSalva);
 	    }
 		
 	
