@@ -14,7 +14,7 @@ public interface OrdemProducaoRepository extends JpaRepository<OrdemProducao, Lo
 
 	List<OrdemProducao> findByLinhaId(Long id);
 	
-	@Query(value = "SELECT id, data_emissao, prioridade_atual, prioridade_inicial, quantidade, referencia, reprocesso, valor_total, cliente_id, linha_id, ordem_producao_id, tipo_produto_id\r\n" + 
+	@Query(value = "SELECT OP.id, OP.data_emissao, OP.prioridade_atual, OP.prioridade_inicial, OP.quantidade, OP.referencia, OP.reprocesso, OP.valor_total, OP.cliente_id, OP.linha_id, OP.ordem_producao_id, OP.tipo_produto_id\r\n" + 
 			"	FROM ordem_producao as OP, etapa_producao as EP\r\n" + 
 			"	WHERE EP.id = :id\r\n" + 
 			"	and OP.ordem_producao_id = EP.id;", nativeQuery = true)
