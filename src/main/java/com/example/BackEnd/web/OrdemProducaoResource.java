@@ -105,7 +105,7 @@ public class OrdemProducaoResource {
 			for(EtapaProducao listE: listEtapas) {
 				partida = new Partida();
 				partida.setEtapaProducao(listE);
-				partida.setMaquina(listE.getProcesso().getListaMaquina().get(0));
+				//partida.setMaquina(listE.getProcesso().getListaMaquina().get(0));
 				partida.setQuantidade(ordemProducaoSalva.getQuantidade());
 				partidaRepository.save(partida);
 	        }
