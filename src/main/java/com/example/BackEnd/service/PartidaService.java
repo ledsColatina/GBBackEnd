@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.BackEnd.domain.Cliente;
 import com.example.BackEnd.domain.EtapaProducao;
 import com.example.BackEnd.domain.OrdemProducao;
 import com.example.BackEnd.dto.PartidaDTO;
+import com.example.BackEnd.repository.ClienteRepository;
 import com.example.BackEnd.repository.EtapaProducaoRepository;
 import com.example.BackEnd.repository.OrdemProducaoRepository;
 import com.example.BackEnd.repository.PartidaRepository;
@@ -28,6 +30,8 @@ public class PartidaService {
 	@Autowired
 	private OrdemProducaoRepository ordemProducaoRepository;
 	
+	private ClienteRepository clienteRepository;
+	
 	public PartidaService(PartidaRepository partidaRepository) {
 		this.partidaListagemMapper = new PartidaListagemMapper();
 		this.partidaRepository = partidaRepository;
@@ -37,15 +41,18 @@ public class PartidaService {
 		List<PartidaDTO> lisPartidaDTO = partidaListagemMapper.toDto(partidaRepository.findAll());
 		EtapaProducao etapaProducao;
 		OrdemProducao ordeProducao;
+		Cliente cliente;
 		for(PartidaDTO partDTO : lisPartidaDTO) {
 			etapaProducao = new EtapaProducao();
 			ordeProducao = new OrdemProducao();
 			
 			etapaProducao = etapaProducaoRepository.buscarSequenciaDeEtapa(partDTO.getIdPartida());
 			partDTO.setSequenciaEtapa(etapaProducao.getSequencia());
-			ordeProducao  = ordemProducaoRepository.buscarReferenciOP(etapaProducao.getId());
-			partDTO.setReferenciaOP(ordeProducao.getReferencia());
-			partDTO.setNomeCliente(ordeProducao.getCliente().getNome());
+			//ordeProducao  = ordemProducaoRepository.buscarReferenciOP(etapaProducao.getId());
+			//partDTO.setReferenciaOP(ordeProducao.getReferencia());
+			//partDTO.setNomeCliente(ordeProducao.getCliente().getNome());
+			//cliente = clienteRepository.buscarNomeClientePorOrdemProducao(ordeProducao.getId());
+			//partDTO.setNomeCliente(cliente.getNome());
 		}
 		return 	lisPartidaDTO;
 	}
