@@ -44,8 +44,8 @@ public class PartidaResource {
 	
 	//----------------------------------------------------------------------------------------------------------------------
 		@GetMapping("/inicio")
-		public ResponseEntity<List<PartidaDTO>> inicoPartidas(OrdemProducao op){ 	
-			return ResponseEntity.ok(partidaService.consultar(op));	
+		public ResponseEntity<List<PartidaDTO>> inicoPartidas(){ 	
+			return ResponseEntity.ok(partidaService.consultar());	
 		}
 		
 	//----------------------------------------------------------------------------------------------------------------------

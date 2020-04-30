@@ -110,7 +110,7 @@ public class OrdemProducaoResource {
 			
 		
 			
-			List<PartidaDTO> lisPartidaDTO = partidaService.consultar(ordemProducaoSalva);
+			//List<PartidaDTO> lisPartidaDTO = partidaService.consultar(ordemProducaoSalva);
 			
 				
 			

@@ -16,8 +16,8 @@ public interface OrdemProducaoRepository extends JpaRepository<OrdemProducao, Lo
 	
 	@Query(value = "SELECT OP.id, OP.data_emissao, OP.prioridade_atual, OP.prioridade_inicial, OP.quantidade, OP.referencia, OP.reprocesso, OP.valor_total, OP.cliente_id, OP.linha_id, OP.ordem_producao_id, OP.tipo_produto_id\r\n" + 
 			"	FROM ordem_producao as OP, etapa_producao as EP\r\n" + 
-			"	WHERE EP.id = :id\r\n" + 
-			"	and OP.ordem_producao_id = EP.id;", nativeQuery = true)
+			"	WHERE EP.id =:id\r\n" + 
+			"	and OP.ordem_producao_id = EP.etapa_producao_id;", nativeQuery = true)
 	OrdemProducao buscarReferenciOP(@Param("id") Long id);
 
 }
