@@ -44,10 +44,10 @@ public class PartidaResource {
 	
 	//----------------------------------------------------------------------------------------------------------------------
 		@GetMapping("/inicio")
-		public ResponseEntity<List<PartidaDTO>> inicoPartidas(){ 	
+		public ResponseEntity<List<PartidaDTO>> inicioPartidas(){ 	
 			return ResponseEntity.ok(partidaService.consultar());	
 		}
-		
+	
 	//----------------------------------------------------------------------------------------------------------------------
 	
     @PostMapping

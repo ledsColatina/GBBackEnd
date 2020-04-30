@@ -30,6 +30,7 @@ import com.example.BackEnd.dto.PartidaDTO;
 import com.example.BackEnd.repository.EtapaProducaoRepository;
 import com.example.BackEnd.repository.OrdemProducaoRepository;
 import com.example.BackEnd.repository.PartidaRepository;
+import com.example.BackEnd.repository.ProcessoRepository;
 import com.example.BackEnd.repository.ValorGrupoRepository;
 import com.example.BackEnd.service.PartidaService;
 
@@ -50,7 +51,7 @@ public class OrdemProducaoResource {
     private PartidaRepository partidaRepository;
 	
 	@Autowired
-    private PartidaService partidaService;
+    private ProcessoRepository ProcessoRepository;
 	
 	//----------------------------------------------------------------------------------------------------------------------
 	
@@ -104,6 +105,7 @@ public class OrdemProducaoResource {
 			for(EtapaProducao listE: listEtapas) {
 				partida = new Partida();
 				partida.setEtapaProducao(listE);
+				partida.setMaquina(listE.getProcesso().getListaMaquina().get(0));
 				partida.setQuantidade(ordemProducaoSalva.getQuantidade());
 				partidaRepository.save(partida);
 	        }
