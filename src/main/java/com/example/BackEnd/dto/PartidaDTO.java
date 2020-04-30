@@ -6,12 +6,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PartidaDTO {
-	private Long idPartida;
+	private Long idPartida;//-
 	private String referenciaOP;
-	private Long sequenciaEtapa;
+	private Long sequenciaEtapa;//-
 	private String nomeCliente;
 	private String nomeMaquina;
-	private Long quantidadePartida;
+	private Long quantidadePartida;//-
 	
 	
 
