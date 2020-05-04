@@ -28,13 +28,13 @@ public class PartidaListagemMapper implements EntityMapper<PartidaDTO,Partida>{
 	public List<Partida> toEntity(List<PartidaDTO> dtoList) {
 		// TODO Auto-generated method stub
 		return null;
+		
 	}
 
 	@Override
 	public List<PartidaDTO> toDto(List<Partida> entityList) {
 		List<PartidaDTO> lisPartidaDTO = new ArrayList<>();
 		for(Partida part : entityList) {
-			System.out.println(entityList.get(0).getMaquina().getNome());
 			lisPartidaDTO.add(toDto(part));
 		}
 		return lisPartidaDTO;
