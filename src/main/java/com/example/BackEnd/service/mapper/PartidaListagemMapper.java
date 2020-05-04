@@ -28,7 +28,6 @@ public class PartidaListagemMapper implements EntityMapper<PartidaDTO,Partida>{
 	public List<Partida> toEntity(List<PartidaDTO> dtoList) {
 		// TODO Auto-generated method stub
 		return null;
-		
 	}
 
 	@Override
