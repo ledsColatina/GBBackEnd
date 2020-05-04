@@ -38,22 +38,22 @@ public class PartidaService {
 	}
 	
 	public List<PartidaDTO> consultar() {
+		System.out.println("ewgsgsdgrdsgsg");
 		List<PartidaDTO> lisPartidaDTO = partidaListagemMapper.toDto(partidaRepository.findAll());
+		
 		EtapaProducao etapaProducao;
 		OrdemProducao ordeProducao;
-		Cliente cliente;
+		
 		for(PartidaDTO partDTO : lisPartidaDTO) {
 			etapaProducao = new EtapaProducao();
 			ordeProducao = new OrdemProducao();
-			
 			etapaProducao = etapaProducaoRepository.buscarSequenciaDeEtapa(partDTO.getIdPartida());
 			partDTO.setSequenciaEtapa(etapaProducao.getSequencia());
 			ordeProducao  = ordemProducaoRepository.buscarReferenciOP(etapaProducao.getId());
 			partDTO.setReferenciaOP(ordeProducao.getReferencia());
 			partDTO.setNomeCliente(ordeProducao.getCliente().getNome());
-			//cliente = clienteRepository.buscarNomeClientePorOrdemProducao(ordeProducao.getId());
-			//partDTO.setNomeCliente(cliente.getNome());
 		}
+		
 		return 	lisPartidaDTO;
 	}
 }

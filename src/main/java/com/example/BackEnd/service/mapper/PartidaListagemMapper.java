@@ -19,6 +19,8 @@ public class PartidaListagemMapper implements EntityMapper<PartidaDTO,Partida>{
 		PartidaDTO partidaDTO = new PartidaDTO();
 		partidaDTO.setIdPartida(entity.getId());
 		partidaDTO.setQuantidadePartida(entity.getQuantidade());
+		System.out.println("ewgsgsdgrdsgsg");
+		partidaDTO.setNomeMaquina(entity.getMaquina().getNome());
 		return partidaDTO;
 	}
 
@@ -32,6 +34,7 @@ public class PartidaListagemMapper implements EntityMapper<PartidaDTO,Partida>{
 	public List<PartidaDTO> toDto(List<Partida> entityList) {
 		List<PartidaDTO> lisPartidaDTO = new ArrayList<>();
 		for(Partida part : entityList) {
+			System.out.println(entityList.get(0).getMaquina().getNome());
 			lisPartidaDTO.add(toDto(part));
 		}
 		return lisPartidaDTO;
