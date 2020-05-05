@@ -1,5 +1,6 @@
 package com.example.BackEnd.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.example.BackEnd.domain.Cliente;
 import com.example.BackEnd.domain.EtapaProducao;
 import com.example.BackEnd.domain.OrdemProducao;
+import com.example.BackEnd.domain.Partida;
 import com.example.BackEnd.dto.PartidaDTO;
 import com.example.BackEnd.repository.ClienteRepository;
 import com.example.BackEnd.repository.EtapaProducaoRepository;
@@ -30,7 +32,7 @@ public class PartidaService {
 	@Autowired
 	private OrdemProducaoRepository ordemProducaoRepository;
 	
-	private ClienteRepository clienteRepository;
+	
 	
 	public PartidaService(PartidaRepository partidaRepository) {
 		this.partidaListagemMapper = new PartidaListagemMapper();
@@ -38,8 +40,31 @@ public class PartidaService {
 	}
 	
 	public List<PartidaDTO> consultar() {
-		System.out.println("ewgsgsdgrdsgsg");
-		List<PartidaDTO> lisPartidaDTO = partidaListagemMapper.toDto(partidaRepository.findAll());
+		int sequenciaAtual;
+		List<EtapaProducao> listMesmaSequencia = new ArrayList<EtapaProducao>();
+		List<OrdemProducao> listOrdemProducao = ordemProducaoRepository.findAll();
+		List<EtapaProducao> listEtapaProducao;
+		
+ 		for(OrdemProducao ordemProducao : listOrdemProducao) {
+ 			listEtapaProducao = etapaProducaoRepository.buscarEtapasDaOPPorSequencia(ordemProducao.getId());
+ 			sequenciaAtual = listEtapaProducao.get(0).getSequencia();
+ 			for(EtapaProducao etapa : listEtapaProducao) {
+ 				
+ 				if(etapa.getSequencia() == sequenciaAtual){
+ 					System.out.println("Sequencia: " + etapa.getSequencia());
+ 					listMesmaSequencia.add(etapa);
+ 				}
+ 			}
+		}
+ 		
+ 		List<Partida> listPartida = new ArrayList<Partida>();;
+ 		for(EtapaProducao etapaProd: listMesmaSequencia) {
+ 			listPartida.add(partidaRepository.buscarPartidaPorEtapa(etapaProd.getId()));	
+ 		}
+ 		
+		List<PartidaDTO> lisPartidaDTO = partidaListagemMapper.toDto(listPartida);
+		
+		
 		
 		EtapaProducao etapaProducao;
 		OrdemProducao ordeProducao;
@@ -53,6 +78,7 @@ public class PartidaService {
 			partDTO.setReferenciaOP(ordeProducao.getReferencia());
 			partDTO.setNomeCliente(ordeProducao.getCliente().getNome());
 		}
+		
 		
 		return 	lisPartidaDTO;
 	}

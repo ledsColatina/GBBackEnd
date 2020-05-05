@@ -23,7 +23,7 @@ public class EtapaProducao {
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long id;
 	//d
-	private Long sequencia;
+	private int sequencia;
 	private String inicioPrevisto;
 	private String fimPrevisto;
 	private Long qtdEmEspera;
