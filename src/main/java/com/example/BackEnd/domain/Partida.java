@@ -23,7 +23,7 @@ public class Partida {
 	private String horaInicio;
 	private String dataFim;
 	private String horaFim;
-	private Long quantidade;
+	private int quantidade;
 	
 	@ManyToOne
 	@JoinColumn(name = "etapaProducao_id")

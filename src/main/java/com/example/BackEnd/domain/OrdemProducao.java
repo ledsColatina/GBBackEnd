@@ -25,7 +25,7 @@ public class OrdemProducao {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private Long quantidade;
+	private int quantidade;
 
 	//@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private String dataEmissao;

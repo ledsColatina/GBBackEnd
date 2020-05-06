@@ -1,6 +1,7 @@
 package com.example.BackEnd.web;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -43,15 +44,28 @@ public class PartidaResource {
 	}
 	
 	//----------------------------------------------------------------------------------------------------------------------
-		@GetMapping("/inicio")
-		public ResponseEntity<List<PartidaDTO>> inicioPartidas(){ 	
-			return ResponseEntity.ok(partidaService.consultar());	
-		}
+	@GetMapping("/{id}")
+	public ResponseEntity<?> buscaPartida(@PathVariable("id") Long id){
+		Optional<Partida> partida = partidaRepository.findById(id);	
+		return ResponseEntity.ok(partida);
+	}
+		
+	//----------------------------------------------------------------------------------------------------------------------
+	@GetMapping("/fim")
+	public ResponseEntity<List<PartidaDTO>> inicioPartidas(){ 	
+		return ResponseEntity.ok(partidaService.consultar(1));	
+	}
 	
+	//----------------------------------------------------------------------------------------------------------------------
+		@GetMapping("/inicio")
+		public ResponseEntity<List<PartidaDTO>> finalizarPartidas(){ 	
+			return ResponseEntity.ok(partidaService.consultar(0));	
+		}
+		
 	//----------------------------------------------------------------------------------------------------------------------
 	
     @PostMapping
-    public ResponseEntity<Partida> criarPartida(@Valid @RequestBody  Partida partida,HttpServletResponse responseEntity){
+    public ResponseEntity<Partida> criarPartida(@Valid @RequestBody  Partida partida){
     	Partida partidaSalva = partidaRepository.save(partida);
     	return ResponseEntity.status(HttpStatus.OK).body(partidaSalva);
     }
@@ -68,19 +82,30 @@ public class PartidaResource {
 	
 
     @PutMapping("/{id}") 
-    public ResponseEntity<Partida> atualizaPartida(@PathVariable("id") Long id,@RequestBody Partida partida,HttpServletResponse responseEntity){
+    public ResponseEntity<?> atualizaPartida(@PathVariable("id") Long id,@RequestBody Partida partida,HttpServletResponse responseEntity){
+    	Optional<Partida> partidaPesquisada = partidaRepository.findById(id);
+    	Partida novaPartida = null;
+    	if(partida.getQuantidade() < partidaPesquisada.get().getQuantidade()) {
+    		novaPartida = new Partida();
+    		//novaPartida.setDataFim(dataFim);
+    		novaPartida.setDataInicio(partida.getDataInicio());
+    		novaPartida.setEtapaProducao(partidaPesquisada.get().getEtapaProducao());
+    		//novaPartida.setHoraFim(horaFim);
+    		novaPartida.setHoraInicio(partida.getHoraInicio());
+    		novaPartida.setMaquina(partidaPesquisada.get().getMaquina());
+    		novaPartida.setQuantidade(partidaPesquisada.get().getQuantidade() - partida.getQuantidade());
+    		partidaRepository.save(novaPartida);
+    	}
+    	
+    	
     	return partidaRepository.findById(id).map(record -> {
-			    		record.setDataFim(partida.getDataFim());
 			    		record.setDataInicio(partida.getDataInicio());
-			    		record.setEtapaProducao(partida.getEtapaProducao());
-			    		record.setHoraFim(partida.getHoraFim());
 			    		record.setHoraInicio(partida.getHoraInicio());
-			    		record.setMaquina(partida.getMaquina());
 			    		record.setQuantidade(partida.getQuantidade());
 			    		Partida updated = partidaRepository.save(record);
-    	                return ResponseEntity.ok().body(updated);
-    	                                 	               
+    	                return ResponseEntity.ok().body(updated);                  	               
     	           }).orElse(ResponseEntity.notFound().build());
+    	
     }   
 	//----------------------------------------------------------------------------------------------------------------------
 	

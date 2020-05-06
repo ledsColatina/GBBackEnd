@@ -1,5 +1,7 @@
 package com.example.BackEnd.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,6 +15,6 @@ public interface PartidaRepository extends JpaRepository<Partida, Long>{
 			"	FROM partida as PA, etapa_producao as EP\r\n" + 
 			"	WHERE EP.id = PA.etapa_producao_id\r\n" + 
 			"	and EP.id = :id", nativeQuery = true)
-	Partida buscarPartidaPorEtapa(@Param("id") Long id);
+	List<Partida> buscarPartidaPorEtapa(@Param("id") Long id);
 
 }

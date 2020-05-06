@@ -39,27 +39,35 @@ public class PartidaService {
 		this.partidaRepository = partidaRepository;
 	}
 	
-	public List<PartidaDTO> consultar() {
+	public List<PartidaDTO> consultar(int op) {
 		int sequenciaAtual;
 		List<EtapaProducao> listMesmaSequencia = new ArrayList<EtapaProducao>();
 		List<OrdemProducao> listOrdemProducao = ordemProducaoRepository.findAll();
 		List<EtapaProducao> listEtapaProducao;
 		
  		for(OrdemProducao ordemProducao : listOrdemProducao) {
- 			listEtapaProducao = etapaProducaoRepository.buscarEtapasDaOPPorSequencia(ordemProducao.getId());
+ 			if(op == 0) {
+ 				listEtapaProducao = etapaProducaoRepository.buscarEtapasDaOPPorSequencia(ordemProducao.getId());
+ 			}else {
+ 				listEtapaProducao = etapaProducaoRepository.buscarEtapasdaOPEmProducao(ordemProducao.getId());
+ 			}
+ 			
  			sequenciaAtual = listEtapaProducao.get(0).getSequencia();
  			for(EtapaProducao etapa : listEtapaProducao) {
- 				
  				if(etapa.getSequencia() == sequenciaAtual){
- 					System.out.println("Sequencia: " + etapa.getSequencia());
+ 					System.out.println(sequenciaAtual);
  					listMesmaSequencia.add(etapa);
  				}
  			}
 		}
  		
- 		List<Partida> listPartida = new ArrayList<Partida>();;
+ 		List<Partida> listPartida = new ArrayList<Partida>();
+ 		List<Partida> listPartidaPesquisada = new ArrayList<Partida>();;
  		for(EtapaProducao etapaProd: listMesmaSequencia) {
- 			listPartida.add(partidaRepository.buscarPartidaPorEtapa(etapaProd.getId()));	
+ 			listPartidaPesquisada = partidaRepository.buscarPartidaPorEtapa(etapaProd.getId());
+ 			for(Partida partida : listPartidaPesquisada) {
+ 				listPartida.add(partida);
+ 			}
  		}
  		
 		List<PartidaDTO> lisPartidaDTO = partidaListagemMapper.toDto(listPartida);
@@ -82,4 +90,6 @@ public class PartidaService {
 		
 		return 	lisPartidaDTO;
 	}
+
+	
 }

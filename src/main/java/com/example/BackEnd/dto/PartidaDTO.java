@@ -11,7 +11,7 @@ public class PartidaDTO {
 	private int sequenciaEtapa;//-
 	private String nomeCliente;
 	private String nomeMaquina;
-	private Long quantidadePartida;//-
+	private int quantidadePartida;//-
 	
 	
 
