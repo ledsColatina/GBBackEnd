@@ -20,9 +20,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.BackEnd.domain.Cliente;
+import com.example.BackEnd.domain.EtapaProducao;
 import com.example.BackEnd.domain.OrdemProducao;
 import com.example.BackEnd.domain.Partida;
 import com.example.BackEnd.dto.PartidaDTO;
+import com.example.BackEnd.repository.EtapaProducaoRepository;
 import com.example.BackEnd.repository.PartidaRepository;
 import com.example.BackEnd.service.PartidaService;
 
@@ -35,6 +37,9 @@ public class PartidaResource {
 	
 	@Autowired
     private PartidaService partidaService;
+	
+	@Autowired
+    private EtapaProducaoRepository etapaProducaoRepository;
 	
 	//----------------------------------------------------------------------------------------------------------------------
 	@GetMapping
@@ -52,13 +57,13 @@ public class PartidaResource {
 		
 	//----------------------------------------------------------------------------------------------------------------------
 	@GetMapping("/fim")
-	public ResponseEntity<List<PartidaDTO>> inicioPartidas(){ 	
+	public ResponseEntity<List<PartidaDTO>> inicioPartidas() { 	
 		return ResponseEntity.ok(partidaService.consultar(1));	
 	}
 	
 	//----------------------------------------------------------------------------------------------------------------------
 		@GetMapping("/inicio")
-		public ResponseEntity<List<PartidaDTO>> finalizarPartidas(){ 	
+		public ResponseEntity<List<PartidaDTO>> finalizarPartidas() { 	
 			return ResponseEntity.ok(partidaService.consultar(0));	
 		}
 		
@@ -77,35 +82,65 @@ public class PartidaResource {
     public void deletePartida(@PathVariable Long id){
     	partidaRepository.deleteById(id);
     }
-   
+  		
 	//----------------------------------------------------------------------------------------------------------------------
 	
 
     @PutMapping("/{id}") 
-    public ResponseEntity<?> atualizaPartida(@PathVariable("id") Long id,@RequestBody Partida partida,HttpServletResponse responseEntity){
+    public ResponseEntity<?> atualizaPartidaInicio(@PathVariable("id") Long id,@RequestBody Partida partida,HttpServletResponse responseEntity){
     	Optional<Partida> partidaPesquisada = partidaRepository.findById(id);
-    	Partida novaPartida = null;
+    	Partida novaPartida = null ;
     	if(partida.getQuantidade() < partidaPesquisada.get().getQuantidade()) {
     		novaPartida = new Partida();
     		//novaPartida.setDataFim(dataFim);
-    		novaPartida.setDataInicio(partida.getDataInicio());
+    		//novaPartida.setDataInicio(partida.getDataInicio());
     		novaPartida.setEtapaProducao(partidaPesquisada.get().getEtapaProducao());
     		//novaPartida.setHoraFim(horaFim);
-    		novaPartida.setHoraInicio(partida.getHoraInicio());
+    		//novaPartida.setHoraInicio(partida.getHoraInicio());
     		novaPartida.setMaquina(partidaPesquisada.get().getMaquina());
+    		novaPartida.setStatus(partidaPesquisada.get().getStatus());
     		novaPartida.setQuantidade(partidaPesquisada.get().getQuantidade() - partida.getQuantidade());
-    		partidaRepository.save(novaPartida);
+    		Partida partidaSalva = partidaRepository.save(novaPartida);
+    		System.out.println(partida.getStatus());
+        	System.out.println(partidaSalva.getStatus());
     	}
     	
     	
-    	return partidaRepository.findById(id).map(record -> {
+    	
+    	 Optional<Object> partidaAlterada = partidaRepository.findById(id).map(record -> {
 			    		record.setDataInicio(partida.getDataInicio());
 			    		record.setHoraInicio(partida.getHoraInicio());
 			    		record.setQuantidade(partida.getQuantidade());
+			    		record.setStatus(partida.getStatus());
 			    		Partida updated = partidaRepository.save(record);
-    	                return ResponseEntity.ok().body(updated);                  	               
-    	           }).orElse(ResponseEntity.notFound().build());
+    	                return updated;                  	               
+    	 });
+    	 
+    	 Optional<EtapaProducao> etapa  = etapaProducaoRepository.findById(partida.getEtapaProducao().getId());
+    	 if(partida.getStatus() == "iniciada") {
+    		 etapa.get().setQtdEmEspera(etapa.get().getQtdEmEspera() - partida.getQuantidade());
+    		 etapa.get().setQtdEmProducao(etapa.get().getQtdEmProducao() + partida.getQuantidade());
+    	 }else if(partida.getStatus() == "finalizada"){
+    		 etapa.get().setQtdEmProducao(etapa.get().getQtdEmProducao() - partida.getQuantidade());
+    		 etapa.get().setQtdFinalizado(etapa.get().getQtdFinalizado() + partida.getQuantidade());
+    	 }
     	
+    	 etapaProducaoRepository.findById(etapa.get().getId()).map(record -> {
+	    		record.setFimPrevisto(etapa.get().getFimPrevisto());
+	    		record.setInicioPrevisto(etapa.get().getInicioPrevisto());
+	    		record.setProcesso(etapa.get().getProcesso());
+	    		record.setListSubProcesso(etapa.get().getListSubProcesso());
+	    		record.setQtdEmEspera(etapa.get().getQtdEmEspera());
+	    		record.setQtdEmProducao(etapa.get().getQtdEmProducao());
+	    		record.setQtdFinalizado(etapa.get().getQtdFinalizado());
+	    		record.setSequencia(etapa.get().getSequencia());
+	    		EtapaProducao updated = etapaProducaoRepository.save(record);
+             return ResponseEntity.ok().body(updated);
+                	               
+        }).orElse(ResponseEntity.notFound().build());
+    	 
+    	 
+    	 return ResponseEntity.ok(partidaAlterada);
     }   
 	//----------------------------------------------------------------------------------------------------------------------
 	

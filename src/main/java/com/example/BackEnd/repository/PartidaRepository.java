@@ -11,10 +11,15 @@ import com.example.BackEnd.domain.Partida;
 
 public interface PartidaRepository extends JpaRepository<Partida, Long>{
 	
-	@Query(value = "SELECT PA.id, PA.data_fim, PA.data_inicio, PA.hora_fim, PA.hora_inicio, PA.quantidade, PA.etapa_producao_id, PA.maquina_id\r\n" + 
-			"	FROM partida as PA, etapa_producao as EP\r\n" + 
+	@Query(value = "SELECT PA.id, PA.data_fim, PA.data_inicio, PA.hora_fim, PA.hora_inicio, PA.quantidade, PA.etapa_producao_id, PA.maquina_id, PA.status\r\n" + 
+			"	FROM partida as PA, etapa_producao as EP, ordem_producao as OP\r\n" + 
 			"	WHERE EP.id = PA.etapa_producao_id\r\n" + 
-			"	and EP.id = :id", nativeQuery = true)
+			"	and PA.status LIKE 'pendente'\r\n" + 
+			"	and EP.id = :id\r\n" + 
+			"	and OP.id =  EP.etapa_producao_id\r\n" + 
+			"	ORDER BY OP.prioridade_inicial DESC"  , nativeQuery = true)
 	List<Partida> buscarPartidaPorEtapa(@Param("id") Long id);
+
+	List<Partida> findByStatusContaining(String string);
 
 }

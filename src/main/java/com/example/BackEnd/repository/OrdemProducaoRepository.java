@@ -20,4 +20,8 @@ public interface OrdemProducaoRepository extends JpaRepository<OrdemProducao, Lo
 			"	and OP.id = EP.etapa_producao_id;", nativeQuery = true)
 	OrdemProducao buscarReferenciOP(@Param("id") Long id);
 
+	//List<OrdemProducao> findAllByOrderByPrioridadeDesc();
+
+	
+
 }

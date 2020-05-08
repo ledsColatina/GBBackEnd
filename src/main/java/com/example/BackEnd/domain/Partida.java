@@ -24,6 +24,7 @@ public class Partida {
 	private String dataFim;
 	private String horaFim;
 	private int quantidade;
+	private String status;
 	
 	@ManyToOne
 	@JoinColumn(name = "etapaProducao_id")

@@ -106,6 +106,7 @@ public class OrdemProducaoResource {
 				System.out.println(listEtapas.get(0).getSequencia());
 				partida = new Partida();
 				partida.setEtapaProducao(etapa);
+				partida.setStatus("pendente"); //iniciada,finalizada
 				partida.setMaquina(etapa.getProcesso().getListaMaquina().get(0));
 				partida.setQuantidade(ordemProducaoSalva.getQuantidade());
 				partidaRepository.save(partida);
@@ -132,7 +133,9 @@ public class OrdemProducaoResource {
 	//----------------------------------------------------------------------------------------------------------------------
 		 @PutMapping("/{id}") 
 		    public ResponseEntity<OrdemProducao> atualizaOrdemProducao(@PathVariable("id") Long id,@RequestBody OrdemProducao ordemProducao,HttpServletResponse responseEntity){
-		    	return ordemProducaoRepository.findById(id).map(record -> {
+		    	//EtapaProducao etapaOriginal = etapaProducaoRepository.findById(ordemProducao.getListEtapas())
+			 
+			 return ordemProducaoRepository.findById(id).map(record -> {
 					    		record.setCliente(ordemProducao.getCliente());
 					    		record.setDataEmissao(ordemProducao.getDataEmissao());
 					    		record.setLinha(ordemProducao.getLinha());
