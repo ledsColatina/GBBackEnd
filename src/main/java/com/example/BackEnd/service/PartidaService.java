@@ -75,55 +75,14 @@ public class PartidaService {
 		}
 		
       return listMaquinasDoUsuarioLogado;
-}
+	}
 	
-	@SuppressWarnings("null")
-	public List<PartidaDTO> consultar(int op)  {
-		List<Maquina> listMaquinasDoUsuarioLogado = getMaquinasDoUsuarioLogado();
+	public List<PartidaDTO> buscarPartidasIniciadas() {
+		List<Partida> listPartida = new ArrayList<Partida>();
+		List<PartidaDTO> lisPartidaDTO;
 		
-		
-		int sequenciaAtual;
-		List<EtapaProducao> listMesmaSequencia = new ArrayList<>();
-		List<OrdemProducao> listOrdemProducao = ordemProducaoRepository.findAll();
-		List<EtapaProducao> listEtapaProducao;
-		EtapaProducao proximaEtapa;
-		List<Partida> listPartidas ;
-		
- 		for(OrdemProducao ordemProducao : listOrdemProducao) {
- 			
- 			proximaEtapa = etapaProducaoRepository.buscarEtapasDaOPPorSequencia(ordemProducao.getId());
- 			listMesmaSequencia = etapaProducaoRepository.buscaPorSequenciaAndEtapaProducaoId(proximaEtapa.getSequencia(),ordemProducao.getId());
- 			if(listMesmaSequencia.size()>1) {
- 				listMesmaSequencia = etapaProducaoRepository.findByProximasEtapas(proximaEtapa.getSequencia(),ordemProducao.getId());
- 			}
- 			
- 			//sequenciaAtual = listEtapaProducao.get(0).getSequencia();
- 			for(EtapaProducao etapa : listMesmaSequencia) {
- 				//listPartidas = partidaRepository.findByEtapaIdAndStatus(etapa.);
- 				
- 				// conseguir a lista de maquinas 
- 				//filtar as que o usuario tem permissao
- 				// ai damos um get partidas 
- 				// fazer um DTO pra cada maquina
- 			}
-		}
- 		
-// 		List<Partida> listPartida = new ArrayList<Partida>();
-// 		List<Partida> listPartidaPesquisada = new ArrayList<Partida>();
-// 		if(op == 0) {
-// 			for(EtapaProducao etapaProd: listMesmaSequencia) {
-// 	 			listPartidaPesquisada = partidaRepository.buscarPartidaPorEtapa(etapaProd.getId());
-// 	 			for(Partida partida : listPartidaPesquisada) {
-// 	 				listPartida.add(partida);
-// 	 			}
-// 	 		}
-// 		}else {
-// 			 listPartida = partidaRepository.findByStatusContaining("iniciada");
-// 		}
- 		
- 		List<Partida> listPartida = new ArrayList<Partida>();
-		List<PartidaDTO> lisPartidaDTO = partidaListagemMapper.toDto(listPartida);
-		
+		listPartida = partidaRepository.findByStatusContaining("iniciada");
+		lisPartidaDTO =  partidaListagemMapper.toDto(listPartida);
 		
 		
 		EtapaProducao etapaProducao;
@@ -140,8 +99,90 @@ public class PartidaService {
 		}
 		
 		
+		return lisPartidaDTO;
+	}
+	
+	private List<Maquina> maquinasComPermissao(EtapaProducao etapaProducao,
+			List<Maquina> listMaquinasDoUsuarioLogado) {
+		Maquina maquinaLiberada;
+		List<Maquina> listMaquinasLiberadas = new ArrayList<Maquina>();
+		
+		for(Maquina maquinaUsuario: listMaquinasDoUsuarioLogado) {
+			maquinaLiberada = new Maquina();
+			maquinaLiberada = maquinaRepository.findByIdAndMaquinaId(maquinaUsuario.getId(),etapaProducao.getProcesso().getId());
+			if(maquinaLiberada != null) {
+				listMaquinasLiberadas.add(maquinaLiberada);
+			}
+		}
+		
+		
+		return listMaquinasLiberadas;
+	}
+	
+	
+	public List<PartidaDTO> consultar()  {
+		List<Maquina> listMaquinasDoUsuarioLogado = getMaquinasDoUsuarioLogado();
+		List<EtapaProducao> listMesmaSequencia = new ArrayList<>();
+		List<OrdemProducao> listOrdemProducao = ordemProducaoRepository.findAllByOrderByPrioridadeAtualDesc();
+		EtapaProducao proximaEtapa;
+		List<Partida> listPartida = new ArrayList<Partida>();
+		List<PartidaDTO> lisPartidaDTO;
+		List<Partida> listTotalDePartidas = new ArrayList<Partida>();
+		Maquina maquinaLiberada = null;
+		
+ 		for(OrdemProducao ordemProducao : listOrdemProducao) {
+ 			
+ 			proximaEtapa = etapaProducaoRepository.buscarEtapasDaOPPorSequencia(ordemProducao.getId());
+ 			listMesmaSequencia = etapaProducaoRepository.buscaPorSequenciaAndEtapaProducaoId(proximaEtapa.getSequencia(),ordemProducao.getId());
+
+ 			//sequenciaAtual = listEtapaProducao.get(0).getSequencia();
+ 			
+ 			
+ 			for(EtapaProducao etapa : listMesmaSequencia) {
+ 				maquinaLiberada = new Maquina();
+ 				for(Maquina maquina:listMaquinasDoUsuarioLogado) {
+ 					maquinaLiberada = maquinaRepository.findByIdAndMaquinaId(maquina.getId(),etapa.getProcesso().getId());
+ 					
+ 	 			}
+ 				if(maquinaLiberada != null) {
+ 					listPartida = partidaRepository.findByEtapaProducaoIdAndStatus(etapa.getId(),"pendente");
+ 	 				listTotalDePartidas.addAll(listPartida);
+ 				}
+ 				
+ 			}
+		}
+ 		
+
+ 		
+ 		
+		
+ 		lisPartidaDTO = partidaListagemMapper.toDto(listTotalDePartidas);
+		
+		
+		EtapaProducao etapaProducao;
+		OrdemProducao ordeProducao;
+		
+		for(PartidaDTO partDTO : lisPartidaDTO) {
+			etapaProducao = new EtapaProducao();
+			ordeProducao = new OrdemProducao();
+			etapaProducao = etapaProducaoRepository.buscarSequenciaDeEtapa(partDTO.getIdPartida());
+			partDTO.setSequenciaEtapa(etapaProducao.getSequencia());
+			ordeProducao  = ordemProducaoRepository.buscarReferenciOP(etapaProducao.getId());
+			partDTO.setReferenciaOP(ordeProducao.getReferencia());
+			partDTO.setNomeCliente(ordeProducao.getCliente().getNome());
+			List<Maquina> listMaquinaLiberadas = maquinasComPermissao(etapaProducao,listMaquinasDoUsuarioLogado);
+			partDTO.setListMaquinasUsuario(listMaquinaLiberadas);
+		}
+		
+		
 		return 	lisPartidaDTO;
 	}
+
+
+	
+
+
+	
 
 	
 }

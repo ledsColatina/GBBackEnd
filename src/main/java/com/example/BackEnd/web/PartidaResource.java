@@ -56,15 +56,15 @@ public class PartidaResource {
 	}
 		
 	//----------------------------------------------------------------------------------------------------------------------
-	@GetMapping("/fim")
+	@GetMapping("/inicio")
 	public ResponseEntity<List<PartidaDTO>> inicioPartidas() { 	
-		return ResponseEntity.ok(partidaService.consultar(1));	
+		return ResponseEntity.ok(partidaService.consultar());	
 	}
 	
 	//----------------------------------------------------------------------------------------------------------------------
-		@GetMapping("/inicio")
+		@GetMapping("/fim")
 		public ResponseEntity<List<PartidaDTO>> finalizarPartidas() { 	
-			return ResponseEntity.ok(partidaService.consultar(0));	
+			return ResponseEntity.ok(partidaService.buscarPartidasIniciadas());	
 		}
 		
 	//----------------------------------------------------------------------------------------------------------------------
@@ -112,17 +112,22 @@ public class PartidaResource {
 			    		record.setHoraInicio(partida.getHoraInicio());
 			    		record.setQuantidade(partida.getQuantidade());
 			    		record.setStatus(partida.getStatus());
+			    		record.setMaquina(partida.getMaquina());
 			    		Partida updated = partidaRepository.save(record);
     	                return updated;                  	               
     	 });
     	 
+    	 //----------
     	 Optional<EtapaProducao> etapa  = etapaProducaoRepository.findById(partida.getEtapaProducao().getId());
-    	 if(partida.getStatus() == "iniciada") {
+    	 if(partida.getStatus().equals("iniciada") ) {
     		 etapa.get().setQtdEmEspera(etapa.get().getQtdEmEspera() - partida.getQuantidade());
     		 etapa.get().setQtdEmProducao(etapa.get().getQtdEmProducao() + partida.getQuantidade());
-    	 }else if(partida.getStatus() == "finalizada"){
+    		 System.out.println("INICIADA");
+    	 }
+    	 if(partida.getStatus().equals("finalizada")){
     		 etapa.get().setQtdEmProducao(etapa.get().getQtdEmProducao() - partida.getQuantidade());
     		 etapa.get().setQtdFinalizado(etapa.get().getQtdFinalizado() + partida.getQuantidade());
+    		 System.out.println("FINALIZADA");
     	 }
     	
     	 etapaProducaoRepository.findById(etapa.get().getId()).map(record -> {
@@ -140,7 +145,7 @@ public class PartidaResource {
         }).orElse(ResponseEntity.notFound().build());
     	 
     	 
-    	 return ResponseEntity.ok(partidaAlterada);
+    	 return ResponseEntity.ok(etapa);
     }   
 	//----------------------------------------------------------------------------------------------------------------------
 	
