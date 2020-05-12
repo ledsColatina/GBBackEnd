@@ -19,5 +19,6 @@ public class PartidaDTO {
 	private List<Maquina> listMaquinasUsuario;
 	
 	
+	
 
 }

@@ -4,26 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.servlet.http.HttpSession;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
+
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+
 import org.springframework.stereotype.Service;
 
-import com.example.BackEnd.domain.Cliente;
+
 import com.example.BackEnd.domain.EtapaProducao;
 import com.example.BackEnd.domain.Maquina;
 import com.example.BackEnd.domain.OrdemProducao;
 import com.example.BackEnd.domain.Partida;
 import com.example.BackEnd.domain.Usuario;
 import com.example.BackEnd.dto.PartidaDTO;
-import com.example.BackEnd.repository.ClienteRepository;
 import com.example.BackEnd.repository.EtapaProducaoRepository;
 import com.example.BackEnd.repository.MaquinaRepository;
 import com.example.BackEnd.repository.OrdemProducaoRepository;
@@ -122,40 +119,50 @@ public class PartidaService {
 	
 	public List<PartidaDTO> consultar()  {
 		List<Maquina> listMaquinasDoUsuarioLogado = getMaquinasDoUsuarioLogado();
+	
 		List<EtapaProducao> listMesmaSequencia = new ArrayList<>();
 		List<OrdemProducao> listOrdemProducao = ordemProducaoRepository.findAllByOrderByPrioridadeAtualDesc();
 		EtapaProducao proximaEtapa;
 		List<Partida> listPartida = new ArrayList<Partida>();
 		List<PartidaDTO> lisPartidaDTO;
 		List<Partida> listTotalDePartidas = new ArrayList<Partida>();
-		Maquina maquinaLiberada = null;
+		Maquina maquinaLiberada ;
+		boolean temPermissao = false;
+		boolean etapaIniciada = false;
+		List<Partida> partidasEtapa = new ArrayList<>();
 		
  		for(OrdemProducao ordemProducao : listOrdemProducao) {
- 			
  			proximaEtapa = etapaProducaoRepository.buscarEtapasDaOPPorSequencia(ordemProducao.getId());
  			listMesmaSequencia = etapaProducaoRepository.buscaPorSequenciaAndEtapaProducaoId(proximaEtapa.getSequencia(),ordemProducao.getId());
-
  			//sequenciaAtual = listEtapaProducao.get(0).getSequencia();
  			
- 			
  			for(EtapaProducao etapa : listMesmaSequencia) {
+ 				etapaIniciada = false;
  				maquinaLiberada = new Maquina();
+ 				partidasEtapa = new ArrayList<>();
  				for(Maquina maquina:listMaquinasDoUsuarioLogado) {
- 					maquinaLiberada = maquinaRepository.findByIdAndMaquinaId(maquina.getId(),etapa.getProcesso().getId());
- 					
+ 					if(maquinaRepository.findByIdAndMaquinaId(maquina.getId(),etapa.getProcesso().getId()) != null) {
+ 						temPermissao = true;
+ 					}
  	 			}
- 				if(maquinaLiberada != null) {
- 					listPartida = partidaRepository.findByEtapaProducaoIdAndStatus(etapa.getId(),"pendente");
- 	 				listTotalDePartidas.addAll(listPartida);
+ 				if(temPermissao) { 
+					if(partidaRepository.findByEtapaProducaoIdAndStatus(etapa.getId(),"pendente") == null && partidaRepository.findByEtapaProducaoIdAndStatus(etapa.getId(),"iniciada") != null) {
+						etapaIniciada = true;
+					} 
+					else {						
+						partidasEtapa.addAll(partidaRepository.findByEtapaProducaoIdAndStatus(etapa.getId(),"pendente"));
+					}
+ 				}		
+ 				if(!etapaIniciada) {
+ 					System.out.println("Adicionou \n\n");
+ 					listTotalDePartidas.addAll((partidasEtapa));
  				}
- 				
+ 				else {
+ 					System.out.println("Nao adicionada \n\n");
+ 				}
  			}
 		}
- 		
 
- 		
- 		
-		
  		lisPartidaDTO = partidaListagemMapper.toDto(listTotalDePartidas);
 		
 		

@@ -11,9 +11,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Data
+
 public class Partida {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +29,7 @@ public class Partida {
 	private int quantidade;
 	private String status;
 	
+	
 	@ManyToOne
 	@JoinColumn(name = "etapaProducao_id")
 	private EtapaProducao etapaProducao;
@@ -33,5 +37,7 @@ public class Partida {
 	@ManyToOne
 	@JoinColumn(name = "maquina_id")
 	private Maquina maquina;
+	
+	
 
 }
