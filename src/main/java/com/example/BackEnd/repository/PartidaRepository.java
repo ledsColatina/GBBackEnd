@@ -28,4 +28,14 @@ public interface PartidaRepository extends JpaRepository<Partida, Long>{
 
 
 
+	
+
+	
+
+	List<Partida> findAllByEtapaProducaoId(Long id);
+
+	
+
+
+
 }

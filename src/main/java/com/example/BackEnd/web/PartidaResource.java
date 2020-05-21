@@ -98,10 +98,10 @@ public class PartidaResource {
     		//novaPartida.setHoraFim(horaFim);
     		//novaPartida.setHoraInicio(partida.getHoraInicio());
     		novaPartida.setMaquina(partidaPesquisada.get().getMaquina());
-    		novaPartida.setStatus(partidaPesquisada.get().getStatus());
+    		novaPartida.setStatus("quebrada");
     		novaPartida.setQuantidade(partidaPesquisada.get().getQuantidade() - partida.getQuantidade());
     		Partida partidaSalva = partidaRepository.save(novaPartida);
-    		System.out.println(partida.getStatus());
+    		System.out.println("quebrada");
         	System.out.println(partidaSalva.getStatus());
     	}
     	

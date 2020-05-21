@@ -130,39 +130,75 @@ public class PartidaService {
 		boolean temPermissao = false;
 		boolean etapaIniciada = false;
 		List<Partida> partidasEtapa = new ArrayList<>();
+		List<Partida> listAuxiliarDePartidas ;
+		List<Partida> partidaIniciada= new ArrayList<>();
+		List<Partida> listPartidasDisponivel ;
+		boolean disponivel=false;
 		
  		for(OrdemProducao ordemProducao : listOrdemProducao) {
  			proximaEtapa = etapaProducaoRepository.buscarEtapasDaOPPorSequencia(ordemProducao.getId());
  			listMesmaSequencia = etapaProducaoRepository.buscaPorSequenciaAndEtapaProducaoId(proximaEtapa.getSequencia(),ordemProducao.getId());
- 			//sequenciaAtual = listEtapaProducao.get(0).getSequencia();
- 			
+ 
+ 			listAuxiliarDePartidas = new ArrayList<>();
+ 			listPartidasDisponivel = new ArrayList<>();
  			for(EtapaProducao etapa : listMesmaSequencia) {
- 				etapaIniciada = false;
+ 				System.out.println("LIST MESMA SEQUENCIA: " + listMesmaSequencia.size());
+
  				maquinaLiberada = new Maquina();
- 				partidasEtapa = new ArrayList<>();
+				partidasEtapa = new ArrayList<>();
  				for(Maquina maquina:listMaquinasDoUsuarioLogado) {
+ 					
  					if(maquinaRepository.findByIdAndMaquinaId(maquina.getId(),etapa.getProcesso().getId()) != null) {
  						temPermissao = true;
  					}
  	 			}
+ 					
+ 			
  				if(temPermissao) { 
-					if(partidaRepository.findByEtapaProducaoIdAndStatus(etapa.getId(),"pendente") == null && partidaRepository.findByEtapaProducaoIdAndStatus(etapa.getId(),"iniciada") != null) {
+
+					if(partidaRepository.findByEtapaProducaoIdAndStatus(etapa.getId(),"pendente").isEmpty() && !partidaRepository.findByEtapaProducaoIdAndStatus(etapa.getId(),"iniciada").isEmpty()) {
 						etapaIniciada = true;
+						if(!partidaRepository.findByEtapaProducaoIdAndStatus(etapa.getId(),"quebrada").isEmpty()) {
+							disponivel = true;
+							listPartidasDisponivel.addAll(partidaRepository.findByEtapaProducaoIdAndStatus(etapa.getId(),"disponivel"));
+							for(Partida partida: listPartidasDisponivel) {
+								System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAA");
+								listTotalDePartidas.add(partida);
+				 			}
+						}					
 					} 
 					else {						
+						
 						partidasEtapa.addAll(partidaRepository.findByEtapaProducaoIdAndStatus(etapa.getId(),"pendente"));
+						System.out.println("NENHUMA ETAPA 'INICIADA' AINDA");
+						for(Partida partida: partidasEtapa) {
+							listAuxiliarDePartidas.add(partida);
+			 			}
+						
+						
+						
 					}
- 				}		
- 				if(!etapaIniciada) {
- 					System.out.println("Adicionou \n\n");
- 					listTotalDePartidas.addAll((partidasEtapa));
+					System.out.println("TAMANHO VETOR: " +  partidasEtapa.size());
+	 				System.out.println("ETAPA INICADA: "+ etapaIniciada);
+	 				
+	 				for(int i=0;i<listAuxiliarDePartidas.size();i++) {
+			 			System.out.println(listAuxiliarDePartidas.get(i).getId());
+			 	 	}
+ 				
  				}
- 				else {
- 					System.out.println("Nao adicionada \n\n");
- 				}
+	 				
+	 				
  			}
-		}
+ 
+ 			if(!etapaIniciada ) {
+				listTotalDePartidas.addAll((listAuxiliarDePartidas));
+					
+			}
 
+ 			etapaIniciada = false;
+		}
+ 		
+ 	//-----------------------------------------------------------------------------------------------------------
  		lisPartidaDTO = partidaListagemMapper.toDto(listTotalDePartidas);
 		
 		
@@ -183,6 +219,14 @@ public class PartidaService {
 		
 		
 		return 	lisPartidaDTO;
+	}
+	
+	private void mudarStatusPartidaEmDisponivel(Long id){
+		List<Partida> listaPartidas = new ArrayList<>();
+		listaPartidas = partidaRepository.findAllByEtapaProducaoId(id);
+		for(Partida partida:listaPartidas) {
+			partida.setStatus("disponivel");
+		}
 	}
 
 
