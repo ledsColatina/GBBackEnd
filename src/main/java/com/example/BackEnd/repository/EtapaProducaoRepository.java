@@ -51,6 +51,14 @@ public interface EtapaProducaoRepository extends JpaRepository<EtapaProducao, Lo
 			"	and OP.id = :id\r\n" + 
 			"	and EP.sequencia = :sequencia\r\n" , nativeQuery = true)
 	List<EtapaProducao> buscaPorSequenciaAndEtapaProducaoId(int sequencia, Long id);
+	
+	@Query(value = "SELECT EP.id, EP.fim_previsto, EP.inicio_previsto, EP.qtd_em_espera, EP.qtd_em_producao, EP.qtd_finalizado, EP.sequencia, EP.processo_id, EP.etapa_producao_id\r\n" + 
+			"FROM etapa_producao as EP,ordem_producao as OP\r\n" + 
+			"where OP.id = EP.etapa_producao_id\r\n" + 
+			"and OP.id = :id\r\n" , nativeQuery = true)
+	List<EtapaProducao> findByEtapaProducaoId(@Param("id") Long id);
+
+	
 
 
 

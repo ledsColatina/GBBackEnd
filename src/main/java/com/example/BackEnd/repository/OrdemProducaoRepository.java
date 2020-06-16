@@ -22,6 +22,9 @@ public interface OrdemProducaoRepository extends JpaRepository<OrdemProducao, Lo
 
 	List<OrdemProducao> findAllByOrderByPrioridadeAtualDesc();
 
+
+	List<OrdemProducao> findByClienteId(Long idCliente);
+
 	
 
 }

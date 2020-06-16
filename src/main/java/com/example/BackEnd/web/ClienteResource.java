@@ -23,8 +23,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.BackEnd.domain.Cliente;
-
+import com.example.BackEnd.dto.FormularioClienteDTO;
 import com.example.BackEnd.repository.ClienteRepository;
+import com.example.BackEnd.service.FormularioClienteService;
 
 @RestController
 @RequestMapping(value = "/cliente")
@@ -33,12 +34,20 @@ public class ClienteResource {
 	@Autowired
     private ClienteRepository clienteRepository;
 	
+	@Autowired
+    private FormularioClienteService formularioCLienteService;
 	//----------------------------------------------------------------------------------------------------------------------
 	
 	@GetMapping
 	public ResponseEntity<List<Cliente>> listar(){
 		List<Cliente> cliente = clienteRepository.findAll();	
 		return !cliente.isEmpty() ? ResponseEntity.ok(cliente) : ResponseEntity.noContent().build();	
+	}
+	
+	//------------------------------------------------------------------------------------------------------------------------------
+	@GetMapping("/formulario")
+	public ResponseEntity<List<FormularioClienteDTO>> listarClienteFormulario(){
+		return ResponseEntity.ok(formularioCLienteService.buscarFormulariosCliente());	
 	}
 	
 	//------------------------------------------------------------------------------------------------------------------------------

@@ -10,7 +10,6 @@ public class PartidaListagemMapper implements EntityMapper<PartidaDTO,Partida>{
 
 	@Override
 	public Partida toEntity(PartidaDTO dto) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -19,7 +18,6 @@ public class PartidaListagemMapper implements EntityMapper<PartidaDTO,Partida>{
 		PartidaDTO partidaDTO = new PartidaDTO();
 		partidaDTO.setIdPartida(entity.getId());
 		partidaDTO.setQuantidadePartida(entity.getQuantidade());
-		System.out.println("ewgsgsdgrdsgsg");
 		partidaDTO.setNomeMaquina(entity.getMaquina().getNome());
 		return partidaDTO;
 	}
