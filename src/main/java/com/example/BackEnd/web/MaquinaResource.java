@@ -24,12 +24,15 @@ import com.example.BackEnd.domain.CapacidadeProducaoExtra;
 import com.example.BackEnd.domain.HoraExtra;
 import com.example.BackEnd.domain.TipoProduto;
 import com.example.BackEnd.domain.Turno;
+import com.example.BackEnd.dto.RelatorioCLienteDTO;
+import com.example.BackEnd.dto.RelatorioMaquinaDTO;
 import com.example.BackEnd.repository.MaquinaRepository;
 import com.example.BackEnd.repository.CapacidadeProducaoExtraRepository;
 import com.example.BackEnd.repository.CapacidadeProducaoRepository;
 import com.example.BackEnd.repository.HoraExtraRepository;
 import com.example.BackEnd.repository.TipoProdutoRepository;
 import com.example.BackEnd.repository.TurnoRepository;
+import com.example.BackEnd.service.ListRelatorioProducaoPorMaquinaService;
 import com.example.BackEnd.service.MaquinaService;
 
 @RestController
@@ -56,6 +59,9 @@ public class MaquinaResource {
 	
 	@Autowired
 	private HoraExtraRepository horaExtraRepository;
+	
+	@Autowired
+	private ListRelatorioProducaoPorMaquinaService listRelatorioProducaoPorMaquinaService;
 	
 	//----------------------------------------------------------------------------------------------------------------------------
 	
@@ -96,7 +102,12 @@ public class MaquinaResource {
 		else
 			return ResponseEntity.ok(1);
 	}
-
+	//------------------------------------------------------------------------------------------------------------------------------
+	@GetMapping("/relatorio")
+	public ResponseEntity<List<RelatorioMaquinaDTO>> maquinaRelatorio(){
+		return ResponseEntity.ok(listRelatorioProducaoPorMaquinaService.buscarRealorioMaquina());	
+	}
+		
 	//-----------------------------------------------------------------------------------------------------------------------	
 	
 	@GetMapping("/{id}/turnos/lastID")

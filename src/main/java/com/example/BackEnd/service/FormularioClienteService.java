@@ -12,6 +12,7 @@ import com.example.BackEnd.domain.Cliente;
 import com.example.BackEnd.domain.EtapaProducao;
 import com.example.BackEnd.domain.OrdemProducao;
 import com.example.BackEnd.dto.FormularioClienteDTO;
+import com.example.BackEnd.dto.ListRelatorioProducaoPorClienteDTO;
 import com.example.BackEnd.repository.ClienteRepository;
 import com.example.BackEnd.repository.EtapaProducaoRepository;
 import com.example.BackEnd.repository.OrdemProducaoRepository;
@@ -77,6 +78,9 @@ public class FormularioClienteService {
 	 return listClienteDTO;
 	
 	}
+
+
+	
 	
 	
 	

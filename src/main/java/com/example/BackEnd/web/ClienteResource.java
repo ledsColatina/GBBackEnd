@@ -24,8 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.BackEnd.domain.Cliente;
 import com.example.BackEnd.dto.FormularioClienteDTO;
+import com.example.BackEnd.dto.ListRelatorioProducaoPorClienteDTO;
+import com.example.BackEnd.dto.RelatorioCLienteDTO;
 import com.example.BackEnd.repository.ClienteRepository;
 import com.example.BackEnd.service.FormularioClienteService;
+import com.example.BackEnd.service.ListRelatorioProducaoPorClienteService;
 
 @RestController
 @RequestMapping(value = "/cliente")
@@ -36,6 +39,9 @@ public class ClienteResource {
 	
 	@Autowired
     private FormularioClienteService formularioCLienteService;
+	
+	@Autowired
+    private ListRelatorioProducaoPorClienteService RelatorioProducaoPorClienteService;
 	//----------------------------------------------------------------------------------------------------------------------
 	
 	@GetMapping
@@ -49,6 +55,12 @@ public class ClienteResource {
 	public ResponseEntity<List<FormularioClienteDTO>> listarClienteFormulario(){
 		return ResponseEntity.ok(formularioCLienteService.buscarFormulariosCliente());	
 	}
+	
+	//------------------------------------------------------------------------------------------------------------------------------
+		@GetMapping("/relatorio")
+		public ResponseEntity<List<RelatorioCLienteDTO>> clienteRelatorio(){
+			return ResponseEntity.ok(RelatorioProducaoPorClienteService.buscarRealorioCliente());	
+		}
 	
 	//------------------------------------------------------------------------------------------------------------------------------
 	
