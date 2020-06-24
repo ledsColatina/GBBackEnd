@@ -54,6 +54,7 @@ public class ListRelatorioProducaoPorMaquinaService {
 		List<EtapaProducao> listEtapas;
 		Processo processo;
 		List<OrdemProducao> listAux = null;
+		int total=0;
 		
 		listRelatorioMaquinaDTO = relatorioMaquinaMapper.toDto(listMaquinas);
 		
@@ -68,6 +69,8 @@ public class ListRelatorioProducaoPorMaquinaService {
 						if(maquina.getNome() == listMaquinas.get(i).getNome()) {
 							
 							listAux.add(op);
+							total = total + op.getQuantidade();
+							
 						}
 					}
 				}
@@ -77,6 +80,8 @@ public class ListRelatorioProducaoPorMaquinaService {
 			
 			listRelatorioProducaoPorMaquinaDTO = listRelatorioProducaoPorMaquinaMapper.toDto(listAux);
 			listRelatorioMaquinaDTO.get(i).setListRelatorio(listRelatorioProducaoPorMaquinaDTO);
+			listRelatorioMaquinaDTO.get(i).setTotal(total);
+			total = 0;
 		}
 		
 		return listRelatorioMaquinaDTO;

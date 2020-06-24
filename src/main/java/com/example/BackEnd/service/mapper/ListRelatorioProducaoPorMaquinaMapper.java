@@ -25,6 +25,7 @@ public class ListRelatorioProducaoPorMaquinaMapper implements EntityMapper<ListR
 		list.setPrioridade(entity.getPrioridadeAtual());
 		list.setQuantidade(entity.getQuantidade());
 		list.setRefCliente(entity.getReferencia());
+		list.setNomeCliente(entity.getCliente().getNome());
 		return list;
 	}
 
