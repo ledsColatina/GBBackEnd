@@ -13,6 +13,6 @@ public class ListRelatorioProducaoPorClienteDTO {
 	private String refCliente;
 	private int quantidade;
 	private int prioridade;
-	private String dataSaida;
+	private Date dataSaida;
 	
 }

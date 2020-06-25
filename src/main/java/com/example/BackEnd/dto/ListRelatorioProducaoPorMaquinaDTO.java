@@ -13,5 +13,5 @@ public class ListRelatorioProducaoPorMaquinaDTO {
 	private String nomeCliente;
 	private int quantidade;
 	private int prioridade;
-	private String dataSaida;
+	private Date dataSaida;
 }
