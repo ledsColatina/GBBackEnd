@@ -42,7 +42,7 @@ public class ListRelatorioProducaoPorClienteService {
 	
 	
 
-	public List<RelatorioCLienteDTO> buscarRealorioCliente() throws Exception {
+	public List<RelatorioCLienteDTO> buscarRealorioCliente() {
 		List<Cliente> list = clienteRepository.findAll();
 		List<RelatorioCLienteDTO> listRelatorioClienteDTO;
 		List<ListRelatorioProducaoPorClienteDTO> listRelatorioProducaoPorClienteDTO = null;
@@ -58,16 +58,16 @@ public class ListRelatorioProducaoPorClienteService {
 			listOPPorCliente = new ArrayList<>();
 			listRelatorioProducaoPorClienteDTO = new ArrayList<>();
 			listOPPorCliente = ordemProducaoRepository.buscarOrdemPorCliente(list.get(i).getId());
-			listEtapas = new ArrayList<>();
+			//listEtapas = new ArrayList<>();
 			for(OrdemProducao op : listOPPorCliente) {
 				total = total + op.getQuantidade();	
 			}
 			
-			for(int j=0;i<listOPPorCliente.size();j++) {
-				listEtapas = listOPPorCliente.get(j).getListEtapas();
-				dataSaida = ganttService.buscarFinalEtapa((long) listEtapas.size());
-				listRelatorioProducaoPorClienteDTO.get(j).setDataSaida(dataSaida);
-			}
+			//for(int j=0;i<listOPPorCliente.size();j++) {
+			//	listEtapas = listOPPorCliente.get(j).getListEtapas();
+			//	dataSaida = ganttService.buscarFinalEtapa((long) listEtapas.size());
+			//	listRelatorioProducaoPorClienteDTO.get(j).setDataSaida(dataSaida);
+			//}
 			
 			
 			listRelatorioProducaoPorClienteDTO = relatorioProducaoPorClienteMapper.toDto(listOPPorCliente);
