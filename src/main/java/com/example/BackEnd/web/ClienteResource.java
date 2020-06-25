@@ -67,7 +67,7 @@ public class ClienteResource {
 	
 	//------------------------------------------------------------------------------------------------------------------------------
 		@GetMapping("/relatorio")
-		public ResponseEntity<List<RelatorioCLienteDTO>> clienteRelatorio(){
+		public ResponseEntity<List<RelatorioCLienteDTO>> clienteRelatorio() throws Exception{
 			return ResponseEntity.ok(RelatorioProducaoPorClienteService.buscarRealorioCliente());	
 		}
 	

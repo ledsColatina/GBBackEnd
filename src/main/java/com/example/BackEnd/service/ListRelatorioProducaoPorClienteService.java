@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.BackEnd.domain.Cliente;
+import com.example.BackEnd.domain.EtapaProducao;
 import com.example.BackEnd.domain.OrdemProducao;
 import com.example.BackEnd.dto.FormularioClienteDTO;
 import com.example.BackEnd.dto.ListRelatorioProducaoPorClienteDTO;
@@ -26,8 +27,11 @@ public class ListRelatorioProducaoPorClienteService {
 	
 	@Autowired
 	private  ClienteRepository clienteRepository;
+	
 	@Autowired
 	private OrdemProducaoRepository ordemProducaoRepository;
+	
+	private GanttService ganttService;
 	
 	public ListRelatorioProducaoPorClienteService(ClienteRepository clienteRepository) {
 		this.relatorioProducaoPorClienteMapper = new ListRelatorioProducaoPorClienteMapper();
@@ -38,12 +42,14 @@ public class ListRelatorioProducaoPorClienteService {
 	
 	
 
-	public List<RelatorioCLienteDTO> buscarRealorioCliente() {
+	public List<RelatorioCLienteDTO> buscarRealorioCliente() throws Exception {
 		List<Cliente> list = clienteRepository.findAll();
 		List<RelatorioCLienteDTO> listRelatorioClienteDTO;
 		List<ListRelatorioProducaoPorClienteDTO> listRelatorioProducaoPorClienteDTO = null;
 		List<OrdemProducao> listOPPorCliente = null;
 		int total;
+		String dataSaida;
+		List<EtapaProducao> listEtapas;
 		listRelatorioClienteDTO = relatorioClienteMapper.toDto(list);
 		
 		
@@ -52,9 +58,18 @@ public class ListRelatorioProducaoPorClienteService {
 			listOPPorCliente = new ArrayList<>();
 			listRelatorioProducaoPorClienteDTO = new ArrayList<>();
 			listOPPorCliente = ordemProducaoRepository.buscarOrdemPorCliente(list.get(i).getId());
+			listEtapas = new ArrayList<>();
 			for(OrdemProducao op : listOPPorCliente) {
-				total = total + op.getQuantidade();
+				total = total + op.getQuantidade();	
 			}
+			
+			for(int j=0;i<listOPPorCliente.size();j++) {
+				listEtapas = listOPPorCliente.get(j).getListEtapas();
+				dataSaida = ganttService.buscarFinalEtapa((long) listEtapas.size());
+				listRelatorioProducaoPorClienteDTO.get(j).setDataSaida(dataSaida);
+			}
+			
+			
 			listRelatorioProducaoPorClienteDTO = relatorioProducaoPorClienteMapper.toDto(listOPPorCliente);
 			listRelatorioClienteDTO.get(i).setListRelatorio(listRelatorioProducaoPorClienteDTO);
 			listRelatorioClienteDTO.get(i).setTotal(total);
