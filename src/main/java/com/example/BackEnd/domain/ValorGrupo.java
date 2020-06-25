@@ -23,18 +23,14 @@ public class ValorGrupo {
 
 	private float valorAtual;
 	
-	
-	
 	@ManyToOne
 	@JoinColumn(name = "linha_id")
 	private Linha linha;
 	
-	
 	@ManyToOne
 	@JoinColumn(name = "tipoProduto_id")
 	private TipoProduto tipoProduto;
-	
-	
+
 	@ManyToOne
 	@JoinColumn(name = "SubProcesso_id")
 	private SubProcesso subProcesso;

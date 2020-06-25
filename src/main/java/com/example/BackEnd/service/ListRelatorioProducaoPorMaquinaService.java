@@ -46,6 +46,10 @@ public class ListRelatorioProducaoPorMaquinaService {
 		this.relatorioMaquinaMapper = new RelatorioMaquinaMapper();
 	}
 
+	
+	
+	
+	
 	public List<RelatorioMaquinaDTO> buscarRealorioMaquina() {
 		List<Maquina> listMaquinas = maquinaRepository.findAll();
 		List<RelatorioMaquinaDTO> listRelatorioMaquinaDTO;

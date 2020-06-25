@@ -1,0 +1,58 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet id="1" author="jpedroc">
+        <createTable tableName="turno">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_turno" nullable="false" />
+            </column>
+            <column name="descricao_turno" type="varchar(200)">
+                <constraints nullable="false" />
+            </column>
+            <column name="hora_inicio" type="varchar(200)">
+                <constraints nullable="false" />
+            </column>
+            <column name="hora_fim" type="varchar(200)">
+                <constraints nullable="false" />
+            </column>
+            <column name="dias_da_semana" type="bytea">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="jpedroc">
+        <createTable tableName="maquina_turno">
+            <column name="maquina_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="turno_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="jpedroc">
+        <addPrimaryKey columnNames="turno_id, maquina_id"
+                       constraintName="pk_maquina_turno"
+                       tableName="maquina_turno"/>
+    </changeSet>
+
+    <changeSet id="4" author="jpedroc">
+        <addForeignKeyConstraint baseColumnNames="maquina_id"
+                                 baseTableName="maquina_turno"
+                                 constraintName="fk_maquina_turno_maquina"
+                                 referencedColumnNames="id"
+                                 referencedTableName="maquina"/>
+    </changeSet>
+
+    <changeSet id="5" author="jpedroc">
+        <addForeignKeyConstraint baseColumnNames="turno_id"
+                                 baseTableName="maquina_turno"
+                                 constraintName="fk_maquina_turno_turno"
+                                 referencedColumnNames="id"
+                                 referencedTableName="turno"/>
+    </changeSet>
+</databaseChangeLog>

@@ -12,17 +12,14 @@ import javax.persistence.ManyToOne;
 import lombok.Data;
 import lombok.Getter;
 
+
 @Entity
 @Data
-//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-//@DiscriminatorColumn(name = "tipo", length = 1, discriminatorType = DiscriminatorType.STRING)
-//@DiscriminatorValue("P")
 public class CapacidadeProducao {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	//@NotEmpty(message = "Capacidade de MaquinaTipoProduto deve ser informado")
+
 	private int capacidadeHora;
 	
 	@ManyToOne

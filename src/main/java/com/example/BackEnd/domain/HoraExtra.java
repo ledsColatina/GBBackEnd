@@ -23,7 +23,7 @@ public class HoraExtra {
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long id;
 	
-	private String data;
+	private String dataHE;
 	private float qtdHoras;
 	private String momento;
 	private String status;

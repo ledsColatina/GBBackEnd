@@ -6,6 +6,9 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import com.example.BackEnd.service.GanttService;
+import com.example.BackEnd.service.TarefaService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +33,7 @@ import com.example.BackEnd.service.PartidaService;
 
 @RestController
 @RequestMapping(value = "/partida")
+@RequiredArgsConstructor
 public class PartidaResource {
 	
 	@Autowired
@@ -40,6 +44,9 @@ public class PartidaResource {
 	
 	@Autowired
     private EtapaProducaoRepository etapaProducaoRepository;
+
+	private final GanttService ganttService;
+	private final TarefaService tarefaService;
 	
 	//----------------------------------------------------------------------------------------------------------------------
 	@GetMapping
@@ -87,25 +94,18 @@ public class PartidaResource {
 	
 
     @PutMapping("/{id}") 
-    public ResponseEntity<?> atualizaPartidaInicio(@PathVariable("id") Long id,@RequestBody Partida partida,HttpServletResponse responseEntity){
+    public ResponseEntity<?> atualizaPartidaInicio(@PathVariable("id") Long id,@RequestBody Partida partida,HttpServletResponse responseEntity) throws Exception {
     	Optional<Partida> partidaPesquisada = partidaRepository.findById(id);
     	Partida novaPartida = null ;
     	if(partida.getQuantidade() < partidaPesquisada.get().getQuantidade()) {
     		novaPartida = new Partida();
-    		//novaPartida.setDataFim(dataFim);
-    		//novaPartida.setDataInicio(partida.getDataInicio());
     		novaPartida.setEtapaProducao(partidaPesquisada.get().getEtapaProducao());
-    		//novaPartida.setHoraFim(horaFim);
-    		//novaPartida.setHoraInicio(partida.getHoraInicio());
     		novaPartida.setMaquina(partidaPesquisada.get().getMaquina());
-    		novaPartida.setStatus("quebrada");
+    		novaPartida.setStatus(partidaPesquisada.get().getStatus());
     		novaPartida.setQuantidade(partidaPesquisada.get().getQuantidade() - partida.getQuantidade());
     		Partida partidaSalva = partidaRepository.save(novaPartida);
-    		System.out.println("quebrada");
-        	System.out.println(partidaSalva.getStatus());
+    		ganttService.adicionarTarefa(partidaSalva);
     	}
-    	
-    	
     	
     	 Optional<Object> partidaAlterada = partidaRepository.findById(id).map(record -> {
 			    		record.setDataInicio(partida.getDataInicio());
@@ -122,12 +122,11 @@ public class PartidaResource {
     	 if(partida.getStatus().equals("iniciada") ) {
     		 etapa.get().setQtdEmEspera(etapa.get().getQtdEmEspera() - partida.getQuantidade());
     		 etapa.get().setQtdEmProducao(etapa.get().getQtdEmProducao() + partida.getQuantidade());
-    		 System.out.println("INICIADA");
     	 }
     	 if(partida.getStatus().equals("finalizada")){
     		 etapa.get().setQtdEmProducao(etapa.get().getQtdEmProducao() - partida.getQuantidade());
     		 etapa.get().setQtdFinalizado(etapa.get().getQtdFinalizado() + partida.getQuantidade());
-    		 System.out.println("FINALIZADA");
+			 tarefaService.excluirTarefa(partida.getId());
     	 }
     	
     	 etapaProducaoRepository.findById(etapa.get().getId()).map(record -> {

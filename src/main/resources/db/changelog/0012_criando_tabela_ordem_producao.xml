@@ -1,0 +1,79 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet id="1" author="jpedroc">
+        <createTable tableName="ordem_producao">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_ordem_producao" nullable="false" />
+            </column>
+            <column name="data_emissao" type="varchar(200)">
+                <constraints nullable="false" />
+            </column>
+            <column name="prioridade_atual" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="prioridade_inicial" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="referencia" type="varchar(200)">
+                <constraints nullable="false" />
+            </column>
+            <column name="valor_total" type="double">
+                <constraints nullable="false" />
+            </column>
+            <column name="quantidade" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="reprocesso" type="boolean">
+                <constraints nullable="false" />
+            </column>
+            <column name="cliente_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="tipo_produto_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="linha_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="ordem_producao_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="jpedroc">
+        <addForeignKeyConstraint baseColumnNames="cliente_id"
+                                 baseTableName="ordem_producao"
+                                 constraintName="fk_ordem_producao_cliente"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cliente"/>
+    </changeSet>
+
+    <changeSet id="3" author="jpedroc">
+        <addForeignKeyConstraint baseColumnNames="tipo_produto_id"
+                                 baseTableName="ordem_producao"
+                                 constraintName="fk_ordem_producao_tipo_produto"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tipo_produto"/>
+    </changeSet>
+
+    <changeSet id="4" author="jpedroc">
+        <addForeignKeyConstraint baseColumnNames="linha_id"
+                                 baseTableName="ordem_producao"
+                                 constraintName="fk_ordem_producao_linha"
+                                 referencedColumnNames="id"
+                                 referencedTableName="linha"/>
+    </changeSet>
+
+    <changeSet id="5" author="jpedroc">
+        <addForeignKeyConstraint baseColumnNames="ordem_producao_id"
+                                 baseTableName="ordem_producao"
+                                 constraintName="fk_ordem_producao_ordem_original"
+                                 referencedColumnNames="id"
+                                 referencedTableName="ordem_producao"/>
+    </changeSet>
+
+</databaseChangeLog>

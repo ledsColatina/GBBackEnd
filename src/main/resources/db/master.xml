@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <include file="db/changelog/0001_criando_tabela_cliente.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/0002_criando_tabela_linha.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/0003_criando_tabela_tipo_produto.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/0004_criando_tabela_processo.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/0005_criando_tabela_maquina.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/0006_criando_tabela_turno.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/0007_criando_tabela_hora_extra.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/0008_criando_tabela_sub_processo.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/0009_criando_tabela_valor_grupo.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/0010_criando_tabela_log_valor.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/0011_criando_tabela_usuario.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/0012_criando_tabela_ordem_producao.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/0013_criando_tabela_etapa_producao.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/0014_criando_tabela_partida.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/0015_criando_tabela_capacidade_producao.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/0016_criando_tabela_horario.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/0017_criando_tabela_tarefa.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/0018_criando_tabela_partida_gantt.xml" relativeToChangelogFile="false"/>
+
+</databaseChangeLog>

@@ -7,6 +7,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import com.example.BackEnd.service.ClienteService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,10 +34,11 @@ import com.example.BackEnd.service.ListRelatorioProducaoPorClienteService;
 
 @RestController
 @RequestMapping(value = "/cliente")
+@RequiredArgsConstructor
 public class ClienteResource {
-	
-	@Autowired
-    private ClienteRepository clienteRepository;
+
+	private final ClienteService clienteService;
+    private final ClienteRepository clienteRepository;
 	
 	@Autowired
     private FormularioClienteService formularioCLienteService;
@@ -48,6 +51,12 @@ public class ClienteResource {
 	public ResponseEntity<List<Cliente>> listar(){
 		List<Cliente> cliente = clienteRepository.findAll();	
 		return !cliente.isEmpty() ? ResponseEntity.ok(cliente) : ResponseEntity.noContent().build();	
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<Cliente> buscarId(@PathVariable("id") Long id){
+		Cliente cliente = clienteService.buscarPorId(id);
+		return ResponseEntity.ok(cliente);
 	}
 	
 	//------------------------------------------------------------------------------------------------------------------------------

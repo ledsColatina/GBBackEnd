@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+
+import com.example.BackEnd.dto.MaquinaGanttDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,7 +61,7 @@ public class MaquinaResource {
 	
 	@Autowired
 	private HoraExtraRepository horaExtraRepository;
-	
+
 	@Autowired
 	private ListRelatorioProducaoPorMaquinaService listRelatorioProducaoPorMaquinaService;
 	
@@ -71,29 +73,21 @@ public class MaquinaResource {
 		return !setor.isEmpty() ? ResponseEntity.ok(setor) : ResponseEntity.noContent().build();
 	}
 
+	@GetMapping("/ordenado")
+	public ResponseEntity<List<Maquina>> listarOrdenado() {
+		List<Maquina> listaMaquina = maquinaService.buscarOrdenadoId();
+		return ResponseEntity.ok(listaMaquina);
+	}
+
 	//----------------------------------------------------------------------------------------------------------------------------
 	
 		@GetMapping("/capacidade/{id}")
 		protected ResponseEntity<?> listar(@PathVariable Long id) {
 			List<CapacidadeProducao> capacidades = capacidadeProducaoRepository.findByMaquinaIdAndDtype(id);
-			
-			//List<CapacidadeProducao> result = capacidades.stream()                
-	        //        .filter(elemento ->!(elemento instanceof CapacidadeProducaoExtra))     
-	        //        .collect(Collectors.toList());
-			//
+
 			return !capacidades.isEmpty() ? ResponseEntity.ok(capacidades) : ResponseEntity.noContent().build();
 		}
 
-	//-----------------------------------------------------------------------------------------------------------------------	
-	
-	//@GetMapping("/{id}/turnos")
-	//protected ResponseEntity<?> listarTurnos(@PathVariable Long id) {
-	//	Optional<Maquina> setor = maquinaRepository.findById(id);
-	//	return setor.isPresent() ? ResponseEntity.ok(setor.get().getListTurno()) : ResponseEntity.noContent().build();
-	//}
-
-	//-----------------------------------------------------------------------------------------------------------------------	
-	
 	@GetMapping("/lastID")
 	public ResponseEntity<?> pegarUltimoIDSetor() {
 		Maquina setor = maquinaRepository.findTopByOrderByIdDesc();
@@ -105,7 +99,7 @@ public class MaquinaResource {
 	//------------------------------------------------------------------------------------------------------------------------------
 	@GetMapping("/relatorio")
 	public ResponseEntity<List<RelatorioMaquinaDTO>> maquinaRelatorio(){
-		return ResponseEntity.ok(listRelatorioProducaoPorMaquinaService.buscarRealorioMaquina());	
+		return ResponseEntity.ok(listRelatorioProducaoPorMaquinaService.buscarRealorioMaquina());
 	}
 		
 	//-----------------------------------------------------------------------------------------------------------------------	
@@ -193,119 +187,10 @@ public class MaquinaResource {
 		}).orElse(ResponseEntity.notFound().build());
 	}
 
-	
-	//----------------------------------------------------------------------------------------------------------------------	
-	/*
-	public int verficarRegrasDeNegocio(Setor setor) {
-		int totalDeHorasDoSetor = 0;
-		int minutosInicio = 0;
-		int minutosFim = 0;
-		int cont = 0;
-		int contadorDeVerificacaoEntreOsTurnos = 1;
-		ArrayList<Integer> vetorHorasInicio = new ArrayList<Integer>();
-		ArrayList<Integer> vetorHorasFinal = new ArrayList<Integer>();
-		int totalDeTurnos = 0;
-		int totalDeHorasDoTurno = 0;
-		for (int b = 0; b < setor.getListTurno().size(); b++) {
-			totalDeTurnos = totalDeTurnos + 1;
-		}
-
-		if (totalDeTurnos == 1) {
-			//turnoRepository.save(setor);
-			return 0;
-		}
-
-		// FAVOR USAR O JAVA 8, trocar para foreach
-		for (int c = 0; c < setor.getListTurno().size(); c++) {
-			totalDeHorasDoSetor = totalDeHorasDoSetor + setor.getListTurno().get(c).getTotalHoras();
-		}
-		
-
-		for (int i = 0; i < setor.getListTurno().size(); i++) {
-			totalDeHorasDoTurno = totalDeHorasDoTurno + setor.getListTurno().get(i).getTotalHoras();
-			String str = setor.getListTurno().get(i).getHoraInicio();
-			String[] arr = str.split(":");
-
-			if (arr.length == 2) {
-				minutosInicio = Integer.parseInt(arr[0]) * 60 + Integer.parseInt(arr[1]);
-			}
-
-			minutosFim = (totalDeHorasDoTurno * 60) + minutosInicio;
-
-			if (minutosFim > 24 * 60) {
-				minutosFim = minutosFim - 24 * 60;
-			}
-
-			
-			if (cont > 0) {
-				for (int j = 0; j < vetorHorasInicio.size(); j++) {
-
-					if ((minutosFim >= vetorHorasInicio.get(j) && minutosFim >= vetorHorasFinal.get(j))
-							|| (minutosInicio / 60 >= vetorHorasInicio.get(j) / 60
-									&& minutosInicio / 60 >= vetorHorasFinal.get(j) / 60)) {
-						System.out.println("IF");
-						System.out.println("(" + minutosFim / 60 + " >= " + vetorHorasInicio.get(j) / 60 + " && "
-								+ minutosFim / 60 + " >= " + vetorHorasFinal.get(j) / 60 + ")" + " || " + "("
-								+ minutosInicio / 60 + " >= " + vetorHorasInicio.get(j) / 60 + " && "
-								+ minutosInicio / 60 + " >= " + vetorHorasFinal.get(j) / 60 + ")");
-
-						if (minutosInicio >= vetorHorasFinal.get(j)) {
-							//turnoRepository.save(setor);
-							return 0;
-						}
-						return 1;
-					} else {
-						System.out.println("ELSE");
-						System.out.println("(" + minutosFim / 60 + " <= " + vetorHorasInicio.get(j) / 60 + " && "
-								+ minutosFim / 60 + " <= " + vetorHorasFinal.get(j) / 60 + ")" + " && " + "("
-								+ minutosInicio / 60 + " <= " + vetorHorasInicio.get(j) / 60 + " && "
-								+ minutosInicio / 60 + " <= " + vetorHorasFinal.get(j) / 60 + ")");
-
-						System.out.println(minutosInicio / 60 + " >= " + vetorHorasFinal.get(j) / 60 + " && "
-								+ minutosInicio / 60 + " >= " + vetorHorasInicio.get(j) / 60);
-						System.out.println(minutosInicio / 60 + " <= " + vetorHorasFinal.get(j) / 60 + " && "
-								+ minutosInicio / 60 + " <= " + vetorHorasInicio.get(j) / 60);
-
-						if ((minutosInicio >= vetorHorasFinal.get(j) && minutosInicio >= vetorHorasInicio.get(j))
-								|| (minutosInicio <= vetorHorasFinal.get(j)
-										&& minutosInicio <= vetorHorasInicio.get(j))) {
-							System.out.println(minutosFim / 60 + " >= " + vetorHorasFinal.get(j) / 60 + " && "
-									+ minutosFim / 60 + " >= " + vetorHorasInicio.get(j) / 60);
-							System.out.println(minutosFim / 60 + " <= " + vetorHorasFinal.get(j) / 60 + " && "
-									+ minutosFim / 60 + " <= " + vetorHorasInicio.get(j) / 60);
-
-							if ((minutosFim >= vetorHorasFinal.get(j) && minutosFim >= vetorHorasInicio.get(j))
-									|| (minutosFim <= vetorHorasFinal.get(j)
-											&& minutosFim <= vetorHorasInicio.get(j))) {
-								contadorDeVerificacaoEntreOsTurnos = contadorDeVerificacaoEntreOsTurnos + 1;
-								System.out.println("cont :" + contadorDeVerificacaoEntreOsTurnos + " // "
-										+ "totalDeTurnos" + totalDeTurnos);
-								if (contadorDeVerificacaoEntreOsTurnos + 1 == totalDeTurnos) {
-									if (totalDeHorasDoSetor < 24) {
-										//turnoRepository.save(setor);
-										return 0;
-									} else {
-										return 1;
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			contadorDeVerificacaoEntreOsTurnos = 0;
-			vetorHorasInicio.add(minutosInicio);
-			vetorHorasFinal.add((totalDeHorasDoTurno * 60) + minutosInicio);
-			cont = cont + 1;
-			totalDeHorasDoTurno = 0;
-
-		}
-		if (cont == 1) {
-			//turnoRepository.save(setor);
-			return 0;
-		}
-
-		return 1;
+	@GetMapping("gantt")
+	public ResponseEntity<List<MaquinaGanttDTO>> listarGantt() {
+//		return maquinaService
+		return null;
 	}
-	*/
+
 }

@@ -1,0 +1,50 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet id="1" author="jpedroc">
+        <createTable tableName="tarefa">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_tarefa" nullable="false" />
+            </column>
+            <column name="prioridade" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="ordem_producao_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="etapa_producao_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="partida_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="jpedroc">
+        <addForeignKeyConstraint baseColumnNames="ordem_producao_id"
+                                 baseTableName="tarefa"
+                                 constraintName="fk_tarefa_ordem_producao"
+                                 referencedColumnNames="id"
+                                 referencedTableName="ordem_producao"/>
+    </changeSet>
+
+    <changeSet id="3" author="jpedroc">
+        <addForeignKeyConstraint baseColumnNames="etapa_producao_id"
+                                 baseTableName="tarefa"
+                                 constraintName="fk_tarefa_etapa_producao"
+                                 referencedColumnNames="id"
+                                 referencedTableName="etapa_producao"/>
+    </changeSet>
+
+    <changeSet id="4" author="jpedroc">
+        <addForeignKeyConstraint baseColumnNames="partida_id"
+                                 baseTableName="tarefa"
+                                 constraintName="fk_tarefa_partida"
+                                 referencedColumnNames="id"
+                                 referencedTableName="partida"/>
+    </changeSet>
+
+</databaseChangeLog>

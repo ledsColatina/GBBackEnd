@@ -120,7 +120,7 @@ public class HoraExtraResource {
 					capacidadeProducaoExtra.setHoraExtra(horaExtraSalva);
 					capacidadeProducaoExtra.setMaquina(listMaquina.get(i));
 					capacidadeProducaoExtra.setTipoProduto(listTipoProd.get(j));
-					List<CapacidadeProducao> listCapProducao = capacidadeProducaoRepository.findByMaquinaIdAndTipoProdutoId(listMaquina.get(i).getId(),listTipoProd.get(j).getId());
+					List<CapacidadeProducao> listCapProducao = capacidadeProducaoRepository.findAllByMaquinaIdAndTipoProdutoId(listMaquina.get(i).getId(),listTipoProd.get(j).getId());
 					for(int k = 0;k<listCapProducao.size();k++) {
 						if(listCapProducao.get(k) instanceof CapacidadeProducao) {
 							capacidadeProducaoExtra.setCapacidadeHora(listCapProducao.get(k).getCapacidadeHora());
@@ -154,7 +154,7 @@ public class HoraExtraResource {
     public ResponseEntity<HoraExtra> atualizaHoraExtra(@PathVariable("id") Long id,@RequestBody HoraExtra horaExtra,HttpServletResponse responseEntity){
     	return horaExtraRepository.findById(id).map(record -> {
 			    		record.setHoraInicio(horaExtra.getHoraInicio());
-			    		record.setData(horaExtra.getData());
+			    		record.setDataHE(horaExtra.getDataHE());
 			    		record.setHoraFim(horaExtra.getHoraFim());
 			    		record.setQtdHoras(horaExtra.getQtdHoras());
 			    		record.setStatus(horaExtra.getStatus());

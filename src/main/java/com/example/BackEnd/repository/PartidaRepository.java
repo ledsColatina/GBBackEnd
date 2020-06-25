@@ -22,20 +22,10 @@ public interface PartidaRepository extends JpaRepository<Partida, Long>{
 
 	List<Partida> findByStatusContaining(String string);
 
-
-
 	List<Partida> findByEtapaProducaoIdAndStatus(Long id, String string);
-
-
-
-	
-
-	
 
 	List<Partida> findAllByEtapaProducaoId(Long id);
 
-	
-
-
+    List<Partida> findAllByMaquinaId(Long id);
 
 }

@@ -25,7 +25,6 @@ public class Maquina {
 	private Long id;
 
 	@NotEmpty(message = "Nome do Setor deve ser informado")
-	//@NotNull(message = "Nome do Setor deve ser informado")
 	private String nome;
 	private Long maxOcupacao;
 	private String role;

@@ -10,12 +10,5 @@ import com.example.BackEnd.domain.Processo;
 import com.example.BackEnd.domain.SubProcesso;
 
 public interface ProcessoRepository extends JpaRepository<Processo, Long>{
-
 	Processo findAllById(Long id);
-
-
-	
-	
-	
-
 }

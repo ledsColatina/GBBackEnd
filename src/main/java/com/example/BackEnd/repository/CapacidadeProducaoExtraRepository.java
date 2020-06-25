@@ -14,12 +14,7 @@ public interface CapacidadeProducaoExtraRepository extends JpaRepository<Capacid
 
 	List<CapacidadeProducaoExtra> findByHoraExtraId(Long id);
 
-
-
 	void deleteByTipoProdutoId(Long id);
 
-
-
 	void deleteByHoraExtraId(Long id);
-
 }

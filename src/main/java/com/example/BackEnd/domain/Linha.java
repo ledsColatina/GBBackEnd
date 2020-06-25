@@ -18,7 +18,6 @@ public class Linha {
 	
 	
 	@NotEmpty(message = "Descrição da Linha deve ser informado")
-	//@NotNull(message = "Descrição da Linha deve ser informado")
 	private String descricao;
 
 	

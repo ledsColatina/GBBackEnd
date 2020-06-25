@@ -1,0 +1,87 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet id="1" author="jpedroc">
+        <createTable tableName="etapa_producao">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_etapa_producao" nullable="false" />
+            </column>
+            <column name="sequencia" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="inicio_previsto" type="varchar(200)">
+                <constraints nullable="true" />
+            </column>
+            <column name="fim_previsto" type="varchar(200)">
+                <constraints nullable="true" />
+            </column>
+            <column name="qtd_em_espera" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="qtd_em_producao" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="qtd_finalizado" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="processo_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="etapa_producao_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="jpedroc">
+        <addForeignKeyConstraint baseColumnNames="processo_id"
+                                 baseTableName="etapa_producao"
+                                 constraintName="fk_etapa_producao_processo"
+                                 referencedColumnNames="id"
+                                 referencedTableName="processo"/>
+    </changeSet>
+
+    <changeSet id="3" author="jpedroc">
+        <addForeignKeyConstraint baseColumnNames="etapa_producao_id"
+                                 baseTableName="etapa_producao"
+                                 constraintName="fk_etapa_producao_ordem_producao"
+                                 referencedColumnNames="id"
+                                 referencedTableName="ordem_producao"/>
+    </changeSet>
+
+    <changeSet id="4" author="jpedroc">
+        <createTable tableName="etapa_sub_processo">
+            <column name="sub_processo_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="etapa_producao_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="5" author="jpedroc">
+        <addPrimaryKey columnNames="etapa_producao_id, sub_processo_id"
+                       constraintName="pk_etapa_sub_processo"
+                       tableName="etapa_sub_processo"/>
+    </changeSet>
+
+    <changeSet id="6" author="jpedroc">
+        <addForeignKeyConstraint baseColumnNames="etapa_producao_id"
+                                 baseTableName="etapa_sub_processo"
+                                 constraintName="fk_etapa_sub_srocesso_etapa_producao"
+                                 referencedColumnNames="id"
+                                 referencedTableName="etapa_producao"/>
+    </changeSet>
+
+    <changeSet id="7" author="jpedroc">
+        <addForeignKeyConstraint baseColumnNames="sub_processo_id"
+                                 baseTableName="etapa_sub_processo"
+                                 constraintName="fk_etapa_sub_processo_sub_processo"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sub_processo"/>
+    </changeSet>
+
+</databaseChangeLog>

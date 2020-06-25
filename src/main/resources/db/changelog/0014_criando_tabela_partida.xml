@@ -1,0 +1,54 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet id="1" author="jpedroc">
+        <createTable tableName="partida">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_partida" nullable="false" />
+            </column>
+            <column name="data_inicio" type="varchar(200)">
+                <constraints nullable="true" />
+            </column>
+            <column name="hora_inicio" type="varchar(200)">
+                <constraints nullable="true" />
+            </column>
+            <column name="data_fim" type="varchar(200)">
+                <constraints nullable="true" />
+            </column>
+            <column name="hora_fim" type="varchar(200)">
+                <constraints nullable="true" />
+            </column>
+            <column name="status" type="varchar(200)">
+                <constraints nullable="true" />
+            </column>
+            <column name="quantidade" type="int">
+                <constraints nullable="true" />
+            </column>
+            <column name="etapa_producao_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="maquina_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="jpedroc">
+        <addForeignKeyConstraint baseColumnNames="etapa_producao_id"
+                                 baseTableName="partida"
+                                 constraintName="fk_partida_etapa_producao"
+                                 referencedColumnNames="id"
+                                 referencedTableName="etapa_producao"/>
+    </changeSet>
+
+    <changeSet id="3" author="jpedroc">
+        <addForeignKeyConstraint baseColumnNames="maquina_id"
+                                 baseTableName="partida"
+                                 constraintName="fk_partida_etapa_maquina"
+                                 referencedColumnNames="id"
+                                 referencedTableName="maquina"/>
+    </changeSet>
+
+</databaseChangeLog>

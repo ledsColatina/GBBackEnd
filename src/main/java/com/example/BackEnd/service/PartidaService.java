@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
-
+import com.example.BackEnd.service.mapper.PartidaGanttMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.core.Authentication;
@@ -42,6 +41,9 @@ public class PartidaService {
 	
 	@Autowired
 	private OrdemProducaoRepository ordemProducaoRepository;
+
+	@Autowired
+	private OrdemProducaoService ordemProducaoService;
 	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
@@ -53,7 +55,18 @@ public class PartidaService {
 		this.partidaListagemMapper = new PartidaListagemMapper();
 		this.partidaRepository = partidaRepository;
 	}
-	
+
+	public List<Partida> buscarPorEtapa(Long id) {
+		return partidaRepository.findAllByEtapaProducaoId(id);
+	}
+
+	public Partida buscarPorId(Long id) throws Exception {
+		return partidaRepository.findById(id).orElseThrow(Exception::new);
+	}
+
+	public List<Partida> buscarPorMaquina(Long id) {
+		return partidaRepository.findAllByMaquinaId(id);
+	}
 	
 	public List<Maquina> getMaquinasDoUsuarioLogado() {
 		
@@ -95,7 +108,6 @@ public class PartidaService {
 			partDTO.setNomeCliente(ordeProducao.getCliente().getNome());
 		}
 		
-		
 		return lisPartidaDTO;
 	}
 	
@@ -111,8 +123,6 @@ public class PartidaService {
 				listMaquinasLiberadas.add(maquinaLiberada);
 			}
 		}
-		
-		
 		return listMaquinasLiberadas;
 	}
 	
@@ -134,74 +144,54 @@ public class PartidaService {
 		List<Partida> partidaIniciada= new ArrayList<>();
 		List<Partida> listPartidasDisponivel ;
 		boolean disponivel=false;
-		
+
  		for(OrdemProducao ordemProducao : listOrdemProducao) {
  			proximaEtapa = etapaProducaoRepository.buscarEtapasDaOPPorSequencia(ordemProducao.getId());
- 			listMesmaSequencia = etapaProducaoRepository.buscaPorSequenciaAndEtapaProducaoId(proximaEtapa.getSequencia(),ordemProducao.getId());
- 
+ 			if(proximaEtapa != null){
+				listMesmaSequencia = etapaProducaoRepository.buscaPorSequenciaAndEtapaProducaoId(proximaEtapa.getSequencia(),ordemProducao.getId());
+			}
+ 			else {
+ 				listMesmaSequencia = new ArrayList<>();
+			}
+
  			listAuxiliarDePartidas = new ArrayList<>();
  			listPartidasDisponivel = new ArrayList<>();
  			for(EtapaProducao etapa : listMesmaSequencia) {
- 				System.out.println("LIST MESMA SEQUENCIA: " + listMesmaSequencia.size());
-
  				maquinaLiberada = new Maquina();
 				partidasEtapa = new ArrayList<>();
  				for(Maquina maquina:listMaquinasDoUsuarioLogado) {
- 					
  					if(maquinaRepository.findByIdAndMaquinaId(maquina.getId(),etapa.getProcesso().getId()) != null) {
  						temPermissao = true;
  					}
  	 			}
- 					
- 			
  				if(temPermissao) { 
 
 					if(partidaRepository.findByEtapaProducaoIdAndStatus(etapa.getId(),"pendente").isEmpty() && !partidaRepository.findByEtapaProducaoIdAndStatus(etapa.getId(),"iniciada").isEmpty()) {
 						etapaIniciada = true;
-						if(!partidaRepository.findByEtapaProducaoIdAndStatus(etapa.getId(),"quebrada").isEmpty()) {
-							disponivel = true;
-							listPartidasDisponivel.addAll(partidaRepository.findByEtapaProducaoIdAndStatus(etapa.getId(),"disponivel"));
-							for(Partida partida: listPartidasDisponivel) {
-								System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAA");
-								listTotalDePartidas.add(partida);
-				 			}
-						}					
+						disponivel = true;
+						listPartidasDisponivel.addAll(partidaRepository.findByEtapaProducaoIdAndStatus(etapa.getId(),"disponivel"));
+						for(Partida partida: listPartidasDisponivel) {
+							listTotalDePartidas.add(partida);
+						}
 					} 
 					else {						
 						
 						partidasEtapa.addAll(partidaRepository.findByEtapaProducaoIdAndStatus(etapa.getId(),"pendente"));
-						System.out.println("NENHUMA ETAPA 'INICIADA' AINDA");
 						for(Partida partida: partidasEtapa) {
 							listAuxiliarDePartidas.add(partida);
 			 			}
-						
-						
-						
 					}
-					System.out.println("TAMANHO VETOR: " +  partidasEtapa.size());
-	 				System.out.println("ETAPA INICADA: "+ etapaIniciada);
-	 				
-	 				for(int i=0;i<listAuxiliarDePartidas.size();i++) {
-			 			System.out.println(listAuxiliarDePartidas.get(i).getId());
-			 	 	}
- 				
  				}
-	 				
-	 				
  			}
- 
  			if(!etapaIniciada ) {
 				listTotalDePartidas.addAll((listAuxiliarDePartidas));
-					
 			}
-
  			etapaIniciada = false;
 		}
  		
  	//-----------------------------------------------------------------------------------------------------------
  		lisPartidaDTO = partidaListagemMapper.toDto(listTotalDePartidas);
 		
-//asfaf
 		EtapaProducao etapaProducao;
 		OrdemProducao ordeProducao;
 		
@@ -229,11 +219,4 @@ public class PartidaService {
 		}
 	}
 
-
-	
-
-
-	
-
-	
 }

@@ -23,12 +23,10 @@ public class Turno {
 	private String descricaoTurno;
 	private String horaInicio;
 	private String horaFim;
-	
 	private ArrayList<String> diasDaSemana;
-
 	
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "maquina_turno", joinColumns = { @JoinColumn(name = "turno_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "maquina_id") }) 
+	@JoinTable(name = "maquina_turno", joinColumns = { @JoinColumn(name = "turno_id") },
+			inverseJoinColumns = {@JoinColumn(name = "maquina_id") })
 	private List<Maquina> listaMaquina;
 }

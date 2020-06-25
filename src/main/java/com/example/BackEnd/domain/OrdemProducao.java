@@ -2,15 +2,7 @@ package com.example.BackEnd.domain;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -27,7 +19,6 @@ public class OrdemProducao {
 
 	private int quantidade;
 
-	//@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private String dataEmissao;
 	private int prioridadeAtual;
 	private String referencia;
@@ -39,7 +30,7 @@ public class OrdemProducao {
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "etapaProducao_id")
 	private List<EtapaProducao> listEtapas;
 	

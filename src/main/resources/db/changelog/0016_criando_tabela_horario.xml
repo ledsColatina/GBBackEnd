@@ -1,0 +1,48 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet id="1" author="jpedroc">
+        <createTable tableName="horario">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_horario" nullable="false" />
+            </column>
+            <column name="dia" type="varchar(200)">
+                <constraints nullable="true" />
+            </column>
+            <column name="inicio" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="fim" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="is_hora_extra" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="turno_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="maquina_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="jpedroc">
+        <addForeignKeyConstraint baseColumnNames="turno_id"
+                                 baseTableName="horario"
+                                 constraintName="fk_horario_turno"
+                                 referencedColumnNames="id"
+                                 referencedTableName="turno"/>
+    </changeSet>
+
+    <changeSet id="3" author="jpedroc">
+        <addForeignKeyConstraint baseColumnNames="maquina_id"
+                                 baseTableName="horario"
+                                 constraintName="fk_horario_maquina"
+                                 referencedColumnNames="id"
+                                 referencedTableName="maquina"/>
+    </changeSet>
+
+</databaseChangeLog>

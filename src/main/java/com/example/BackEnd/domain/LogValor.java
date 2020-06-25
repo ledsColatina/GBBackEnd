@@ -21,18 +21,12 @@ public class LogValor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	// USAR DOUBLE
 	private float ValorNovo;
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date data;
+
 	private String descricao;
 	private String status;
 
-	 //@ManyToOne
-	// @JoinColumn(name = "valorGrupo_id")
-	 //private ValorGrupo valorGrupo;
-
-	
 }

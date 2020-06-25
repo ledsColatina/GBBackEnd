@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import com.example.BackEnd.service.exception.RegraDeNegocioException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -100,32 +101,30 @@ public class LinhaResource {
 	//----------------------------------------------------------------------------------------------------------------------------
 	
 	@DeleteMapping("/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	protected void deleteLinha(@PathVariable Long id) {
+	protected ResponseEntity<Void> deleteLinha(@PathVariable Long id) {
 		List<ValorGrupo> ListValorGrupoExcluido = valorGrupoRepository.findByLinhaId(id);
-		valorGrupoRepository.deleteByLinhaId(id);
 		LogValor logValor;
 		List<OrdemProducao> listOrdemProducao = ordemProducaoRepository.findByLinhaId(id);
-		
-		
-		System.out.println(listOrdemProducao.size());
-		if(listOrdemProducao.size()>0) {
-			linhaRepository.deleteById(id);
+
+		if(!listOrdemProducao.isEmpty()) {
+			throw new RegraDeNegocioException("Linha esta sendo usada em um OP");
 		}else {
-			
-			for(int i=0;i<ListValorGrupoExcluido.size();i++) {
-				logValor = new LogValor();
-				logValor.setData(new java.util.Date(System.currentTimeMillis()));
-				logValor.setDescricao("SubProcesso: " + ListValorGrupoExcluido.get(i).getSubProcesso().getDescricao() + "\n"+ 
-										"Linha: " + ListValorGrupoExcluido.get(i).getLinha().getDescricao() + "\n" + 
-										"TipoProduto: " + ListValorGrupoExcluido.get(i).getTipoProduto().getDescricao());
-				logValor.setStatus("Excluido");
-				logValorRepository.save(logValor);
+			if(!ListValorGrupoExcluido.isEmpty()){
+				valorGrupoRepository.deleteByLinhaId(id);
+				for(int i=0;i<ListValorGrupoExcluido.size();i++) {
+					logValor = new LogValor();
+					logValor.setData(new java.util.Date(System.currentTimeMillis()));
+					logValor.setDescricao("SubProcesso: " + ListValorGrupoExcluido.get(i).getSubProcesso().getDescricao() + "\n"+
+							"Linha: " + ListValorGrupoExcluido.get(i).getLinha().getDescricao() + "\n" +
+							"TipoProduto: " + ListValorGrupoExcluido.get(i).getTipoProduto().getDescricao());
+					logValor.setStatus("Excluido");
+					logValorRepository.save(logValor);
+				}
 			}
 			
 			linhaRepository.deleteById(id);
 		}
-		
+		return ResponseEntity.ok(null);
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------------

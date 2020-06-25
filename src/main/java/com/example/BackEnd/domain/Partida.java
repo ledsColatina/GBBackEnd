@@ -37,7 +37,5 @@ public class Partida {
 	@ManyToOne
 	@JoinColumn(name = "maquina_id")
 	private Maquina maquina;
-	
-	
 
 }

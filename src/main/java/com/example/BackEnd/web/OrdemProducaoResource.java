@@ -6,6 +6,9 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import com.example.BackEnd.service.GanttService;
+import com.example.BackEnd.service.OrdemProducaoService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,22 +39,22 @@ import com.example.BackEnd.service.PartidaService;
 
 @RestController
 @RequestMapping(value = "/ordemproducao")
+@RequiredArgsConstructor
 public class OrdemProducaoResource {
-	
-	@Autowired
-    private OrdemProducaoRepository ordemProducaoRepository;
-	
-	@Autowired
-    private EtapaProducaoRepository etapaProducaoRepository;
-	
-	@Autowired
-    private ValorGrupoRepository valorGrupoRespository;
-	
-	@Autowired
-    private PartidaRepository partidaRepository;
-	
-	@Autowired
-    private ProcessoRepository ProcessoRepository;
+
+	private final GanttService ganttService;
+
+    private final OrdemProducaoRepository ordemProducaoRepository;
+
+    private final OrdemProducaoService ordemProducaoService;
+
+    private final EtapaProducaoRepository etapaProducaoRepository;
+
+    private final ValorGrupoRepository valorGrupoRespository;
+
+    private final PartidaRepository partidaRepository;
+
+    private final ProcessoRepository ProcessoRepository;
 	
 	//----------------------------------------------------------------------------------------------------------------------
 	
@@ -93,11 +96,7 @@ public class OrdemProducaoResource {
 	//----------------------------------------------------------------------------------------------------------------------
 
 		@PostMapping
-	    public ResponseEntity<?> criarOrdemProducao(@Valid @RequestBody  OrdemProducao ordemProducao,HttpServletResponse responseEntity){
-			//List<EtapaProducao> listEtapas = ordemProducao.getListEtapas();
-			//for(int i=0;i<listEtapas.size();i++) {
-			//	etapaProducaoRepository.save(listEtapas.get(i));
-			//}
+	    public ResponseEntity<?> criarOrdemProducao(@Valid @RequestBody  OrdemProducao ordemProducao,HttpServletResponse responseEntity) throws Exception {
 			OrdemProducao ordemProducaoSalva = ordemProducaoRepository.save(ordemProducao);
 			
 			List<EtapaProducao> listEtapas = ordemProducaoSalva.getListEtapas();
@@ -111,15 +110,17 @@ public class OrdemProducaoResource {
 				partida.setQuantidade(ordemProducaoSalva.getQuantidade());
 				partidaRepository.save(partida);
 	        }
-			
-		
-			
-			//List<PartidaDTO> lisPartidaDTO = partidaService.consultar(ordemProducaoSalva);
-			
-				
-			
+
+			ganttService.preencherTarefas(ordemProducaoSalva.getId());
+
 	    	return ResponseEntity.status(HttpStatus.OK).body(ordemProducaoSalva);
 	    }
+
+	    @GetMapping("/referencia/{ref}")
+		public ResponseEntity<OrdemProducao> buscarPorReferencia(@PathVariable("ref") String ref){
+			OrdemProducao op = ordemProducaoService.buscarPorReferencia(ref);
+			return ResponseEntity.ok(op);
+		}
 		
 	
 	//----------------------------------------------------------------------------------------------------------------------

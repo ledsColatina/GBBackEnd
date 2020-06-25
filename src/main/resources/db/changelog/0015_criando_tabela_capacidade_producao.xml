@@ -1,0 +1,53 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet id="1" author="jpedroc">
+        <createTable tableName="capacidade_producao">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_capacidade_producao" nullable="false" />
+            </column>
+            <column name="dtype" type="varchar(200)">
+                <constraints nullable="false" />
+            </column>
+            <column name="capacidade_hora" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="hora_extra_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="maquina_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="tipo_produto_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="jpedroc">
+        <addForeignKeyConstraint baseColumnNames="hora_extra_id"
+                                 baseTableName="capacidade_producao"
+                                 constraintName="fk_capacidade_producao_hora_extra"
+                                 referencedColumnNames="id"
+                                 referencedTableName="hora_extra"/>
+    </changeSet>
+
+    <changeSet id="3" author="jpedroc">
+        <addForeignKeyConstraint baseColumnNames="tipo_produto_id"
+                                 baseTableName="capacidade_producao"
+                                 constraintName="fk_capacidade_producao_tipo_produto"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tipo_produto"/>
+    </changeSet>
+
+    <changeSet id="4" author="jpedroc">
+        <addForeignKeyConstraint baseColumnNames="maquina_id"
+                                 baseTableName="capacidade_producao"
+                                 constraintName="fk_capacidade_producao_maquina"
+                                 referencedColumnNames="id"
+                                 referencedTableName="maquina"/>
+    </changeSet>
+
+</databaseChangeLog>

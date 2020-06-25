@@ -1,0 +1,75 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet id="1" author="jpedroc">
+        <createTable tableName="hora_extra">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_hora_extra" nullable="false" />
+            </column>
+            <column name="datahe" type="varchar(200)">
+                <constraints nullable="false" />
+            </column>
+            <column name="hora_inicio" type="varchar(200)">
+                <constraints nullable="false" />
+            </column>
+            <column name="hora_fim" type="varchar(200)">
+                <constraints nullable="false" />
+            </column>
+            <column name="status" type="varchar(200)">
+                <constraints nullable="false" />
+            </column>
+            <column name="momento" type="varchar(200)">
+                <constraints nullable="false" />
+            </column>
+            <column name="qtd_horas" type="float">
+                <constraints nullable="false" />
+            </column>
+            <column name="turno" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="jpedroc">
+        <addForeignKeyConstraint baseColumnNames="turno"
+                                 baseTableName="hora_extra"
+                                 constraintName="fk_hora_extra_turno"
+                                 referencedColumnNames="id"
+                                 referencedTableName="turno"/>
+    </changeSet>
+
+    <changeSet id="3" author="jpedroc">
+        <createTable tableName="hora_extra_maquina">
+            <column name="maquina_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hora_extra_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="4" author="jpedroc">
+        <addPrimaryKey columnNames="hora_extra_id, maquina_id"
+                       constraintName="pk_hora_extra_maquina"
+                       tableName="hora_extra_maquina"/>
+    </changeSet>
+
+    <changeSet id="5" author="jpedroc">
+        <addForeignKeyConstraint baseColumnNames="maquina_id"
+                                 baseTableName="hora_extra_maquina"
+                                 constraintName="fk_hora_extra_maquina_maquina"
+                                 referencedColumnNames="id"
+                                 referencedTableName="maquina"/>
+    </changeSet>
+
+    <changeSet id="6" author="jpedroc">
+        <addForeignKeyConstraint baseColumnNames="hora_extra_id"
+                                 baseTableName="hora_extra_maquina"
+                                 constraintName="fk_hora_extra_maquina_hora_extra"
+                                 referencedColumnNames="id"
+                                 referencedTableName="hora_extra"/>
+    </changeSet>
+</databaseChangeLog>

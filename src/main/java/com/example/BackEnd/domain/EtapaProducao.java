@@ -22,25 +22,20 @@ public class EtapaProducao {
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long id;
-	//d
 	private int sequencia;
 	private String inicioPrevisto;
 	private String fimPrevisto;
 	private Long qtdEmEspera;
 	private Long qtdEmProducao;
 	private Long qtdFinalizado;
-	
-	//@ManyToOne
-	//@JoinColumn(name = "ordemProducao_id")
-	//private OrdemProducao ordemProducao;
-	
+
 	@ManyToOne
+	@JoinColumn(name = "processo_id")
 	private Processo processo;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany
 	@JoinTable(name = "Etapa_SubProcesso", joinColumns = { @JoinColumn(name = "subProcesso_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "etapaProducao_id") })
 	private List<SubProcesso> listSubProcesso;
-	
-	
+		
 }
