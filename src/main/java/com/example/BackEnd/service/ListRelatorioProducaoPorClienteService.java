@@ -31,7 +31,7 @@ public class ListRelatorioProducaoPorClienteService {
 	@Autowired
 	private OrdemProducaoRepository ordemProducaoRepository;
 	
-	private GanttService ganttService;
+	//private GanttService ganttService;
 	
 	public ListRelatorioProducaoPorClienteService(ClienteRepository clienteRepository) {
 		this.relatorioProducaoPorClienteMapper = new ListRelatorioProducaoPorClienteMapper();
