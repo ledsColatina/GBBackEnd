@@ -23,6 +23,5 @@
     <include file="db/changelog/0016_criando_tabela_horario.xml" relativeToChangelogFile="false"/>
     <include file="db/changelog/0017_criando_tabela_tarefa.xml" relativeToChangelogFile="false"/>
     <include file="db/changelog/0018_criando_tabela_partida_gantt.xml" relativeToChangelogFile="false"/>
-    <include file="db/changelog/0019_alterando_tabela_etapa_producao.xml" relativeToChangelogFile="false"/>
 
 </databaseChangeLog>
