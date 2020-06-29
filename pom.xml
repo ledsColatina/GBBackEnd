@@ -51,8 +51,11 @@
 		<dependency>
 		    <groupId>org.hibernate</groupId>
 		    <artifactId>hibernate-validator</artifactId>
-			<version>6.1.5.Final</version>
+		    <version>4.2.0.Final</version>
 		</dependency>
+		
+	
+		
 
 		<dependency>
 		    <groupId>org.apache.commons</groupId>
@@ -94,10 +97,12 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<scope>provided</scope>
+		    <groupId>org.projectlombok</groupId>
+		    <artifactId>lombok</artifactId>
+		    <version>1.18.12</version>
+		    <scope>provided</scope>
 		</dependency>
+
 		
 	</dependencies>
 
