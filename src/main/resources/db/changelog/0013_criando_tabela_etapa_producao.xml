@@ -71,7 +71,7 @@
     <changeSet id="6" author="jpedroc">
         <addForeignKeyConstraint baseColumnNames="etapa_producao_id"
                                  baseTableName="etapa_sub_processo"
-                                 constraintName="fk_etapa_sub_srocesso_etapa_producao"
+                                 constraintName="fk_etapa_sub_processo_etapa_producao"
                                  referencedColumnNames="id"
                                  referencedTableName="etapa_producao"/>
     </changeSet>
